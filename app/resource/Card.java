@@ -1,5 +1,7 @@
 package app.resource;
 
+import java.lang.*;
+
 public class Card {
     private int value;
     private String colour;
@@ -38,6 +40,6 @@ public class Card {
     }
 
     public String toString() {
-        return "Colour: " + colour + " Number: " + value;
+        return "Colour: " + colour + ", Number: " + value;
     }
 }
