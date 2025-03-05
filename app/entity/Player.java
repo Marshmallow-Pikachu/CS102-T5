@@ -14,7 +14,6 @@ public class Player {
         // then, take cards from the parade on the following conditions
         // take face value of the card
         // if card value is 3, remove the last 3 cards from the available pool of cards
-        // OR
         // iterate through the list and stop i < index size - X, 3 in this case
         // if ((card.value <= placedCard.value) || (card.color.equals(placedCard.color))) {, yes its value <= value
         //        remove from parade and add to players card list
