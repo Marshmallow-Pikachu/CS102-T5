@@ -29,12 +29,12 @@ public class Card {
         return flipped;
     }
 
-    public void setRemovalMode(boolean removalMode) {
-        this.removalMode = removalMode;
+    public void setRemovalMode() {
+        removalMode = true;
     }
 
-    public void setFlipped (boolean flipped) {
-        this.flipped = flipped;
+    public void setFlipped () {
+        flipped = true;
     }
 
     public String toString() {
