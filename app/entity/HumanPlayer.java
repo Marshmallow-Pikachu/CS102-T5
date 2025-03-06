@@ -4,17 +4,35 @@ import java.util.*;
 import app.resource.*;
 
 public class HumanPlayer extends Player {
-    //inherited attributes
-    /* 
-        private ArrayList<Card> playerHand;
-        private ArrayList<Card> collectedParadeCards;
-        private boolean haveSixColors;
-    */
+    // Players take turns
+    // private ArrayList<Card> playerHand;
+    // private ArrayList<Card> collectedParadeCards;
+    // private boolean hasSixColors;
 
-    //inherits playCard()
-    //inherits collectEligibleCardsFromParade
-
-    public void takeTurn(/* <please insert necessary parameters> */) {
-        playCard(/* <please insert necessary parameters> */); // from player.java
+    public HumanPlayer() {
+        
     }
+
+    public void collectEligibleCardsFromParade(Parade parade, Card card) {
+
+    }
+    
+    public void takeTurn(Deck deck, Parade parade) {
+
+    }
+    // add 1 card to the end of the parade
+    // then, take cards from the parade on the following conditions
+    // take face value of the card
+    // if card value is 3, remove the last 3 cards from the available pool of cards
+    // OR
+    // iterate through the list and stop i < index size - X, 3 in this case
+    // if ((card.value <= placedCard.value) || (card.color.equals(placedCard.color))) {, yes its value <= value
+    //        remove from parade and add to players card list
+    //} 
+    // cards removed from the parade will be placed OPEN UP infront of the player, perhaps another attribute
+    // ArrayList<Cards> collectedParadeCards
+    // fill up the empty gaps, reorganise the board ArrayList 
+    // Finally, draw +1 card into player's hand CLOSED 
+    // redraws up to a hand of 5
+
 }
