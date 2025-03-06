@@ -48,9 +48,9 @@ public class Deck {
      * javac app/resource/Deck.java
      * java app.resource.Deck
      */
-    // public ArrayList<Card> getCards() {
-    //     return cards;
-    // }
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
 
     // public static void main(String[] args) {
     //     Deck testDeck = new Deck();
