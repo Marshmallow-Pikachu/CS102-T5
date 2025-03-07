@@ -8,6 +8,7 @@ public class DisplayPlayerMenu {
         // print out the current Parade state
         parade.displayParade();
 
+        System.out.println("----------------------------------------------------------");
         // print out myHand
         System.out.println("Player Hand");
         System.out.println(myHand);
@@ -37,7 +38,7 @@ public class DisplayPlayerMenu {
         return myHand.get(cardSelectedIndex);
     }
 
-    // compile command: javac -d out -cp "out" app/utilities/DisplayPlayerMenu.java
+    // compile command: javac -d out -cp "src" src/app/utilities/DisplayPlayerMenu.java
     // public static void main(String[] args) {
     //     // run java app.utilities.DisplayPlayerMenu to test this after compiling
     //     DisplayPlayerMenu menu = new DisplayPlayerMenu();

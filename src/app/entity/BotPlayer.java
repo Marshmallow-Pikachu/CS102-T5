@@ -1,8 +1,8 @@
 package app.entity;
 
 import java.util.*;
-
 import app.resource.*;
+import app.utilities.DisplayPlayerMenu;
 
 public class BotPlayer extends Player {
         public BotPlayer(Deck deck, String name) {
@@ -21,16 +21,40 @@ public class BotPlayer extends Player {
     // 2. If multiple cards have the same highest value, play the card that results in the fewest removals.
 
     public Card determineCardChoice(ArrayList<Card> botHand, Parade parade) {
-        Card bestCard = null;
+        // Sort the bot’s hand by highest value first
+        botHand.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
 
+        Card bestCard = null;
+        int minCardsRemoved = Integer.MAX_VALUE;
+
+        for (Card card : botHand) {
+            int cardsRemoved = parade.removeEligibleCards(card).size();
+            if (cardsRemoved < minCardsRemoved) {
+                minCardsRemoved = cardsRemoved;
+                bestCard = card;
+            }
+        }
         return bestCard;
     }
 
     public void takeTurn(Deck deck, Parade parade) {
-        // Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
-        // collectEligibleCardsFromParade(parade, chosenCard);
-        // super.getPlayerHand().add(deck.drawCard());
+        Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
+        System.out.println("Bot has chosen to play " + chosenCard.toString());
+        collectEligibleCardsFromParade(parade, chosenCard);
+        super.getPlayerHand().add(deck.drawCard());
     }
 
+    //Testing and Debugging
+    //compile command: javac -d out -cp "src" src/app/entity/BotPlayer.java
+    //execute comand: java -cp "out" app.entity.BotPlayer
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        deck.shuffle();
+        Parade parade = new Parade(deck);
+        BotPlayer testBotPlayer = new BotPlayer(deck, "TestBotPlayer");
+        DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
+        testBotPlayer.takeTurn(deck, parade);
+        DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
+    }
 
 }
