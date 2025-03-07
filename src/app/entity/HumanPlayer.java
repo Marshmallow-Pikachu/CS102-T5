@@ -43,13 +43,13 @@ public class HumanPlayer extends Player {
     //compile command: javac -d out -cp "out" src/app/entity/HumanPlayer.java
     //execute command: java -cp "out" app.entity.HumanPlayer
 
-    // public static void main(String[] args) {
-    //     Deck deck = new Deck();
-    //     deck.shuffle();
-    //     Parade parade = new Parade(deck);
-    //     HumanPlayer testHumanPlayer = new HumanPlayer(deck, "TestPlayer");
-    //     testHumanPlayer.takeTurn(deck, parade);
-    //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
-    // }
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        deck.shuffle();
+        Parade parade = new Parade(deck);
+        HumanPlayer testHumanPlayer = new HumanPlayer(deck, "TestPlayer");
+        testHumanPlayer.takeTurn(deck, parade);
+        DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
+    }
 
 }

@@ -18,17 +18,38 @@ public class Parade {
     }
 
     public ArrayList<Card> removeEligibleCards(Card playedCard) {
-        ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); //list of cards that are removed from parade
-
-        for (Card currentParadeCard : paradeCards) {
-            // checking eligibility of cards to be removed from Parade to Players' Hand
-            if (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour())) {
-                removableCardsFromParadeList.add(currentParadeCard);  
+        ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); 
+        if (playedCard.getValue() < paradeCards.size()) {
+            for(int i = 0; i <= paradeCards.size() - playedCard.getValue() - 1; i++) {
+                Card currentCard = paradeCards.get(i);
+                currentCard.setRemovalMode();
             }
         }
-        paradeCards.removeAll(removableCardsFromParadeList);
+
+
+        for (Card currentParadeCard:paradeCards) {
+            if (currentParadeCard.getRemovalMode() == true && (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour()))) {
+                removableCardsFromParadeList.add(currentParadeCard); 
+            }
+        }
+        for(Card removingCard:removableCardsFromParadeList) {
+            paradeCards.remove(removingCard);
+        }
         return removableCardsFromParadeList;
     }
+
+    //public ArrayList<Card> removeEligibleCards(Card playedCard) {
+    //     ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); //list of cards that are removed from parade
+
+    //     for (Card currentParadeCard : paradeCards) {
+    //         // checking eligibility of cards to be removed from Parade to Players' Hand
+    //         if (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour())) {
+    //             removableCardsFromParadeList.add(currentParadeCard);  
+    //         }
+    //     }
+    //     paradeCards.removeAll(removableCardsFromParadeList);
+    //     return removableCardsFromParadeList;
+    // }
 
     public void addToParade(Card playedCard) {
         paradeCards.add(playedCard); // add playedCard to paradeCards
