@@ -2,13 +2,10 @@ package app;
 
 import java.util.*;
 
-import app.entity.BotPlayer;
-import app.entity.Player;
-
-// import app.game.*;
-// import app.entity.*;
-// import app.resource.*;
-// import app.utilities.*;
+import app.game.*;
+import app.entity.*;
+import app.resource.*;
+import app.utilities.*;
 
 
 public class App {
@@ -37,7 +34,79 @@ public class App {
         return false;
     }
 
+    // Helper function to create the arraylist of players to add to the game
+    public static ArrayList<Player> getPlayerList(Scanner sc, Deck deck) {
+        // initialise ArrayList<Player> to return players
+        ArrayList<Player> players = new ArrayList<>();
 
+        // Ask user for the amount of players to add
+        boolean valid = false;
+        System.out.print("How many human players (1-6): ");
+        String input = sc.nextLine();
+        
+        while (!valid) {
+            try {
+                // Check if the user inputted a number
+                int humans = Integer.parseInt(input);
+
+                // Check if the user inputted a number between 1 to 6
+                if (humans < 1 | humans > 6) {
+                    System.out.println("\nInvalid number of players.\n");
+                    System.out.print("How many human players (1-6): ");
+                    input = sc.nextLine();
+                }
+
+                // Now ask the user for number of bots if it is not 6 human players
+                if (humans != 6) {
+                    System.out.printf("How many bots (0-%d): ", 6 - humans);
+                    input = sc.nextLine();
+                }
+
+                // Check if the input is an int
+                int bots = Integer.parseInt(input);
+
+                // Check if the number isn't between 2 to 6
+                if (humans + bots < 2 | humans + bots > 6) {
+                    System.out.println("\nInvalid number of players.\n");
+                    System.out.print("How many human players (1-6): ");
+                    input = sc.nextLine();
+                }
+
+                // Once number is correct, can start creating players
+                valid = true;
+                System.out.println();
+
+            for (int i = 1; i <= humans; i++) {
+                System.out.printf("Name of player %d: ", i);
+                input = sc.nextLine();
+                players.add(new HumanPlayer(deck, input));
+            }
+
+            // Default list of bot names to randomise
+            ArrayList<String> paradeBotNames = new ArrayList<>();
+            paradeBotNames.add("Alice");
+            paradeBotNames.add("Mad Hatter");
+            paradeBotNames.add("White Rabbit");
+            paradeBotNames.add("Humpty Dumpty");
+            paradeBotNames.add("Cheshire Cat");
+            paradeBotNames.add("Dodo Bird");
+            Collections.shuffle(paradeBotNames);
+
+            for (int i = 0; i < bots; i++) {
+                // TODO: change to BotPlayer once implemented
+                players.add(new HumanPlayer(deck, paradeBotNames.get(i)));
+            };
+            
+            } catch (NumberFormatException e) {
+                System.out.println("\nInvalid number of players.\n");
+                System.out.print("How many human players (1-6): ");
+                input = sc.nextLine();
+            }
+
+        }
+
+        return players;
+    } 
     public static void main(String[] args) {
         // Initialise Scanner to read inputs
         Scanner sc = new Scanner(System.in);
@@ -48,6 +117,17 @@ public class App {
         // This is the main game starting loop, everything inside is to 
         while (startGame(sc)) {
             System.out.println("Play game");
+
+            // initialise deck and players to add to the game
+            Deck deck = new Deck();
+            deck.shuffle();
+            ArrayList<Player> players = getPlayerList(sc, deck);
+
+            // Just to check if players are inside
+            for (Player p : players) {
+                System.out.println(p.getName());;
+            }
+            
         }
 
         // Exiting message once the user is done playing
