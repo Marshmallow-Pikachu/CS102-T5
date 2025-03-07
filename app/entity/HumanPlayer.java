@@ -2,6 +2,7 @@ package app.entity;
 
 import java.util.*;
 import app.resource.*;
+import app.utilities.DisplayPlayerMenu;
 
 public class HumanPlayer extends Player {
     // Players take turns
@@ -9,17 +10,19 @@ public class HumanPlayer extends Player {
     // private ArrayList<Card> collectedParadeCards;
     // private boolean hasSixColors;
 
-    public HumanPlayer() {
-        
+    public HumanPlayer(Deck deck, String name) {
+        super(deck, name);
     }
 
-    public void collectEligibleCardsFromParade(Parade parade, Card card) {
-
-    }
     
     public void takeTurn(Deck deck, Parade parade) {
-
+        DisplayPlayerMenu.displayParadeAndMyHand(parade, super.getPlayerHand());
+        Card playedCard = DisplayPlayerMenu.promptPlayerForCardToPlay(super.getPlayerHand());
+        collectEligibleCardsFromParade(parade, playedCard);
     }
+
+
+
     // add 1 card to the end of the parade
     // then, take cards from the parade on the following conditions
     // take face value of the card
@@ -34,5 +37,17 @@ public class HumanPlayer extends Player {
     // fill up the empty gaps, reorganise the board ArrayList 
     // Finally, draw +1 card into player's hand CLOSED 
     // redraws up to a hand of 5
+
+    //Testing and Debugging
+    //compile command: javac -d out -cp "out" app/entity/HumanPlayer.java
+    //execute command: java -cp "out" app.entity.HumanPlayer
+    public static void main(String[] args) {
+        Deck deck = new Deck();
+        deck.shuffle();
+        Parade parade = new Parade(deck);
+        HumanPlayer testHumanPlayer = new HumanPlayer(deck);
+        testHumanPlayer.takeTurn(deck, parade);
+        DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
+    }
 
 }

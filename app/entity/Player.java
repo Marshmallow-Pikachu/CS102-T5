@@ -4,19 +4,32 @@ import java.util.*;
 import app.resource.*; //imports card, deck and parade.java
 
 public abstract class Player {
-    private ArrayList<Card> playerHand;
-    private ArrayList<Card> collectedParadeCards;
-    private boolean hasSixColors;
+    private ArrayList<Card> playerHand = new ArrayList<Card>();
+    private ArrayList<Card> collectedParadeCards = new ArrayList<Card>();
+    private String name;
+    // private boolean hasSixColors;
 
-    public Player() {
-        // call draw card six times and add to list?
+    public Player(Deck deck, String name) {
+        for (int i = 0; i < 5; i++) {
+            Card drawnCard = deck.drawCard();
+            playerHand.add(drawnCard);
+        }
+        this.name  = name;
     }
 
+    public ArrayList<Card> getPlayerHand()  {
+        return this.playerHand;
+    }
+    
     public ArrayList<Card> getCollectedParadeCards() {
         return this.collectedParadeCards;
     }
 
-    public boolean getHasSixColors() {
+    public String getName() {
+        return this.name;
+    }
+
+    public boolean HasSixColors() {
 
         if (getCollectedParadeCards() == null || getCollectedParadeCards().size() < 6) {
             return false;
@@ -35,7 +48,7 @@ public abstract class Player {
         }
         // if there are 6 entries, then return true. Shouldnt get more than 6 entries since only 6 unique colors
         if (sixColours.size() == 6) {
-            hasSixColors = true; //set hasSixColor to true? <----------------------------------------------------------
+            // hasSixColors = true; //set hasSixColor to true? <----------------------------------------------------------
             return true;
         }
         return false;
@@ -58,33 +71,45 @@ public abstract class Player {
         return count;
     }
 
+    //Marc
     public void collectEligibleCardsFromParade(Parade parade, Card playedCard) {
-        // take cards from the parade on the following conditions
-        // take face value of the card
-        // if card value is 3, remove the last 3 cards from the available pool of cards
-        // iterate through the list and stop i < index size - X, 3 in this case
-        int numberOfCardsInParade = parade.getNumberOfCardsInParade();
-        // if parade has less cards than the facevalue, set eligible cards to 0 ie nothing. Else, check until the index
-        // 8 cards in parade
-        // play a 3
-        // 5 cards available, so go from index i = 0, i < 5; i++;
-
-        int eligibleCardIndex = numberOfCardsInParade - playedCard.getValue() <= 0 ? 0 : numberOfCardsInParade - playedCard.getValue(); 
-        for (int i = 0; i < eligibleCardIndex; i++) {
-            Card currentParadeCard = parade.getParadeCards().get(i);
-            if (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour())) {
-                this.collectedParadeCards.add(currentParadeCard);
-                parade.removeEligibleCard(currentParadeCard);
-            }
+        ArrayList<Card> collectedCards = parade.removeEligibleCards(playedCard); //get the collected cards from parade as an array
+        parade.addToParade(playedCard); //add the card played to the parade
+        for (Card card : collectedCards) {
+            collectedParadeCards.add(card);
         }
-        // if ((card.value <= placedCard.value) || (card.color.equals(placedCard.color))) {, yes its value <= value
-        //        remove from parade and add to players card list
-        //} 
-        // cards removed from the parade will be placed OPEN UP infront of the player, perhaps another attribute
-        // ArrayList<Cards> collectedParadeCards
-        // fill up the empty gaps, reorganise the board ArrayList 
-        // Finally, draw +1 card into player's hand CLOSED 
-        // redraws up to a hand of 5
+        playerHand.remove(playedCard);
+
+        // // take cards from the parade on the following conditions
+        // // take face value of the card
+        // // if card value is 3, remove the last 3 cards from the available pool of cards
+        // // iterate through the list and stop i < index size - X, 3 in this case
+        // int numberOfCardsInParade = parade.getNumberOfCardsInParade();
+        // // if parade has less cards than the facevalue, set eligible cards to 0 ie nothing. Else, check until the index
+        // // 8 cards in parade
+        // // play a 3
+        // // 5 cards available, so go from index i = 0, i < 5; i++;
+
+        // int eligibleCardIndex = numberOfCardsInParade - playedCard.getValue() <= 0 ? 0 : numberOfCardsInParade - playedCard.getValue(); 
+        // for (int i = 0; i < eligibleCardIndex; i++) {
+        //     Card currentParadeCard = parade.getParadeCards().get(i);
+        //     if (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour())) {
+        //         this.collectedParadeCards.add(currentParadeCard);
+        //         parade.removeEligibleCard(currentParadeCard);
+        //     }
+        // }
+        // // if ((card.value <= placedCard.value) || (card.color.equals(placedCard.color))) {, yes its value <= value
+        // //        remove from parade and add to players card list
+        // //} 
+        // // cards removed from the parade will be placed OPEN UP infront of the player, perhaps another attribute
+        // // ArrayList<Cards> collectedParadeCards
+        // // fill up the empty gaps, reorganise the board ArrayList 
+        // // Finally, draw +1 card into player's hand CLOSED 
+        // // redraws up to a hand of 5
     }
     public abstract void takeTurn(Deck deck, Parade parade);
+
+    //Testing and Debugging
+    //all commands run from parent folder of "app"
+    //compile command: javac -d out -cp "out" app/entity/Player.java
 }   

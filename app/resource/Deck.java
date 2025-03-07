@@ -50,9 +50,9 @@ public class Deck {
     /*
      * uncomment the code below to test Deck class
      * in terminal:
-     * javac app/resource/Card.java
-     * javac app/resource/Deck.java
-     * java app.resource.Deck
+     * javac -d out app/resource/Card.java
+     * javac -d out app/resource/Deck.java
+     * java -cp "out" app.resource.Deck
      */
 
     // public static void main(String[] args) {

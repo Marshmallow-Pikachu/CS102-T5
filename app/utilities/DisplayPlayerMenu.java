@@ -4,18 +4,19 @@ import java.util.*;
 import app.resource.*; 
 
 public class DisplayPlayerMenu {
-    public void displayParadeAndMyHand(Parade parade, ArrayList<Card> myHand) {
+    public static void displayParadeAndMyHand(Parade parade, ArrayList<Card> myHand) {
         // print out the current Parade state
-        System.out.println(parade);
+        parade.displayParade();
 
         // print out myHand
+        System.out.println("Player Hand");
         System.out.println(myHand);
     }
 
     // Player will input a number from 1 to 5, representing the 5 cards in his hand
     // Player input is validated here by my try catch, not sure if there is a need for validateInput.java
 
-    public Card promptPlayerForCardToPlay(ArrayList<Card> myHand) { //should be left non-static since this 
+    public static Card promptPlayerForCardToPlay(ArrayList<Card> myHand) { //should be left non-static since this 
         Scanner sc = new Scanner(System.in);
         int cardSelectedIndex = -1; 
         String input = null;
@@ -35,6 +36,8 @@ public class DisplayPlayerMenu {
         sc.close(); //not sure if i need to close here
         return myHand.get(cardSelectedIndex);
     }
+
+    // compile command: javac -d out -cp "out" app/utilities/DisplayPlayerMenu.java
     // public static void main(String[] args) {
     //     // run java app.utilities.DisplayPlayerMenu to test this after compiling
     //     DisplayPlayerMenu menu = new DisplayPlayerMenu();
