@@ -14,6 +14,8 @@ public class BotPlayer extends Player {
 
     // }
 
+    //Simulates the removal of eligible cards without modifying the actual parade.
+    //Returns a list of cards that would be removed if the given card were played.
     public ArrayList<Card> simulateRemoval (Card playedCard, ArrayList<Card> simulatedParade) {
         ArrayList<Card> removableCards = new ArrayList<>();
         for (Card currentParadeCard : simulatedParade) {
@@ -27,12 +29,8 @@ public class BotPlayer extends Player {
 
     //Bot Algorithm
     //This simple algorithm is aimed at collecting the least amount cards from the parade as possible
-    // 1. Play the highest-value card first (to protect more cards in the parade).
-    // 2. If multiple cards have the same highest value, play the card that results in the fewest removals.
+    // The bot evaluates each card in its hand and selects the one that results in the fewest removals from the parade.
     public Card determineCardChoice(ArrayList<Card> botHand, Parade parade) {
-        // Sort the bot’s hand by highest value first
-        botHand.sort((a, b) -> Integer.compare(b.getValue(), a.getValue()));
-
         Card bestCard = null;
         int minCardsRemoved = Integer.MAX_VALUE;
 
