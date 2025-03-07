@@ -45,7 +45,7 @@ public class HumanPlayer extends Player {
         Deck deck = new Deck();
         deck.shuffle();
         Parade parade = new Parade(deck);
-        HumanPlayer testHumanPlayer = new HumanPlayer(deck);
+        HumanPlayer testHumanPlayer = new HumanPlayer(deck, "TestPlayer");
         testHumanPlayer.takeTurn(deck, parade);
         DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
     }
