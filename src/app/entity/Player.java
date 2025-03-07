@@ -111,5 +111,5 @@ public abstract class Player {
 
     //Testing and Debugging
     //all commands run from parent folder of "app"
-    //compile command: javac -d out -cp "out" app/entity/Player.java
+    //compile command: javac -d out -cp "out" src/app/entity/Player.java
 }   

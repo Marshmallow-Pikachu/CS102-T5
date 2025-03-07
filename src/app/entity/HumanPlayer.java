@@ -19,6 +19,7 @@ public class HumanPlayer extends Player {
         DisplayPlayerMenu.displayParadeAndMyHand(parade, super.getPlayerHand());
         Card playedCard = DisplayPlayerMenu.promptPlayerForCardToPlay(super.getPlayerHand());
         collectEligibleCardsFromParade(parade, playedCard);
+        super.getPlayerHand().add(deck.drawCard());
     }
 
 
@@ -39,15 +40,16 @@ public class HumanPlayer extends Player {
     // redraws up to a hand of 5
 
     //Testing and Debugging
-    //compile command: javac -d out -cp "out" app/entity/HumanPlayer.java
+    //compile command: javac -d out -cp "out" src/app/entity/HumanPlayer.java
     //execute command: java -cp "out" app.entity.HumanPlayer
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.shuffle();
-        Parade parade = new Parade(deck);
-        HumanPlayer testHumanPlayer = new HumanPlayer(deck, "TestPlayer");
-        testHumanPlayer.takeTurn(deck, parade);
-        DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
-    }
+
+    // public static void main(String[] args) {
+    //     Deck deck = new Deck();
+    //     deck.shuffle();
+    //     Parade parade = new Parade(deck);
+    //     HumanPlayer testHumanPlayer = new HumanPlayer(deck, "TestPlayer");
+    //     testHumanPlayer.takeTurn(deck, parade);
+    //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testHumanPlayer.getPlayerHand());
+    // }
 
 }
