@@ -56,14 +56,14 @@ public class BotPlayer extends Player {
     //Testing and Debugging
     //compile command: javac -d out -cp "src" src/app/entity/BotPlayer.java
     //execute comand: java -cp "out" app.entity.BotPlayer
-    public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.shuffle();
-        Parade parade = new Parade(deck);
-        BotPlayer testBotPlayer = new BotPlayer(deck, "TestBotPlayer");
-        DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
-        testBotPlayer.takeTurn(deck, parade);
-        DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
-    }
+    // public static void main(String[] args) {
+    //     Deck deck = new Deck();
+    //     deck.shuffle();
+    //     Parade parade = new Parade(deck);
+    //     BotPlayer testBotPlayer = new BotPlayer(deck, "TestBotPlayer");
+    //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
+    //     testBotPlayer.takeTurn(deck, parade);
+    //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
+    // }
 
 }

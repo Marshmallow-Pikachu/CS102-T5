@@ -46,8 +46,8 @@ public class Game {
     }
 
 
-    //Gets String to Convert Color
-    public String linkCardtoColor(Card c){
+    //Gets String to Convert Colour
+    public String linkCardtoColour(Card c){
         String cardColor = null;
         switch (c.getColour()){
             case "Red":
@@ -138,7 +138,7 @@ public class Game {
     }
     //Prints 1 Card (For Testing)
     public void printCard(Card c){
-        System.out.println(linkCardtoColor(c) + "╭───╮");
+        System.out.println(linkCardtoColour(c) + "╭───╮");
         System.out.printf("│ %d │ %n", c.getValue());
         System.out.println("╰───╯" + ANSI_RESET);
     }
@@ -149,7 +149,7 @@ public class Game {
         parade.add(""); 
         parade.add("");
         for (Card c : cards){
-            String colorCode = linkCardtoColor(c);
+            String colorCode = linkCardtoColour(c);
             ArrayList<String> temp = printCardString(c);
             parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET);
             parade.set(1, parade.get(1) + colorCode + temp.get(1) + ANSI_RESET);

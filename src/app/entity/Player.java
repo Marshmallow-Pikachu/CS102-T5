@@ -29,7 +29,7 @@ public abstract class Player {
         return this.name;
     }
 
-    public boolean HasSixColors() {
+    public boolean hasSixColors() {
 
         if (getCollectedParadeCards() == null || getCollectedParadeCards().size() < 6) {
             return false;
