@@ -48,6 +48,7 @@ public class App {
             try {
                 // Check if the user inputted a number
                 int humans = Integer.parseInt(input);
+                int bots = 0;
 
                 // Check if the user inputted a number between 1 to 6
                 if (humans < 1 | humans > 6) {
@@ -58,44 +59,43 @@ public class App {
 
                 // Now ask the user for number of bots if it is not 6 human players
                 if (humans != 6) {
-                    System.out.printf("How many bots (0-%d): ", 6 - humans);
+                    System.out.printf("How many bots (0-%d): ", (6 - humans));
                     input = sc.nextLine();
+                    // Check if the input is an int
+                    bots = Integer.parseInt(input);
                 }
 
-                // Check if the input is an int
-                int bots = Integer.parseInt(input);
-
                 // Check if the number isn't between 2 to 6
-                if (humans + bots < 2 | humans + bots > 6) {
+                if (humans + bots < 2 | humans + bots > 6 | bots < 0) {
                     System.out.println("\nInvalid number of players.\n");
                     System.out.print("How many human players (1-6): ");
                     input = sc.nextLine();
+                } else {
+                    // Once number is correct, can start creating players
+                    valid = true;
+                    System.out.println();
+
+                    for (int i = 1; i < humans + 1; i++) {
+                        System.out.printf("Name of player %d: ", i);
+                        input = sc.nextLine();
+                        players.add(new HumanPlayer(deck, input));
+                    }
+
+                    // Default list of bot names to randomise
+                    ArrayList<String> paradeBotNames = new ArrayList<>();
+                    paradeBotNames.add("Alice");
+                    paradeBotNames.add("Mad Hatter");
+                    paradeBotNames.add("White Rabbit");
+                    paradeBotNames.add("Humpty Dumpty");
+                    paradeBotNames.add("Cheshire Cat");
+                    paradeBotNames.add("Dodo Bird");
+                    Collections.shuffle(paradeBotNames);
+
+                    for (int i = 0; i < bots; i++) {
+                        players.add(new BotPlayer(deck, paradeBotNames.get(i)));
+                    };
                 }
 
-                // Once number is correct, can start creating players
-                valid = true;
-                System.out.println();
-
-            for (int i = 1; i <= humans; i++) {
-                System.out.printf("Name of player %d: ", i);
-                input = sc.nextLine();
-                players.add(new HumanPlayer(deck, input));
-            }
-
-            // Default list of bot names to randomise
-            ArrayList<String> paradeBotNames = new ArrayList<>();
-            paradeBotNames.add("Alice");
-            paradeBotNames.add("Mad Hatter");
-            paradeBotNames.add("White Rabbit");
-            paradeBotNames.add("Humpty Dumpty");
-            paradeBotNames.add("Cheshire Cat");
-            paradeBotNames.add("Dodo Bird");
-            Collections.shuffle(paradeBotNames);
-
-            for (int i = 0; i < bots; i++) {
-                // TODO: change to BotPlayer once implemented
-                players.add(new HumanPlayer(deck, paradeBotNames.get(i)));
-            };
             
             } catch (NumberFormatException e) {
                 System.out.println("\nInvalid number of players.\n");
@@ -125,7 +125,33 @@ public class App {
 
             // Just to check if players are inside
             for (Player p : players) {
-                System.out.println(p.getName());;
+                System.out.printf("===== %s =====%n", p.getName());
+                ArrayList<Card> hand = p.getPlayerHand();
+                for (Card c : hand) {
+                    switch (c.getColour()) {
+                        case "Black":
+                            System.out.printf(" \u001B[30m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        case "Blue":
+                            System.out.printf(" \u001B[34m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        case "Red":
+                            System.out.printf(" \u001B[31m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        case "Green":
+                            System.out.printf(" \u001B[92m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        case "Purple":
+                            System.out.printf(" \u001B[35m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        case "Yellow":
+                            System.out.printf(" \u001B[33m| %s |\u001B[0m ", c.getValue());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                System.out.println();
             }
             
         }
