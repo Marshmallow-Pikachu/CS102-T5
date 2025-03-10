@@ -126,7 +126,7 @@ public class Printer {
         System.out.println("╰───╯" + ANSI_RESET);
     }
 
-    public static void printHand(ArrayList<Card> cards){ //to replace with Parade parade
+    public static void printHand(ArrayList<Card> cards){ // Print hand and Collected Card
         ArrayList<String> parade = new ArrayList<>();
         parade.add("");         
         parade.add(""); 
