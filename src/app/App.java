@@ -55,6 +55,7 @@ public class App {
                     System.out.println("\nInvalid number of players.\n");
                     System.out.print("How many human players (1-6): ");
                     input = sc.nextLine();
+                    continue;
                 }
 
                 // Now ask the user for number of bots if it is not 6 human players
@@ -70,6 +71,7 @@ public class App {
                     System.out.println("\nInvalid number of players.\n");
                     System.out.print("How many human players (1-6): ");
                     input = sc.nextLine();
+                    continue;
                 } else {
                     // Once number is correct, can start creating players
                     valid = true;
