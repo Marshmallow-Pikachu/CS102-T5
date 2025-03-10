@@ -19,14 +19,12 @@ public class Game {
     public static final String ANSI_RESET = "\u001B[0m"; 
   
     // Declaring the color (Red, Blue, Purple, Green, Grey, Orange) 
-    // Custom declaration 
     public static final String ANSI_BLACK  = "\u001B[30m";
     public static final String ANSI_RED    = "\u001B[31m";
     public static final String ANSI_BLUE   = "\u001B[34m";
     public static final String ANSI_YELLOW = "\u001B[33m"; 
     public static final String ANSI_BRIGHT_GREEN  = "\u001B[92m";
     public static final String ANSI_PURPLE = "\u001B[35m";
-    //public static final String ANSI_GRAY = "\u001B[38;5;240m";  // Darker gray
 
     // Feel free to add to psvm to check if your parts integrate
     private ArrayList<Player> players;
@@ -236,7 +234,7 @@ public class Game {
 
         System.out.println("============================== Current Parade ===============================");
         //printParade(testList);
-        printParade(parade);
+        parade.printParade();
     } 
     
     public void initiateRound(){  //Player chooses a card from hand to play to parade
