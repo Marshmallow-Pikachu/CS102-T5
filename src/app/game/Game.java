@@ -307,9 +307,11 @@ public class Game {
 
         // while (game.gameEnd == false){
             //game.initiateRound();
-            game.displayGameState(game);
+          //  game.displayGameState(game);
         // }
-        game.initiateFinalRound();
+        //game.initiateFinalRound();
+
+        new Card(2,"Red").printCard();
 
     }
 }
