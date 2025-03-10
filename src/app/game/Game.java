@@ -1,10 +1,18 @@
 package app.game;
 
-import app.entity.Player;
-import app.resource.*;
 import java.util.*;
 
+import app.entity.*;
+import app.resource.*;
+import app.utilities.*;
+import java.lang.reflect.Array;
+
+
 //import Parade/Players when done can use the above as example 
+
+
+// Compile Command
+//javac -cp "src" src/app/game/Game.java 
 
 public class Game {
     // Declaring ANSI_RESET so that we can reset the color 
@@ -23,7 +31,7 @@ public class Game {
     // Feel free to add to psvm to check if your parts integrate
     private ArrayList<Player> players;
     private Parade parade;
-    public Deck deck;
+    public static Deck deck;
     private boolean gameEnd;
 
 
@@ -32,17 +40,26 @@ public class Game {
     //     System.out.println("Game Started");
     // }
 
+    // public Game(){ //For Testing Purposes Only
+    //     deck = new Deck();
+    //     parade = new Parade(deck);
+    //     System.out.println("Game Started");
+    // }
 
-    public Game(){
+
+    public Game(ArrayList<String> playersName){
         deck = new Deck();
+        parade = new Parade(deck);
+        players = new ArrayList<Player>();
+        for (String s : playersName){ //Add Player into ArrayList
+            players.add(makeHumanPlayer(s));
+        }
         System.out.println("Game Started");
     }
 
-
-    public void addPlayers(ArrayList<Player> players){
-        for (Player p : players){
-            players.add(p);
-        }
+    public static Player makeHumanPlayer(String name){ //For Testing Only
+        Player p = new HumanPlayer(deck, name);
+        return p;
     }
 
 
@@ -68,6 +85,10 @@ public class Game {
     }
 
     public void printScoringZone(ArrayList<Card> cards){
+        if (cards.isEmpty()){
+            System.out.println("No Cards Collected");
+            return;
+        }
         ArrayList<Card> redCards = new ArrayList<>();
         ArrayList<Card> blueCards = new ArrayList<>();
         ArrayList<Card> purpleCards = new ArrayList<>();
@@ -106,6 +127,9 @@ public class Game {
 
     //Prints all card of same Color in 1 Row
     public void printSameColor(ArrayList<Card> cards, String cardColor){
+        if (cards.isEmpty()){
+            return;
+        }
         ArrayList<String> printString = new ArrayList<>();
         printString.add("");
         printString.add("");
@@ -143,12 +167,32 @@ public class Game {
         System.out.println("╰───╯" + ANSI_RESET);
     }
 
-    public void printParade(ArrayList<Card> cards){ //to replace with Parade parade
+    // public void printParade(ArrayList<Card> cards){ //to replace with Parade parade
+    //     ArrayList<String> parade = new ArrayList<>();
+    //     parade.add("");         
+    //     parade.add(""); 
+    //     parade.add("");
+    //     for (Card c : cards){
+    //         String colorCode = linkCardtoColour(c);
+    //         ArrayList<String> temp = printCardString(c);
+    //         parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET);
+    //         parade.set(1, parade.get(1) + colorCode + temp.get(1) + ANSI_RESET);
+    //         parade.set(2, parade.get(2) + colorCode + temp.get(2) + ANSI_RESET);
+    //         //System.out.println(parade.get(2));
+    //         //System.out.println();
+    //     }
+    //     System.out.println(parade.get(0));
+    //     System.out.println(parade.get(1));
+    //     System.out.println(parade.get(2));
+    // } 
+
+
+    public void printParade(Parade p){
         ArrayList<String> parade = new ArrayList<>();
         parade.add("");         
         parade.add(""); 
         parade.add("");
-        for (Card c : cards){
+        for (Card c : p.getParadeCards()){
             String colorCode = linkCardtoColour(c);
             ArrayList<String> temp = printCardString(c);
             parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET);
@@ -162,29 +206,49 @@ public class Game {
         System.out.println(parade.get(2));
     } 
 
+
     public void displayGameState(Game game){     //- display each players scoring zone, number of cards in deck, parade itself)
         //Show Player's Scoring Zone
 
         //Test Printing Card
-        System.out.printf("Scoring Zone: (%s) ========================================== %n","Player1Name");
-        printScoringZone(deck.getCards()); //replace with player's scoring Zone instead of deck
+        // System.out.printf("Scoring Zone: (%s) ========================================== %n","Player1Name");
+        // ArrayList<Card> testList = new ArrayList<>();
+        // testList.add(new Card(5, "Blue"));
+        // testList.add(new Card(4, "Red"));
+        // testList.add(new Card(2, "Yellow"));
+        // testList.add(new Card(9, "Green"));
+        // printScoringZone(testList); //replace with player's scoring Zone instead of deck
+
+        for (Player p : players){
+            System.out.printf("Scoring Zone: (%s) ========================================== %n",p.getName());
+            printScoringZone(p.getCollectedParadeCards());
+
+        }
 
         System.out.println("Size of deck: " + deck.getCards().size());
 
         //Prints Parade 
-        ArrayList<Card> testList = new ArrayList<>();
-        testList.add(new Card(5, "Blue"));
-        testList.add(new Card(4, "Red"));
-        testList.add(new Card(2, "Yellow"));
-        testList.add(new Card(9, "Green"));
+        // ArrayList<Card> testList = new ArrayList<>();
+        // testList.add(new Card(5, "Blue"));
+        // testList.add(new Card(4, "Red"));
+        // testList.add(new Card(2, "Yellow"));
+        // testList.add(new Card(9, "Green"));
 
-        System.out.println("==============================Parade===============================");
-        printParade(testList);
+        System.out.println("============================== Current Parade ===============================");
+        //printParade(testList);
+        printParade(parade);
     } 
     
-    public void initiateRound(){
-        //for each player
-            //Draw a card, 
+    public void initiateRound(){  //Player chooses a card from hand to play to parade
+        //Calls collectEligibleCardsFromParade(Parade parade, Card c)
+        System.out.println("New Round Start");
+        for (Player p : players){
+            p.takeTurn(deck, parade);
+            //check for final round trigger
+            if (p.hasSixColors() || deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+                gameEnd = true;
+            }
+        }
     }
 
 
@@ -196,7 +260,8 @@ public class Game {
 // Even if other players get their 6th color during the last round, this has no further effect. The games ends after the round.
 
     public void initiateFinalRound(){ // if a player has all 6 colors, or deck is empty
-        gameEnd = true;
+        //Starts off with the person who initiated last round
+        // Reorder the players ArrayList? / Make another ArrayList with Person who started last round as first man? / Any other ideas?
 
     }
 
@@ -227,16 +292,26 @@ public class Game {
         }
     } 
 
-    public Player determineWinner(){
-        return new Player();
-    }
+    // public Player determineWinner(){
+    //     return new Player();
+    // }
 
 
 
 
 
     public static void main(String[] args) {
-        Game game = new Game();
-        game.displayGameState(game);
+        //Game game = new Game();
+        ArrayList<String> players = new ArrayList<>();
+        players.add("Player 1");
+        players.add("Player 2");
+        Game game = new Game(players);
+
+        // while (game.gameEnd == false){
+            //game.initiateRound();
+            game.displayGameState(game);
+        // }
+        game.initiateFinalRound();
+
     }
 }
