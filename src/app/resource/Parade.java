@@ -110,6 +110,7 @@ public class Parade {
         }
     
         public void printParade(){
+            System.out.println("============ Parade ============");
             ArrayList<String> parade = new ArrayList<>();
             parade.add("");         
             parade.add(""); 

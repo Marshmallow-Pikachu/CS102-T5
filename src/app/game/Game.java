@@ -306,12 +306,12 @@ public class Game {
         Game game = new Game(players);
 
         // while (game.gameEnd == false){
-            //game.initiateRound();
-          //  game.displayGameState(game);
+            game.initiateRound();
+            game.displayGameState(game);
         // }
         //game.initiateFinalRound();
 
-        new Card(2,"Red").printCard();
+        //new Card(2,"Red").printCard();
 
     }
 }

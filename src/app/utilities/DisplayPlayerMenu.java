@@ -1,17 +1,18 @@
 package app.utilities;
 
-import java.util.*;
-import app.resource.*; 
+import app.resource.*;
+import java.util.*; 
 
 public class DisplayPlayerMenu {
     public static void displayParadeAndMyHand(Parade parade, ArrayList<Card> myHand) {
         // print out the current Parade state
-        parade.displayParade();
+        parade.printParade();
 
         System.out.println("----------------------------------------------------------");
         // print out myHand
         System.out.println("Player Hand");
-        System.out.println(myHand);
+        //System.out.println(myHand);
+        Printer.printHand(myHand);
     }
 
     // Player will input a number from 1 to 5, representing the 5 cards in his hand
