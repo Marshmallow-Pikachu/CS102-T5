@@ -248,8 +248,13 @@ public class Game {
         for (Player p : players){
             p.takeTurn(deck, parade);
             //check for final round trigger
-            if (p.hasSixColors() || deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+            if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
                 gameEnd = true;
+                //System.out.println("Game End Triggered by Collected Colours");
+            }
+            if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+                gameEnd = true;
+                //System.out.println("Game End Triggered by Empty Deck");
             }
         }
     }
@@ -379,8 +384,10 @@ public class Game {
             for (int i = 0; i < 5; i++){
                 int diff = player1.get(i) - player2.get(i);
                 if (diff >= 2){
+                    System.out.println("Player 1 Flipping Index: " + i);
                     flipCardsByColour(p1, i);
                 }else if (diff <= -2){
+                    System.out.println("Player 2 Flipping Index: " + i);
                     flipCardsByColour(p2, i);
                 }
             }
@@ -510,8 +517,8 @@ public class Game {
         ArrayList<String> players = new ArrayList<>();
         players.add("Player 1");
         players.add("Player 2");
-        players.add("Player 3");
-        players.add("Player 4");
+        // players.add("Player 3");
+        // players.add("Player 4");
         Game game = new Game(players, true);
 
         while (game.gameEnd == false){
