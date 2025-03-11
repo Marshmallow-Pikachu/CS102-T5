@@ -35,7 +35,6 @@ public class DisplayPlayerMenu {
                 System.out.println(String.format("%s is not a valid input", input));
             } 
         }
-        sc.close(); //not sure if i need to close here
         return myHand.get(cardSelectedIndex);
     }
 
