@@ -300,6 +300,7 @@ public class Game {
 // 2.  Each player will then add up the printed values of all their face up cards. Sum up
 // this total with the total obtained from any face down cards.
 
+// Get count of color in play zone in sequence of red, blue, purple, green, black, yellow
     public ArrayList<Integer> getCountOfColors(ArrayList<Card> cards){
         ArrayList<Integer> count = new ArrayList<>(6);
         count.add(0);count.add(0);count.add(0);count.add(0);count.add(0);count.add(0);
@@ -328,6 +329,7 @@ public class Game {
         return count;
     }
 
+    //Flip cards, based on index in sequence
     public void flipCardsByColour(ArrayList<Card> cardList,int val){
         String colour = null;
         switch (val){
@@ -374,7 +376,7 @@ public class Game {
     }
 
 
-    public void flipMajorityCards(){  // make sure to check if it’s a two player game
+    public void flipMajorityCards(){
         if (players.size() == 2){ // 2 Players
             ArrayList<Card> p1 = players.get(0).getCollectedParadeCards();
             ArrayList<Card> p2 = players.get(1).getCollectedParadeCards();
@@ -384,16 +386,16 @@ public class Game {
             for (int i = 0; i < 5; i++){
                 int diff = player1.get(i) - player2.get(i);
                 if (diff >= 2){
-                    System.out.println("Player 1 Flipping Index: " + i);
+                    //System.out.println("Player 1 Flipping Index: " + i);
                     flipCardsByColour(p1, i);
                 }else if (diff <= -2){
-                    System.out.println("Player 2 Flipping Index: " + i);
+                    //System.out.println("Player 2 Flipping Index: " + i);
                     flipCardsByColour(p2, i);
                 }
             }
         } 
         else{
-            System.out.println("TEST1: MORE THAN 2 Players HIT");
+            //System.out.println("TEST1: MORE THAN 2 Players HIT");
             ArrayList<String> colourList = new ArrayList<>();
             colourList.add("Red");colourList.add("Blue");colourList.add("Purple");colourList.add("Green");colourList.add("Black");colourList.add("Yellow");
             ArrayList<Integer> colourCount = new ArrayList<>(6);

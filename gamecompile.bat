@@ -1,0 +1,1 @@
+clear && javac -d classes -cp "src" src/app/game/Game.java && java -cp "classes" app.game.Game
