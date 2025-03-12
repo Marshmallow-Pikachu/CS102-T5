@@ -15,11 +15,13 @@ public class HumanPlayer extends Player {
     }
 
     
-    public void takeTurn(Deck deck, Parade parade) {
+    public void takeTurn(Deck deck, Parade parade, boolean finalTurn) {
         DisplayPlayerMenu.displayParadeAndMyHand(parade, super.getPlayerHand());
         Card playedCard = DisplayPlayerMenu.promptPlayerForCardToPlay(super.getPlayerHand());
         collectEligibleCardsFromParade(parade, playedCard);
-        super.getPlayerHand().add(deck.drawCard());
+        if (!finalTurn) {
+            super.getPlayerHand().add(deck.drawCard());
+        }
     }
 
 

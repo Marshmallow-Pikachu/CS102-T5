@@ -481,7 +481,7 @@ public class Game {
         for (Player p : players){
             // p.discardCard(); //Discards card chosen by player and do not return anything
             // p.discardCard();
-            // p.handToScoringArea();
+            // p.emptyHandToScoringArea();
         }
     }
 
