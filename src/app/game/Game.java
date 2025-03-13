@@ -44,6 +44,7 @@ public class Game {
 
     public Game(ArrayList<String> playersName, boolean b){
         deck = new Deck();
+        deck.shuffle();
         parade = new Parade(deck);
         players = new ArrayList<Player>();
         for (String s : playersName){ //Add Player into ArrayList
@@ -246,7 +247,7 @@ public class Game {
         //Calls collectEligibleCardsFromParade(Parade parade, Card c)
         System.out.println("New Round Start");
         for (Player p : players){
-            p.takeTurn(deck, parade);
+            p.takeTurn(deck, parade, gameEnd);
             //check for final round trigger
             if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
                 gameEnd = true;
@@ -273,12 +274,12 @@ public class Game {
 
         System.out.println("Final Round!!");
         for (Player p : players){
-            p.takeTurn(new Deck(), parade); // Change to p.takeTurnWithoutDrawing
+            p.takeTurn(deck, parade, gameEnd); // Change to p.takeTurnWithoutDrawing
         }
         //System.out.println("Test1");
         flipMajorityCards();
         //System.out.println("Test2");
-        //discardTwoCards(players);
+        discardTwoCards(players);
     }
 
 
@@ -479,9 +480,9 @@ public class Game {
 
     public void discardTwoCards(ArrayList<Player> players){
         for (Player p : players){
-            // p.discardCard(); //Discards card chosen by player and do not return anything
-            // p.discardCard();
-            // p.emptyHandToScoringArea();
+            p.discardCard(); //Discards card chosen by player and do not return anything
+            p.discardCard();
+            //p.emptyHandToScoringArea();
         }
     }
 
