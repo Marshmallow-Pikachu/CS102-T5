@@ -7,6 +7,7 @@ public abstract class Player {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
     private ArrayList<Card> collectedParadeCards = new ArrayList<Card>();
     private String name;
+    private static final Scanner scanner = new Scanner(System.in); // Persistent Scanner
     // private boolean hasSixColors;
 
     public Player(Deck deck, String name) {
@@ -74,21 +75,21 @@ public abstract class Player {
     //Marc
     public void discardCard() {
         int index;
-        try (Scanner scanner = new Scanner(System.in)) {
-            while (true) {
-                System.out.println("Select card to discard by entering its number (1 to " + playerHand.size() + "):");
-                if (scanner.hasNextInt()) {
-                    index = scanner.nextInt() - 1;
-                    if (index >=0 && index < playerHand.size()) {
-                        break; //exit loop on valid input
-                    }
-                } else if (scanner.hasNext()) {
-                    scanner.next(); //discard invalid input
+        while (true) {
+            System.out.println("Select card to discard by entering its number (1 to " + playerHand.size() + "):");
+            if (scanner.hasNextInt()) {
+                index = scanner.nextInt() - 1;
+                scanner.nextLine();
+                if (index >=0 && index < playerHand.size()) {
+                    break; //exit loop on valid input
                 }
-                System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
+            } else {
+                scanner.nextLine(); //discard invalid input
             }
-            playerHand.remove(index);
+            System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
         }
+        Card discardedCard = playerHand.remove(index);
+        System.out.println("You discarded: " + discardedCard);
     }
 
     public void emptyHandToScoringArea() {
