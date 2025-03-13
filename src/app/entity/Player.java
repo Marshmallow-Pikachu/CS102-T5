@@ -82,7 +82,7 @@ public abstract class Player {
                     if (index >=0 && index < playerHand.size()) {
                         break; //exit loop on valid input
                     }
-                } else {
+                } else if (scanner.hasNextLine())_{
                     scanner.nextLine(); //discard invalid input
                 }
                 System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
