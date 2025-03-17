@@ -248,7 +248,7 @@ public class Game {
         //Calls collectEligibleCardsFromParade(Parade parade, Card c)
         System.out.println("New Round Start");
         for (Player p : players){
-            p.takeTurn(deck, parade, gameEnd);
+            p.takeTurn(deck, parade, players, gameEnd);
             //check for final round trigger
             if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
                 gameEnd = true;
@@ -275,7 +275,7 @@ public class Game {
 
         System.out.println("Final Round!!");
         for (Player p : players){
-            p.takeTurn(deck, parade, gameEnd); // Change to p.takeTurnWithoutDrawing
+            p.takeTurn(deck, parade, players, gameEnd); // Change to p.takeTurnWithoutDrawing
         }
         //System.out.println("Test1");
         flipMajorityCards();

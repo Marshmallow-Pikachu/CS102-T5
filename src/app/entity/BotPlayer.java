@@ -46,7 +46,7 @@ public class BotPlayer extends Player {
         return bestCard;
     }
 
-    public void takeTurn(Deck deck, Parade parade, boolean finalTurn) {
+    public void takeTurn(Deck deck, Parade parade, ArrayList<Player> players, boolean finalTurn) {
         Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
         collectEligibleCardsFromParade(parade, chosenCard);

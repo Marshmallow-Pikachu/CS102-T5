@@ -108,7 +108,7 @@ public abstract class Player {
         playerHand.remove(playedCard);
 
     }
-    public abstract void takeTurn(Deck deck, Parade parade, boolean finalTurn);
+    public abstract void takeTurn(Deck deck, Parade parade, ArrayList<Player> player, boolean finalTurn);
 
     //Testing and Debugging
     //all commands run from parent folder of "app"

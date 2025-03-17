@@ -43,7 +43,7 @@ public class Printer {
         return cardColor;
     }
 
-    public void printScoringZone(ArrayList<Card> cards){
+    public static void printScoringZone(ArrayList<Card> cards){
         if (cards.isEmpty()){
             System.out.println("No Cards Collected");
             return;
@@ -85,7 +85,7 @@ public class Printer {
     }
 
     //Prints all card of same Color in 1 Row
-    public void printSameColor(ArrayList<Card> cards, String cardColor){
+    public static void printSameColor(ArrayList<Card> cards, String cardColor){
         if (cards.isEmpty()){
             return;
         }
@@ -113,7 +113,7 @@ public class Printer {
         if (c.getValue() != 10){
             toInsert = "│ "+c.getValue()+" │";
         } else{
-            toInsert = "│ "+c.getValue()+"│";
+            toInsert = "│ T │";
         }
         returnval.add(1, toInsert);
         returnval.add(2, "╰───╯");
