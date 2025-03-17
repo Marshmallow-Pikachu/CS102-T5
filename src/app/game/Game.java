@@ -54,9 +54,10 @@ public class Game {
     }
 
 
-    public Game(ArrayList<Player> players){
-        deck = new Deck();
+    public Game(ArrayList<Player> players, Deck deck){
         parade = new Parade(deck);
+
+        this.deck = deck;
         this.players = players;
         System.out.println("Game Started");
     }

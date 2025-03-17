@@ -124,38 +124,15 @@ public class App {
             Deck deck = new Deck();
             deck.shuffle();
             ArrayList<Player> players = getPlayerList(sc, deck);
-
-            // Just to check if players are inside
-            for (Player p : players) {
-                System.out.printf("===== %s =====%n", p.getName());
-                ArrayList<Card> hand = p.getPlayerHand();
-                for (Card c : hand) {
-                    switch (c.getColour()) {
-                        case "Black":
-                            System.out.printf(" \u001B[30m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        case "Blue":
-                            System.out.printf(" \u001B[34m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        case "Red":
-                            System.out.printf(" \u001B[31m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        case "Green":
-                            System.out.printf(" \u001B[92m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        case "Purple":
-                            System.out.printf(" \u001B[35m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        case "Yellow":
-                            System.out.printf(" \u001B[33m| %s |\u001B[0m ", c.getValue());
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                System.out.println();
-            }
+            Game game = new Game(players, deck);
             
+
+            // Start the game loop 
+            while (!game.getGameEnd()) {
+                game.initiateRound();
+                System.out.printf("%n%n");
+            }
+            game.initiateFinalRound(players);
         }
 
         // Exiting message once the user is done playing
