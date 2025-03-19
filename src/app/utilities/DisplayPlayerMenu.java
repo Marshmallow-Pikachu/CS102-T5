@@ -7,7 +7,7 @@ import app.entity.*;
 public class DisplayPlayerMenu {
     public static void displayGameState(Parade parade, ArrayList<Player> players, String name, ArrayList<Card> myHand) {
         // print out the current game state
-        parade.printParade();
+        
         System.out.println("----------------------------------------------------------");
         for (Player p : players) {
             System.out.printf("%s Scoring Zone%n%n", p.getName());
@@ -15,6 +15,8 @@ public class DisplayPlayerMenu {
             System.out.println("----------------------------------------------------------\n");
         }
 
+        parade.printParade();
+        
         // print out myHand
         System.out.printf("%s Hand%n", name);
         //System.out.println(myHand);

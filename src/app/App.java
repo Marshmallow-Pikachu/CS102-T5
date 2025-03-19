@@ -44,6 +44,23 @@ public class App {
         System.out.print("How many human players (1-6): ");
         String input = sc.nextLine();
         
+        if (input.equals("auto")) {
+            // Default list of bot names to randomise
+            ArrayList<String> paradeBotNames = new ArrayList<>();
+            paradeBotNames.add("Alice");
+            paradeBotNames.add("Mad Hatter");
+            paradeBotNames.add("White Rabbit");
+            paradeBotNames.add("Humpty Dumpty");
+            paradeBotNames.add("Cheshire Cat");
+            paradeBotNames.add("Dodo Bird");
+            Collections.shuffle(paradeBotNames);
+
+            for (int i = 0; i < 6; i++) {
+                players.add(new BotPlayer(deck, paradeBotNames.get(i)));
+            };
+            return players;
+        }
+
         while (!valid) {
             try {
                 // Check if the user inputted a number
@@ -133,6 +150,9 @@ public class App {
                 System.out.printf("%n%n");
             }
             game.initiateFinalRound(players);
+            game.displayGameState(game);
+            System.out.println("Winner is : " + game.determineWinner().getName());
+            
         }
 
         // Exiting message once the user is done playing

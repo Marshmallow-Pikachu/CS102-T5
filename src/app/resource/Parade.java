@@ -103,7 +103,7 @@ public class Parade {
             if (c.getValue() != 10){
                 toInsert = "│ "+c.getValue()+" │";
             } else{
-                toInsert = "│ "+c.getValue()+"│";
+                toInsert = "│ T │";
             }
             returnval.add(1, toInsert);
             returnval.add(2, "╰───╯");
