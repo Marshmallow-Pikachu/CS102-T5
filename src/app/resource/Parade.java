@@ -30,13 +30,14 @@ public class Parade {
 
     public ArrayList<Card> removeEligibleCards(Card playedCard) {
         ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); 
-        if (playedCard.getValue() < paradeCards.size()) {
-            for(int i = 0; i <= paradeCards.size() - playedCard.getValue() - 1; i++) {
-                Card currentCard = paradeCards.get(i);
-                currentCard.setRemovalMode();
-            }
+        if (playedCard.getValue() >= paradeCards.size()) {
+            return removableCardsFromParadeList;
         }
 
+        for(int i = 0; i <= paradeCards.size() - playedCard.getValue() - 1; i++) {
+            Card currentCard = paradeCards.get(i);
+            currentCard.setRemovalMode();
+        }
 
         for (Card currentParadeCard:paradeCards) {
             if (currentParadeCard.getRemovalMode() == true && (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour()))) {
