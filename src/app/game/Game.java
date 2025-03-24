@@ -10,7 +10,6 @@ import java.util.*;
 public class Game {
     // Declaring ANSI_RESET so that we can reset the color 
     public static final String ANSI_RESET = "\u001B[0m"; 
-  
     // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) 
     public static final String ANSI_RED    = "\u001B[31m";
     public static final String ANSI_BLUE   = "\u001B[34m";
