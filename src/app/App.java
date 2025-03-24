@@ -6,7 +6,7 @@ import app.game.*;
 import app.entity.*;
 import app.resource.*;
 import app.utilities.*;
-
+import app.network.*;
 
 public class App {
     // Helper function to check whether the user would like to start the game or stop playing
