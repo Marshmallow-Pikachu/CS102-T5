@@ -28,25 +28,6 @@ public class Game {
     public static Deck deck;
     private boolean gameEnd;
 
-
-    public Game(ArrayList<String> playersName, boolean b){
-        colourList.add("Red");
-        colourList.add("Blue");
-        colourList.add("Purple");
-        colourList.add("Green");
-        colourList.add("Black");
-        colourList.add("Yellow");
-        deck = new Deck();
-        deck.shuffle();
-        parade = new Parade(deck);
-        players = new ArrayList<Player>();
-        for (String s : playersName){ //Add Player into ArrayList
-            players.add(makeHumanPlayer(s));
-        }
-        System.out.println("Game Started");
-    }
-
-
     public Game(ArrayList<Player> players, Deck deck){
         colourList.add("Red");
         colourList.add("Blue");
@@ -59,12 +40,6 @@ public class Game {
         this.players = players;
         System.out.println("Game Started");
     }
-
-    public static Player makeHumanPlayer(String name){ //For Testing Only
-        Player p = new HumanPlayer(deck, name);
-        return p;
-    }
-
 
     //Gets String to Convert Colour
     public String linkCardtoColour(Card c){
@@ -164,50 +139,6 @@ public class Game {
         return returnval;
     }
 
-    //Prints 1 Card (For Testing)
-    // public void printCard(Card c){
-    //     System.out.println(linkCardtoColour(c) + "╭───╮");
-    //     System.out.printf("│ %d │ %n", c.getValue());
-    //     System.out.println("╰───╯" + ANSI_RESET);
-    // }
-
-    // public void printParade(ArrayList<Card> cards){ //to replace with Parade parade
-    //     ArrayList<String> parade = new ArrayList<>();
-    //     parade.add("");         
-    //     parade.add(""); 
-    //     parade.add("");
-    //     for (Card c : cards){
-    //         String colorCode = linkCardtoColour(c);
-    //         ArrayList<String> temp = printCardString(c);
-    //         parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET);
-    //         parade.set(1, parade.get(1) + colorCode + temp.get(1) + ANSI_RESET);
-    //         parade.set(2, parade.get(2) + colorCode + temp.get(2) + ANSI_RESET);
-    //         //System.out.println(parade.get(2));
-    //         //System.out.println();
-    //     }
-    //     System.out.println(parade.get(0));
-    //     System.out.println(parade.get(1));
-    //     System.out.println(parade.get(2));
-    // } 
-
-
-    public void printParade(Parade p){
-        ArrayList<String> parade = new ArrayList<>();
-        parade.add("");         
-        parade.add(""); 
-        parade.add("");
-        for (Card c : p.getParadeCards()){
-            String colorCode = linkCardtoColour(c);
-            ArrayList<String> temp = printCardString(c);
-            parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET); //Add Characters to parade to print
-            parade.set(1, parade.get(1) + colorCode + temp.get(1) + ANSI_RESET);
-            parade.set(2, parade.get(2) + colorCode + temp.get(2) + ANSI_RESET);
-        }
-        System.out.println(parade.get(0));
-        System.out.println(parade.get(1));
-        System.out.println(parade.get(2));
-    } 
-
 
     public void displayGameState(Game game){     //- display each players scoring zone, number of cards in deck, parade itself)
         //Show Player's Scoring Zone
@@ -248,53 +179,13 @@ public class Game {
         flipMajorityCards();
     }
 
-
-    public boolean getGameEnd(){
-        return gameEnd;
+    public void discardTwoCards(){
+        for (Player p : players){
+            p.discardCard(); //Discards card chosen by player and do not return anything
+            p.discardCard();
+            p.emptyHandToScoringArea();
+        }
     }
-
-
-// After the end of the game each player chooses 2 cards from their hand and discards them. 
-// The remaining 2 cards in hand are added to those already in front of the player.
-// Note: Each of these 2 cards will either be added to colors you already own, or create a new pile (if you do not already have any cards of that color).
-// Only the cards lying in front of a player are scored. The cards still taking part in the parade are discarded.
-// For each color, players must determine the number of points they score. Each color is dealt with separately.
-
-// 1.  Determine who has the majority in each color. The player or players with the 
-// most cards in each color flip those cards over and each of these cards counts as
-// 1 point. (The value printed on the cards is not counted.)
-
-// 2.  Each player will then add up the printed values of all their face up cards. Sum up
-// this total with the total obtained from any face down cards.
-
-// Get count of color in play zone in sequence of red, blue, purple, green, black, yellow
-    // public ArrayList<Integer> getCountOfColors(ArrayList<Card> cards){
-    //     ArrayList<Integer> count = new ArrayList<>(6);
-    //     count.add(0);count.add(0);count.add(0);count.add(0);count.add(0);count.add(0); // Prevent NullPointerException
-    //     for (Card c : cards){
-    //         switch (c.getColour()){ //Count number of cards by colour
-    //             case ("Red"):
-    //             count.set(0, count.get(0)+1);
-    //             break;
-    //             case ("Blue"):
-    //             count.set(1, count.get(1)+1);
-    //             break;
-    //             case ("Purple"):
-    //             count.set(2, count.get(2)+1);
-    //             break;
-    //             case ("Green"):
-    //             count.set(3, count.get(3)+1);
-    //             break;
-    //             case ("Black"):
-    //             count.set(4, count.get(4)+1);
-    //             break;
-    //             case ("Yellow"):
-    //             count.set(5, count.get(5)+1);
-    //             break;
-    //         }
-    //     }
-    //     return count; //returns list of num of red, blue, purple, green, black, yellow in sequence
-    // }
 
     public ArrayList<Integer> getCountOfColors(ArrayList<Card> cardList, ArrayList<String> colourList){
         ArrayList<Integer> returnList = new ArrayList<>();
@@ -378,7 +269,6 @@ public class Game {
         return colourCount;
     }
 
-
     public void flipMajorityCards(){
         if (players.size() == 2){ // 2 Players
             this.flipTwoPlayers();
@@ -396,14 +286,6 @@ public class Game {
             }
         }
     } 
-
-    public void discardTwoCards(){
-        for (Player p : players){
-            p.discardCard(); //Discards card chosen by player and do not return anything
-            p.discardCard();
-            p.emptyHandToScoringArea();
-        }
-    }
 
     public ArrayList<Player> determineWinner(){
         //Count numbers in scoring zone
@@ -447,29 +329,27 @@ public class Game {
         }
     }
 
-
-
-
-
-    public static void main(String[] args) {
-        //Game game = new Game();
-        ArrayList<String> players = new ArrayList<>();
-        players.add("Player 1");
-        players.add("Player 2");
-        players.add("Player 3");
-        players.add("Player 4");
-        Game game = new Game(players, true);
-
-        while (game.gameEnd == false){
-            game.initiateRound();
-            System.out.println();
-            System.out.println();
-            game.displayGameState(game);
-        }
-        game.initiateFinalRound(game.players);
-        game.displayGameState(game);
-        game.printWinScreen();
-
-        
+    public boolean getGameEnd(){
+        return gameEnd;
     }
+
+    // public static void main(String[] args) {
+    //     //Game game = new Game();
+    //     ArrayList<String> players = new ArrayList<>();
+    //     players.add("Player 1");
+    //     players.add("Player 2");
+    //     players.add("Player 3");
+    //     players.add("Player 4");
+    //     Game game = new Game(players, true);
+
+    //     while (game.gameEnd == false){
+    //         game.initiateRound();
+    //         System.out.println();
+    //         System.out.println();
+    //         game.displayGameState(game);
+    //     }
+    //     game.initiateFinalRound(game.players);
+    //     game.displayGameState(game);
+    //     game.printWinScreen();   
+    // }
 }

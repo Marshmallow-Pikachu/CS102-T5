@@ -8,6 +8,7 @@ import app.resource.*;
 import app.utilities.*;
 import app.network.*;
 
+
 public class App {
     // Helper function to check whether the user would like to start the game or stop playing
     public static boolean startGame(Scanner sc) {
@@ -151,7 +152,7 @@ public class App {
             }
             game.initiateFinalRound(players);
             game.displayGameState(game);
-            System.out.println("Winner is : " + game.determineWinner().getName());
+            game.printWinScreen();
             
         }
 
