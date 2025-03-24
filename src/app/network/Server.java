@@ -4,7 +4,7 @@ import java.io.*;
 
 import java.net.ServerSocket;
 import java.net.Socket;
-import network.ClientHandler;
+import app.network.ClientHandler;
 
 
 public class Server {
@@ -21,7 +21,7 @@ public class Server {
         
         try {
             // keep the server up until the socket is closed
-            while (!serverSocket.isClosed() && ClientHandler.clientHandlers.size() < PlayerCount) {
+            while (!serverSocket.isClosed()) {
 
                 Socket socket = serverSocket.accept();
                 System.out.println("A new client has connected!");
@@ -33,6 +33,10 @@ public class Server {
                 // The thread will invoke the run() method in clientHandler
                 Thread thread = new Thread(clientHandler);
                 thread.start();
+
+                if (clientHandler.clientHandlers.size() == PlayerCount) {
+                    return true;
+                }
             }   
 
         } catch (Exception e) {
@@ -65,6 +69,8 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(port);
         Server server = new Server(serverSocket);
         System.out.println("Server is online!");
-        server.startServer(2);
+        if (server.startServer(2)) {
+            System.out.println("Ready to play game!");
+        };
     }
 }
