@@ -10,29 +10,29 @@ import app.network.*;
 
 
 public class App {
-    // Helper function to check whether the user would like to start the game or stop playing
-    public static boolean startGame(Scanner sc) {
-        // Prompt the user to start the game
-        System.out.print("Start a new game? (Y/N): ");
-        String start = sc.nextLine();
-
-        // If the user enters n or N, stop asking the user
-        while (!start.toUpperCase().equals("N")) {
-            // If the user doesn't enter y or Y, that means that the inputs are invalid
-            // and we should we reprompt the user for another input
-            if (!start.toUpperCase().equals("Y")) {
-                System.out.println("\nInvalid command. Try again please :)\n");
-                System.out.print("Start a new game? (Y/N): ");
-                start = sc.nextLine();
-                continue;
+    // Menu for selecting the game mode
+    public static int gameModeOption(Scanner sc) {
+        boolean valid = false;
+        int input = 0;
+        while (!valid) {
+            try {
+                System.out.printf("Select on Option:%n");
+                System.out.printf("1. Play Offline%n");
+                System.out.printf("2. Create an Online Game:%n");
+                System.out.printf("3. Join an Online Game:%n");
+                System.out.printf("4. Quit%n");
+                System.out.printf("%nSelect on option > ");
+                input = Integer.parseInt(sc.nextLine());
+                if (input < 0 || input > 4) {
+                    System.out.printf("%nInvalid Option :(%n%n");
+                    continue;
+                }
+                valid = true;
+            } catch (NumberFormatException e){
+                System.out.printf("%nInvalid Option :(%n%n");
             }
-
-            // if the user enters y or Y, the game will start
-            return true;
         }
-
-        // If the user enters n or N, the game will stop
-        return false;
+        return input;
     }
 
     // Helper function to create the arraylist of players to add to the game
@@ -54,11 +54,12 @@ public class App {
             paradeBotNames.add("Humpty Dumpty");
             paradeBotNames.add("Cheshire Cat");
             paradeBotNames.add("Dodo Bird");
-            Collections.shuffle(paradeBotNames);
 
             for (int i = 0; i < 6; i++) {
                 players.add(new BotPlayer(deck, paradeBotNames.get(i)));
             };
+
+            Collections.shuffle(players);
             return players;
         }
 
@@ -127,6 +128,26 @@ public class App {
 
         return players;
     } 
+
+    // Helper function for running an offline game
+    public static void offlineGame(Scanner sc) {
+        // initialise deck and players to add to the game
+        Deck deck = new Deck();
+        deck.shuffle();
+        ArrayList<Player> players = getPlayerList(sc, deck);
+        Game game = new Game(players, deck);
+        
+
+        // Start the game loop 
+        while (!game.getGameEnd()) {
+            game.initiateRound();
+            System.out.printf("%n%n");
+        }
+        game.initiateFinalRound(players);
+        game.displayGameState(game);
+        game.printWinScreen();
+    }
+
     public static void main(String[] args) {
         // Initialise Scanner to read inputs
         Scanner sc = new Scanner(System.in);
@@ -134,26 +155,24 @@ public class App {
         // Starting message of the program
         System.out.println("Welcome to Parade!\n");
 
+        // Ask the user what option they want
+        int option = gameModeOption(sc);
+
         // This is the main game starting loop, everything inside is to 
-        while (startGame(sc)) {
-            System.out.println("Play game");
-
-            // initialise deck and players to add to the game
-            Deck deck = new Deck();
-            deck.shuffle();
-            ArrayList<Player> players = getPlayerList(sc, deck);
-            Game game = new Game(players, deck);
-            
-
-            // Start the game loop 
-            while (!game.getGameEnd()) {
-                game.initiateRound();
-                System.out.printf("%n%n");
+        while (option != 4) {
+            switch (option) {
+                // Offline game
+                case 1:
+                    offlineGame(sc);
+                    break;
+                case 2:
+                    System.out.printf("%nHave yet to implement%n%n");
+                    break;
+                case 3:
+                    System.out.printf("%nHave yet to implement%n%n");
+                    break;
             }
-            game.initiateFinalRound(players);
-            game.displayGameState(game);
-            game.printWinScreen();
-            
+            option = gameModeOption(sc);
         }
 
         // Exiting message once the user is done playing
