@@ -192,10 +192,11 @@ public class Game {
             if (p instanceof HumanPlayer) {
                 HumanPlayer human = (HumanPlayer)p;
                 human.discardCard();
+                human.discardCard();
                 human.emptyHandToScoringArea();
             } else{
                 BotPlayer bot = (BotPlayer)p;
-                bot.discardCard(players);
+                bot.discardCards(players);
                 bot.emptyHandToScoringArea();
             }
             // p.discardCard(); //Discards card chosen by player and do not return anything

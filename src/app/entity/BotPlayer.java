@@ -48,7 +48,7 @@ public class BotPlayer extends Player {
         return bestCard;
     }
 
-    public void discardCard(ArrayList<Player> gamePlayers) {
+    public void discardCards(ArrayList<Player> gamePlayers) {
         ArrayList<Integer> highestColourCounts = obtainHighestColourCounts(gamePlayers);
         ArrayList<Integer> botCollectedColourCounts = super.obtainPlayerColourCounts(getCollectedParadeCards());
         ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
