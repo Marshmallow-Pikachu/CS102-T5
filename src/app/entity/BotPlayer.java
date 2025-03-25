@@ -50,8 +50,49 @@ public class BotPlayer extends Player {
 
     public void discardCard(ArrayList<Player> gamePlayers) {
         ArrayList<Integer> highestColourCounts = obtainHighestColourCounts(gamePlayers);
-        ArrayList<Integer> botColourCounts = super.obtainPlayerColourCounts(super.getPlayerHand());
- 
+        ArrayList<Integer> botCollectedColourCounts = super.obtainPlayerColourCounts(getCollectedParadeCards());
+        ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
+
+        ArrayList<Card> botHand = getPlayerHand();
+        ArrayList<Card> colourCardsToKeep = new ArrayList<>();
+        ArrayList<Card> cardsToKeep = new ArrayList<>();
+
+        //Find the cards that belong to colours the bot has a majority off in the game
+        for (Card c : botHand) { 
+            int index = colourList.indexOf(c.getColour());
+            if (botCollectedColourCounts.get(index) >= highestColourCounts.get(index)) {
+                colourCardsToKeep.add(c);
+            }
+        }
+        System.out.println("debug here:" + colourCardsToKeep);
+
+        //sort coloured cards to keep by value
+        colourCardsToKeep.sort(Comparator.comparingInt(Card::getValue));
+
+        //keep up to 2 of those coloured cards
+        for (Card c: colourCardsToKeep) {
+            cardsToKeep.add(c);
+            if (cardsToKeep.size() == 2) {
+                break;
+            }
+        }
+
+        //If needed, fill the remaining slots with lowest-value cards from hand (excluding those who are already kept)
+        if (cardsToKeep.size() < 2) {
+            ArrayList<Card> remainingCards = new ArrayList<>(botHand);
+            remainingCards.removeAll(cardsToKeep);
+
+            //sort remaining cards by value
+            remainingCards.sort(Comparator.comparingInt(Card::getValue)); //calls card.getvalue() and then sorts remaining cards based on the value
+
+            for (Card c : remainingCards) {
+                cardsToKeep.add(c);
+                if (cardsToKeep.size() == 2) break;
+            }
+        }
+
+        botHand.clear();
+        botHand.addAll(cardsToKeep);
     }
 
     public ArrayList<Integer> obtainHighestColourCounts(ArrayList<Player> gamePlayers) {
@@ -66,6 +107,19 @@ public class BotPlayer extends Player {
             }
             return highestColourCounts;
         }
+    
+    public ArrayList<Integer> obtainPlayerColourCounts (ArrayList<Card> playerHand) {
+        ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
+        ArrayList<Integer> colorCount = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
+        for (Card c : playerHand) {
+            for (int i = 0; i < 6; i++) {
+                if (c.getColour().equals(colourList.get(i))) {
+                    colorCount.set(i, colorCount.get(i) + 1);
+                }
+            }
+        }
+        return colorCount;
+    }
     
 
     public void takeTurn(Game game) {
@@ -94,5 +148,55 @@ public class BotPlayer extends Player {
     //     testBotPlayer.takeTurn(deck, parade);
     //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
     // }
+
+    public static void main(String[] args) {
+        // in this test case, the Bot loses in majority for Purple, yellow, red, and blue, However it has a potential majority in black and green
+        Deck dummyDeck = new Deck();
+        dummyDeck.shuffle();
+    
+        // Create bot and other players
+        BotPlayer bot = new BotPlayer(dummyDeck, "Bot");
+    
+        Player player1 = new HumanPlayer(dummyDeck, "Player1");
+        Player player2 = new HumanPlayer(dummyDeck, "Player2");
+    
+        // Setup bot's collected parade cards
+        bot.getCollectedParadeCards().addAll(Arrays.asList(
+            new Card(4, "Red"),
+            new Card(2, "Blue"),
+            new Card(5, "Black"),
+            new Card(3, "Green")
+        ));
+    
+        // Setup other players’ collected cards
+        player1.getCollectedParadeCards().addAll(Arrays.asList(
+            new Card(1, "Red"),
+            new Card(1, "Blue"),
+            new Card(1, "Blue"),
+            new Card(1, "Blue"),
+            new Card(2, "Purple")
+        ));
+    
+        player2.getCollectedParadeCards().addAll(Arrays.asList(
+            new Card(6, "Red"),
+            new Card(6, "Red"),
+            new Card(6, "Red"),
+            new Card(6, "Red"),
+            new Card(4, "Green"),
+            new Card(2, "Yellow"),
+            new Card(5, "Black")
+        ));
+    
+        ArrayList<Player> allPlayers = new ArrayList<>(Arrays.asList(bot, player1, player2));
+    
+        // Before discard
+        System.out.println("Bot hand before: " + bot.getPlayerHand());
+    
+        // Perform discard
+        bot.discardCard(allPlayers);
+    
+        // After discard
+        System.out.println("Bot hand after: " + bot.getPlayerHand());
+    }
 
 }
