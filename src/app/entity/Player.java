@@ -7,7 +7,7 @@ public abstract class Player {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
     private ArrayList<Card> collectedParadeCards = new ArrayList<Card>();
     private String name;
-    private static final Scanner scanner = new Scanner(System.in); // Persistent Scanner
+
     // private boolean hasSixColors;
 
     public Player(Deck deck, String name) {
@@ -55,6 +55,20 @@ public abstract class Player {
         return false;
     }
 
+    public ArrayList<Integer> obtainPlayerColourCounts (ArrayList<Card> playerHand){
+        ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
+        ArrayList<Integer> colourCount = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
+        for (Card c : playerHand) {
+            for (int i = 0; i < 6; i++) {
+                if (c.getColour().equals(colourList.get(i))) {
+                    colourCount.set(i, colourCount.get(i) + 1);
+                }
+            }
+        }
+        return colourCount;
+    }
+
+
     public int countNumOfColouredCards(String colour) {
         if (getCollectedParadeCards() == null || getCollectedParadeCards().size() == 0) {
             return 0;
@@ -73,24 +87,24 @@ public abstract class Player {
     }
 
     //Marc
-    public void discardCard() {
-        int index;
-        while (true) {
-            System.out.println("Select card to discard by entering its number (1 to " + playerHand.size() + "):");
-            if (scanner.hasNextInt()) {
-                index = scanner.nextInt() - 1;
-                scanner.nextLine();
-                if (index >=0 && index < playerHand.size()) {
-                    break; //exit loop on valid input
-                }
-            } else {
-                scanner.nextLine(); //discard invalid input
-            }
-            System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
-        }
-        Card discardedCard = playerHand.remove(index);
-        System.out.println("You discarded: " + discardedCard);
-    }
+    // public void discardCard() {
+    //     int index;
+    //     while (true) {
+    //         System.out.println("Select card to discard by entering its number (1 to " + playerHand.size() + "):");
+    //         if (scanner.hasNextInt()) {
+    //             index = scanner.nextInt() - 1;
+    //             scanner.nextLine();
+    //             if (index >=0 && index < playerHand.size()) {
+    //                 break; //exit loop on valid input
+    //             }
+    //         } else {
+    //             scanner.nextLine(); //discard invalid input
+    //         }
+    //         System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
+    //     }
+    //     Card discardedCard = playerHand.remove(index);
+    //     System.out.println("You discarded: " + discardedCard);
+    // }
 
     public void emptyHandToScoringArea() {
         while (!playerHand.isEmpty()){

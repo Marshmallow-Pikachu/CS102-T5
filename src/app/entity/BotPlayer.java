@@ -46,6 +46,40 @@ public class BotPlayer extends Player {
         return bestCard;
     }
 
+    public void discardCard(ArrayList<Player> gamePlayers) {
+        ArrayList<Integer> highestColourCounts = obtainHighestColourCounts(gamePlayers);
+        ArrayList<Integer> botColourCounts = super.obtainPlayerColourCounts(super.getPlayerHand());
+ 
+    }
+
+    public ArrayList<Integer> obtainHighestColourCounts(ArrayList<Player> gamePlayers) {
+        ArrayList<Integer> highestColourCounts = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
+        for (Player p : gamePlayers){
+            ArrayList<Integer> colourCount = obtainPlayerColourCounts(p.getCollectedParadeCards());
+                for (int i = 0; i < 6; i++) {
+                    if (colourCount.get(i) > highestColourCounts.get(i)) {
+                        highestColourCounts.set(i, colourCount.get(i));
+                    }
+                }
+            }
+            return highestColourCounts;
+        }
+    
+
+    // public ArrayList<Integer> getCountOfColors(ArrayList<Card> cardList, ArrayList<String> colourList){
+    //     ArrayList<Integer> returnList = new ArrayList<>();
+    //     returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);
+    //     for (Card c : cardList){
+    //         for (int i = 0; i < 6; i++){
+    //             if (c.getColour().equals(colourList.get(i))){
+    //                 returnList.set(i, returnList.get(i) + 1);
+    //             }
+    //         }
+    //     }
+    //     return returnList;
+    // }
+
+
     public void takeTurn(Deck deck, Parade parade, ArrayList<Player> players, boolean finalTurn) {
         Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
@@ -54,6 +88,9 @@ public class BotPlayer extends Player {
             super.getPlayerHand().add(deck.drawCard());
         }
     }
+
+
+
 
     //Testing and Debugging
     //compile command: javac -d out -cp "src" src/app/entity/BotPlayer.java

@@ -178,11 +178,21 @@ public class Game {
         flipMajorityCards();
     }
 
+    //This Function needs to be uncommented and changed, discardCard() is not longer a function of player, it now has seperate implementations in HumanPlayer and BotPlayer
     public void discardTwoCards(){
         for (Player p : players){
-            p.discardCard(); //Discards card chosen by player and do not return anything
-            p.discardCard();
-            p.emptyHandToScoringArea();
+            if (p instanceof HumanPlayer) {
+                HumanPlayer human = (HumanPlayer)p;
+                human.discardCard();
+                human.emptyHandToScoringArea();
+            } else{
+                BotPlayer bot = (BotPlayer)p;
+                bot.discardCard(players);
+                bot.emptyHandToScoringArea();
+            }
+            // p.discardCard(); //Discards card chosen by player and do not return anything
+            // p.discardCard();
+            // p.emptyHandToScoringArea();
         }
     }
 

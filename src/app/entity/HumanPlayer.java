@@ -5,6 +5,8 @@ import app.resource.*;
 import app.utilities.DisplayPlayerMenu;
 
 public class HumanPlayer extends Player {
+
+    private static final Scanner scanner = new Scanner(System.in); // Persistent Scanner
     // Players take turns
     // private ArrayList<Card> playerHand;
     // private ArrayList<Card> collectedParadeCards;
@@ -24,7 +26,24 @@ public class HumanPlayer extends Player {
         }
     }
 
-
+    public void discardCard() {
+        int index;
+        while (true) {
+            System.out.println("Select card to discard by entering its number (1 to " + super.getPlayerHand().size() + "):");
+            if (scanner.hasNextInt()) {
+                index = scanner.nextInt() - 1;
+                scanner.nextLine();
+                if (index >=0 && index < super.getPlayerHand().size()) {
+                    break; //exit loop on valid input
+                }
+            } else {
+                scanner.nextLine(); //discard invalid input
+            }
+            System.out.println("Invalid choice. Please enter a number between 1 and " + super.getPlayerHand().size() + ".");
+        }
+        Card discardedCard = super.getPlayerHand().remove(index);
+        System.out.println("You discarded: " + discardedCard);
+    }
 
     // add 1 card to the end of the parade
     // then, take cards from the parade on the following conditions
