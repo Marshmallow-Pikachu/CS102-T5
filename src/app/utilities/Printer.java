@@ -231,7 +231,7 @@ public class Printer {
                 break;
             case "Yellow":
                 details[0] = "dodo.txt";
-                details[1] = ANSI_RED;
+                details[1] = ANSI_YELLOW;
                 break;
         }
         return details;
