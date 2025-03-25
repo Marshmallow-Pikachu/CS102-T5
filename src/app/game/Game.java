@@ -61,6 +61,18 @@ public class Game {
         return cardColor;
     }
 
+    public Parade getParade() {
+        return this.parade;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return this.players;
+    }
+
+    public Deck getDeck() {
+        return this.deck;
+    }
+
     public void printScoringZone(ArrayList<Card> cards){
         if (cards.isEmpty()){
             System.out.println("No Cards Collected");
@@ -139,31 +151,27 @@ public class Game {
     }
 
 
-    public void displayGameState(Game game){     //- display each players scoring zone, number of cards in deck, parade itself)
-        //Show Player's Scoring Zone
-        for (Player p : players){
-            System.out.printf("Scoring Zone: (%s) ========================================== %n",p.getName());
-            printScoringZone(p.getCollectedParadeCards());
-        }
-        System.out.println("Size of deck: " + deck.getCards().size());
-
-        //Prints Parade 
-        System.out.println("============================== Current Parade ===============================");
-        parade.printParade();
-    } 
     
     public void initiateRound(){ 
         System.out.println("New Round Start");
-        for (Player p : players){
-            p.takeTurn(deck, parade, players, gameEnd); // Player takes turn
+        Player p = this.players.get(0);
+        // check if it is final round
+        //for (Player p : players){
+            p.takeTurn(this); // Player takes turn
+            
+            
             //check for final round trigger
             if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
                 gameEnd = true;
+                //break;
             }
             if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
                 gameEnd = true;
+                //break;
             }
-        }
+            this.players.remove(p);
+            players.add(p);
+        //}
     }
 
     public void initiateFinalRound(ArrayList<Player> players){ // if a player has all 6 colors, or deck is empty
@@ -172,7 +180,7 @@ public class Game {
 
         System.out.println("Final Round!!");
         for (Player p : players){
-            p.takeTurn(deck, parade, players, gameEnd);
+            p.takeTurn(this);
         }
         discardTwoCards();
         flipMajorityCards();
@@ -245,7 +253,7 @@ public class Game {
             ArrayList<Card> p2 = players.get(1).getCollectedParadeCards();
             ArrayList<Integer> player1 = getCountOfColors(p1,colourList);
             ArrayList<Integer> player2 = getCountOfColors(p2,colourList);
-            for (int i = 0; i < 5; i++){
+            for (int i = 0; i < 6; i++){
                 int diff = player1.get(i) - player2.get(i); //Compare number of x colour cards in p1 vs p2
                 if (diff >= 2){                             //if p1 has majority, flip the card
                     flipCardsByColour(p1, i);

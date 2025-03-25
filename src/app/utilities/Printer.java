@@ -3,8 +3,9 @@ package app.utilities;
 import app.resource.*;
 import java.util.*; 
 import app.entity.*;
+import app.game.Game;
 
-public class DisplayPlayerMenu {
+public class Printer {
 
     public static final String ANSI_RESET = "\u001B[0m"; 
     // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) 
@@ -15,7 +16,13 @@ public class DisplayPlayerMenu {
     public static final String ANSI_BLACK  = "\u001B[30m";
     public static final String ANSI_YELLOW = "\u001B[33m";
 
-    public static void displayGameState(Parade parade, ArrayList<Player> players, String name, ArrayList<Card> myHand) {
+    public static void displayGameState(Game game) {
+        // Clean the screen first
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+
+        Parade parade = game.getParade();
+        ArrayList<Player> players = game.getPlayers();
         // print out the current game state
         
         System.out.println("----------------------------------------------------------");
@@ -27,11 +34,6 @@ public class DisplayPlayerMenu {
 
         System.out.println("============ Parade ============");
         printCards(parade.getParadeCards());
-        
-        // print out myHand
-        System.out.printf("%s Hand%n", name);
-        //System.out.println(myHand);
-        printCards(myHand);
     }
 
 

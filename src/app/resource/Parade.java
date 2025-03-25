@@ -67,68 +67,6 @@ public class Parade {
         paradeCards.add(playedCard); // add playedCard to paradeCards
     }
 
-    public void displayParade() {
-        System.out.println("Current Parade");
-        for(Card card:paradeCards) {
-            System.out.println(card.toString());
-        }
-    }
-
-        //Gets String to Convert Colour
-        public String linkCardtoColour(Card c){
-            String cardColor = null;
-            switch (c.getColour()){
-                case "Red":
-                return ANSI_RED;
-                case "Blue":
-                return ANSI_BLUE;
-                case "Purple":
-                return ANSI_PURPLE;
-                case "Green":
-                return ANSI_BRIGHT_GREEN;
-                case "Black":
-                return ANSI_BLACK;
-                case "Yellow":
-                return ANSI_YELLOW;
-            }
-            System.out.println("Error Color Not Matched!");
-            return cardColor;
-        }
-    
-        //Gets String to append to print everything in same line
-        public ArrayList<String> printCardString(Card c){
-            ArrayList<String> returnval = new ArrayList<String>();
-            returnval.add(0, "╭───╮");
-            String toInsert;
-            if (c.getValue() != 10){
-                toInsert = "│ "+c.getValue()+" │";
-            } else{
-                toInsert = "│ T │";
-            }
-            returnval.add(1, toInsert);
-            returnval.add(2, "╰───╯");
-            return returnval;
-        }
-    
-        public void printParade(){
-            System.out.println("============ Parade ============");
-            ArrayList<String> parade = new ArrayList<>();
-            parade.add("");         
-            parade.add(""); 
-            parade.add("");
-            for (Card c : paradeCards){
-                String colorCode = linkCardtoColour(c);
-                ArrayList<String> temp = printCardString(c);
-                parade.set(0, parade.get(0) + colorCode + temp.get(0) + ANSI_RESET);
-                parade.set(1, parade.get(1) + colorCode + temp.get(1) + ANSI_RESET);
-                parade.set(2, parade.get(2) + colorCode + temp.get(2) + ANSI_RESET);
-                //System.out.println(parade.get(2));
-                //System.out.println();
-            }
-            System.out.println(parade.get(0));
-            System.out.println(parade.get(1));
-            System.out.println(parade.get(2));
-        } 
     
 
     //testing and debug
