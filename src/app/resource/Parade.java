@@ -47,6 +47,9 @@ public class Parade {
         for(Card removingCard:removableCardsFromParadeList) {
             paradeCards.remove(removingCard);
         }
+        for (Card c : paradeCards){
+            c.resetRemovalMode();
+        }
         return removableCardsFromParadeList;
     }
 

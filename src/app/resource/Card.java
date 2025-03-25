@@ -46,6 +46,10 @@ public class Card {
         removalMode = true;
     }
 
+    public void resetRemovalMode() {
+        removalMode = false;
+    }
+
     public void setFlipped () {
         flipped = true;
     }
