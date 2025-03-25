@@ -185,12 +185,14 @@ public class Printer {
     // }
 
 
-
+    // Print static logo for our game
     public static void printLogo() {
         try (Scanner sc = new Scanner(new File("./image/logo.txt"))) {
+            System.out.print(ANSI_PURPLE);
             while (sc.hasNextLine()) {
                 System.out.println(sc.nextLine());
             }
+            System.out.println(ANSI_RESET);
         } catch (FileNotFoundException e) {
             System.out.println("Seems like the image folder is missing...");
         }
