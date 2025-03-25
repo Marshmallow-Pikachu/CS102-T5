@@ -197,5 +197,48 @@ public class Printer {
             System.out.println("Seems like the image folder is missing...");
         }
     }
+
+    // Translate the card into [filename, color]
+    public static String[] translateCard(Card c) {
+        switch (c.getColour()){
+            String[] details = new String[2];
+            case "Red":
+                details[0] = "hatter.txt";
+                details[1] = ANSI_RED;
+                break;
+            case "Blue":
+                details[0] = "alice.txt";
+                details[1] = ANSI_BLUE;
+                break;
+            case "Purple":
+                details[0] = "cat.txt";
+                details[1] = ANSI_PURPLE;
+                break;
+            case "Green":
+                details[0] = "egg.txt";
+                details[1] = ANSI_BRIGHT_GREEN;
+                break;
+            case "Black":
+                details[0] = "rabbit.txt";
+                details[1] = ANSI_BLACK;
+                break;
+            case "Yellow":
+                details[0] = "dodo.txt";
+                details[1] = ANSI_RED;
+                break;
+        }
+        return details;
+    }
+
+    // Convert a card into an ArrayList of Strings to print out
+    public static List<String> renderCard(Card c) {
+        String[] details = translateCard(c);
+        // TODO: Set the correct file path to the image folder
+        try (Scanner sc = new Scanner(new File(details[0]))) {
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
 }
 
