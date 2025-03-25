@@ -64,7 +64,7 @@ public class BotPlayer extends Player {
                 colourCardsToKeep.add(c);
             }
         }
-        System.out.println("debug here:" + colourCardsToKeep);
+        // System.out.println("debug here:" + colourCardsToKeep);
 
         //sort coloured cards to keep by value
         colourCardsToKeep.sort(Comparator.comparingInt(Card::getValue));
