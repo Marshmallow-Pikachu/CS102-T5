@@ -18,8 +18,8 @@ public class App {
             try {
                 System.out.printf("Select on Option:%n");
                 System.out.printf("1. Play Offline%n");
-                System.out.printf("2. Create an Online Game:%n");
-                System.out.printf("3. Join an Online Game:%n");
+                System.out.printf("2. Create an Online Game%n");
+                System.out.printf("3. Join an Online Game%n");
                 System.out.printf("4. Quit%n");
                 System.out.printf("%nSelect on option > ");
                 input = Integer.parseInt(sc.nextLine());
@@ -149,6 +149,11 @@ public class App {
         game.printWinScreen();
     }
 
+    // Helper function for hosting an online game
+    public static void hostGame(Scanner sc) {
+        
+    }
+
     public static void main(String[] args) {
         // Initialise Scanner to read inputs
         Scanner sc = new Scanner(System.in);
@@ -167,7 +172,7 @@ public class App {
                     offlineGame(sc);
                     break;
                 case 2:
-                    System.out.printf("%nHave yet to implement%n%n");
+                    hostGame(sc);
                     break;
                 case 3:
                     System.out.printf("%nHave yet to implement%n%n");
