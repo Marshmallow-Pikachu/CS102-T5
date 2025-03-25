@@ -306,5 +306,9 @@ public class Printer {
             System.out.println(printList.get(j));
         }
     }
+
+    public static void renderCollectedCards(ArrayList<Card> cards) {
+        // TODO: Add the logic for this
+    }
 }
 
