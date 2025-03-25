@@ -143,8 +143,9 @@ public class App {
             game.initiateRound();
             System.out.printf("%n%n");
         }
+        System.out.println("Start final round");
         game.initiateFinalRound(players);
-        game.displayGameState(game);
+        Printer.displayGameState(game);
         game.printWinScreen();
     }
 

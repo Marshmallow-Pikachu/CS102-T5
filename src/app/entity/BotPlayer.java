@@ -1,8 +1,10 @@
 package app.entity;
 
 import java.util.*;
+
+import app.game.Game;
 import app.resource.*;
-import app.utilities.DisplayPlayerMenu;
+import app.utilities.Printer;
 
 public class BotPlayer extends Player {
         public BotPlayer(Deck deck, String name) {
@@ -46,11 +48,13 @@ public class BotPlayer extends Player {
         return bestCard;
     }
 
-    public void takeTurn(Deck deck, Parade parade, ArrayList<Player> players, boolean finalTurn) {
+    public void takeTurn(Game game) {
+        Parade parade = game.getParade();
         Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
         collectEligibleCardsFromParade(parade, chosenCard);
-        if (!finalTurn) {
+        if (!game.getGameEnd()) {
+            Deck deck = game.getDeck();
             super.getPlayerHand().add(deck.drawCard());
         }
     }

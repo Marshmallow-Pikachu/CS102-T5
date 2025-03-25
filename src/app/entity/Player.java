@@ -2,6 +2,7 @@ package app.entity;
 
 import java.util.*;
 import app.resource.*; //imports card, deck and parade.java
+import app.game.*; // imports game
 
 public abstract class Player {
     private ArrayList<Card> playerHand = new ArrayList<Card>();
@@ -108,7 +109,7 @@ public abstract class Player {
         playerHand.remove(playedCard);
 
     }
-    public abstract void takeTurn(Deck deck, Parade parade, ArrayList<Player> player, boolean finalTurn);
+    public abstract void takeTurn(Game game);
 
     //Testing and Debugging
     //all commands run from parent folder of "app"

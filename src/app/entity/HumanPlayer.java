@@ -1,8 +1,10 @@
 package app.entity;
 
 import java.util.*;
+
+import app.game.Game;
 import app.resource.*;
-import app.utilities.DisplayPlayerMenu;
+import app.utilities.Printer;
 
 public class HumanPlayer extends Player {
     // Players take turns
@@ -15,11 +17,20 @@ public class HumanPlayer extends Player {
     }
 
     
-    public void takeTurn(Deck deck, Parade parade, ArrayList<Player> players, boolean finalTurn) {
-        DisplayPlayerMenu.displayGameState(parade, players, super.getName(), super.getPlayerHand());
-        Card playedCard = DisplayPlayerMenu.promptPlayerForCardToPlay(super.getPlayerHand());
+    public void takeTurn(Game game) {
+        // Print the game state and the players hand
+        Printer.displayGameState(game);
+        System.out.printf("%s Hand%n", super.getName());
+        Printer.printCards(super.getPlayerHand());
+        
+        // Ask player to play a card
+        Card playedCard = Printer.promptPlayerForCardToPlay(super.getPlayerHand());
+        Parade parade = game.getParade();
         collectEligibleCardsFromParade(parade, playedCard);
-        if (!finalTurn) {
+
+        // If the game isn't ending, draw a card
+        if (!game.getGameEnd()) {
+            Deck deck = game.getDeck();
             super.getPlayerHand().add(deck.drawCard());
         }
     }
