@@ -25,7 +25,7 @@ public class Printer {
         for (Player p : players) {
             System.out.printf("%s Scoring Zone%n%n", p.getName());
             printCollectedCards(p.getCollectedParadeCards());
-            System.out.println("----------------------------------------------------------\n");
+            System.out.println("----------------------------------------------------------");
         }
 
         System.out.println("============ Parade ============");
