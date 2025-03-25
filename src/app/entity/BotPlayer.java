@@ -149,54 +149,53 @@ public class BotPlayer extends Player {
     //     DisplayPlayerMenu.displayParadeAndMyHand(parade, testBotPlayer.getPlayerHand());
     // }
 
-    public static void main(String[] args) {
-        // in this test case, the Bot loses in majority for Purple, yellow, red, and blue, However it has a potential majority in black and green
-        Deck dummyDeck = new Deck();
-        dummyDeck.shuffle();
+    // public static void main(String[] args) {
+    //     // in this test case, the Bot loses in majority for Purple, yellow, red, and blue, However it has a potential majority in black and green
+    //     Deck dummyDeck = new Deck();
+    //     dummyDeck.shuffle();
     
-        // Create bot and other players
-        BotPlayer bot = new BotPlayer(dummyDeck, "Bot");
+    //     // Create bot and other players
+    //     BotPlayer bot = new BotPlayer(dummyDeck, "Bot");
     
-        Player player1 = new HumanPlayer(dummyDeck, "Player1");
-        Player player2 = new HumanPlayer(dummyDeck, "Player2");
+    //     Player player1 = new HumanPlayer(dummyDeck, "Player1");
+    //     Player player2 = new HumanPlayer(dummyDeck, "Player2");
     
-        // Setup bot's collected parade cards
-        bot.getCollectedParadeCards().addAll(Arrays.asList(
-            new Card(4, "Red"),
-            new Card(2, "Blue"),
-            new Card(5, "Black"),
-            new Card(3, "Green")
-        ));
+    //     // Setup bot's collected parade cards
+    //     bot.getCollectedParadeCards().addAll(Arrays.asList(
+    //         new Card(4, "Red"),
+    //         new Card(2, "Blue"),
+    //         new Card(5, "Black"),
+    //         new Card(3, "Green")
+    //     ));
     
-        // Setup other players’ collected cards
-        player1.getCollectedParadeCards().addAll(Arrays.asList(
-            new Card(1, "Red"),
-            new Card(1, "Blue"),
-            new Card(1, "Blue"),
-            new Card(1, "Blue"),
-            new Card(2, "Purple")
-        ));
+    //     // Setup other players’ collected cards
+    //     player1.getCollectedParadeCards().addAll(Arrays.asList(
+    //         new Card(1, "Red"),
+    //         new Card(1, "Blue"),
+    //         new Card(1, "Blue"),
+    //         new Card(1, "Blue"),
+    //         new Card(2, "Purple")
+    //     ));
     
-        player2.getCollectedParadeCards().addAll(Arrays.asList(
-            new Card(6, "Red"),
-            new Card(6, "Red"),
-            new Card(6, "Red"),
-            new Card(6, "Red"),
-            new Card(4, "Green"),
-            new Card(2, "Yellow"),
-            new Card(5, "Black")
-        ));
+    //     player2.getCollectedParadeCards().addAll(Arrays.asList(
+    //         new Card(6, "Red"),
+    //         new Card(6, "Red"),
+    //         new Card(6, "Red"),
+    //         new Card(6, "Red"),
+    //         new Card(4, "Green"),
+    //         new Card(2, "Yellow"),
+    //         new Card(5, "Black")
+    //     ));
     
-        ArrayList<Player> allPlayers = new ArrayList<>(Arrays.asList(bot, player1, player2));
+    //     ArrayList<Player> allPlayers = new ArrayList<>(Arrays.asList(bot, player1, player2));
     
-        // Before discard
-        System.out.println("Bot hand before: " + bot.getPlayerHand());
+    //     // Before discard
+    //     System.out.println("Bot hand before: " + bot.getPlayerHand());
     
-        // Perform discard
-        bot.discardCard(allPlayers);
+    //     // Perform discard
+    //     bot.discardCard(allPlayers);
     
-        // After discard
-        System.out.println("Bot hand after: " + bot.getPlayerHand());
-    }
-
+    //     // After discard
+    //     System.out.println("Bot hand after: " + bot.getPlayerHand());
+    // }
 }
