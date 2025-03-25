@@ -147,6 +147,9 @@ public class App {
         game.initiateFinalRound(players);
         Printer.displayGameState(game);
         game.printWinScreen();
+        System.out.println("enter anything to continue!");
+        sc.nextLine();
+        Printer.clearScreen();
     }
 
     // Helper function for hosting an online game
@@ -159,6 +162,7 @@ public class App {
         Scanner sc = new Scanner(System.in);
 
         // Starting message of the program
+        Printer.printLogo();
         System.out.println("Welcome to Parade!\n");
 
         // Ask the user what option they want

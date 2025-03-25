@@ -1,6 +1,8 @@
 package app.utilities;
 
 import app.resource.*;
+
+import java.io.*;
 import java.util.*; 
 import app.entity.*;
 import app.game.Game;
@@ -17,10 +19,6 @@ public class Printer {
     public static final String ANSI_YELLOW = "\u001B[33m";
 
     public static void displayGameState(Game game) {
-        // Clean the screen first
-        System.out.print("\033[H\033[2J");  
-        System.out.flush();  
-
         Parade parade = game.getParade();
         ArrayList<Player> players = game.getPlayers();
         // print out the current game state
@@ -186,4 +184,17 @@ public class Printer {
     //     DisplayPlayerMenu menu = new DisplayPlayerMenu();
     //     menu.promptPlayerForCardToPlay();
     // }
+
+
+
+    public static void printLogo() {
+        try (Scanner sc = new Scanner(new File("./image/logo.txt"))) {
+            while (sc.hasNextLine()) {
+                System.out.println(sc.nextLine());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Seems like the image folder is missing...");
+        }
+    }
 }
+
