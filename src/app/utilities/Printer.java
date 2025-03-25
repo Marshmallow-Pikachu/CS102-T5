@@ -1,11 +1,10 @@
 package app.utilities;
 
-import app.resource.*;
-
-import java.io.*;
-import java.util.*; 
 import app.entity.*;
 import app.game.Game;
+import app.resource.*;
+import java.io.*;
+import java.util.*;
 
 public class Printer {
 
@@ -141,7 +140,7 @@ public class Printer {
     //Gets String to append to print everything in same line
     public static ArrayList<String> printCardString(Card c){
         ArrayList<String> returnval = new ArrayList<String>();
-        returnval.add(0, "╭───╮");
+        returnval.add(0, "┌───┐");
         String toInsert;
         if (c.getValue() != 10){
             toInsert = "│ "+c.getValue()+" │";
@@ -149,7 +148,7 @@ public class Printer {
             toInsert = "│ T │";
         }
         returnval.add(1, toInsert);
-        returnval.add(2, "╰───╯");
+        returnval.add(2, "└───┘");
         return returnval;
     }
 
