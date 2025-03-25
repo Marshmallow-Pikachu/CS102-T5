@@ -21,11 +21,12 @@ public class DisplayPlayerMenu {
         System.out.println("----------------------------------------------------------");
         for (Player p : players) {
             System.out.printf("%s Scoring Zone%n%n", p.getName());
-            printCards(p.getCollectedParadeCards());
+            printCollectedCards(p.getCollectedParadeCards());
             System.out.println("----------------------------------------------------------\n");
         }
 
-        parade.printParade();
+        System.out.println("============ Parade ============");
+        printCards(parade.getParadeCards());
         
         // print out myHand
         System.out.printf("%s Hand%n", name);
@@ -34,7 +35,7 @@ public class DisplayPlayerMenu {
     }
 
 
-    public static void printCards(ArrayList<Card> cards){
+    public static void printCollectedCards(ArrayList<Card> cards){
         if (cards.isEmpty()){
             System.out.println("No Cards Collected");
             return;
@@ -75,7 +76,7 @@ public class DisplayPlayerMenu {
         printSameColor(yellowCards, ANSI_YELLOW);
     }
 
-        //Prints all card of same Color in 1 Row
+    //Prints all card of same Color in 1 Row
     public static void printSameColor(ArrayList<Card> cards, String cardColor){
         if (cards.isEmpty()){
             return;
@@ -96,6 +97,47 @@ public class DisplayPlayerMenu {
         System.out.println(printString.get(2) + ANSI_RESET);
     }
 
+    //Gets String to Convert Colour
+    public static String linkCardtoColour(Card c){
+        String cardColor = null;
+        switch (c.getColour()){
+            case "Red":
+            return ANSI_RED;
+            case "Blue":
+            return ANSI_BLUE;
+            case "Purple":
+            return ANSI_PURPLE;
+            case "Green":
+            return ANSI_BRIGHT_GREEN;
+            case "Black":
+            return ANSI_BLACK;
+            case "Yellow":
+            return ANSI_YELLOW;
+        }
+        System.out.println("Error Color Not Matched!");
+        return cardColor;
+    }
+
+
+    public static void printCards(ArrayList<Card> cards){
+        ArrayList<String> cardList = new ArrayList<>();
+        cardList.add("");         
+        cardList.add(""); 
+        cardList.add("");
+        for (Card c : cards){
+            String colorCode = linkCardtoColour(c);
+            ArrayList<String> temp = printCardString(c);
+            cardList.set(0, cardList.get(0) + colorCode + temp.get(0) + ANSI_RESET);
+            cardList.set(1, cardList.get(1) + colorCode + temp.get(1) + ANSI_RESET);
+            cardList.set(2, cardList.get(2) + colorCode + temp.get(2) + ANSI_RESET);
+            //System.out.println(parade.get(2));
+            //System.out.println();
+        }
+        System.out.println(cardList.get(0));
+        System.out.println(cardList.get(1));
+        System.out.println(cardList.get(2));
+    } 
+
     //Gets String to append to print everything in same line
     public static ArrayList<String> printCardString(Card c){
         ArrayList<String> returnval = new ArrayList<String>();
@@ -104,7 +146,7 @@ public class DisplayPlayerMenu {
         if (c.getValue() != 10){
             toInsert = "│ "+c.getValue()+" │";
         } else{
-            toInsert = "│ "+c.getValue()+"│";
+            toInsert = "│ T │";
         }
         returnval.add(1, toInsert);
         returnval.add(2, "╰───╯");
