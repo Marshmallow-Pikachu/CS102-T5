@@ -7,9 +7,8 @@ import java.io.*;
 import java.util.*;
 
 public class Printer {
-
+    // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) and Reset codes
     public static final String ANSI_RESET = "\u001B[0m"; 
-    // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) 
     public static final String ANSI_RED    = "\u001B[31m";
     public static final String ANSI_BLUE   = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
@@ -30,7 +29,7 @@ public class Printer {
         }
 
         System.out.println("============ Parade ============");
-        printCards(parade.getParadeCards());
+        printRenderedCards(parade.getParadeCards());
     }
 
 
@@ -67,12 +66,18 @@ public class Printer {
                 break;
             }
         }
-        printSameColor(redCards, ANSI_RED);
-        printSameColor(blueCards, ANSI_BLUE);
-        printSameColor(purpleCards, ANSI_PURPLE);
-        printSameColor(greenCards, ANSI_BRIGHT_GREEN);
-        printSameColor(blackCards, ANSI_BLACK);
-        printSameColor(yellowCards, ANSI_YELLOW);
+        printRenderedCards(redCards);
+        printRenderedCards(blueCards);
+        printRenderedCards(purpleCards);
+        printRenderedCards(greenCards);
+        printRenderedCards(blackCards);
+        printRenderedCards(yellowCards);
+        // printSameColor(redCards, ANSI_RED);
+        // printSameColor(blueCards, ANSI_BLUE);
+        // printSameColor(purpleCards, ANSI_PURPLE);
+        // printSameColor(greenCards, ANSI_BRIGHT_GREEN);
+        // printSameColor(blackCards, ANSI_BLACK);
+        // printSameColor(yellowCards, ANSI_YELLOW);
     }
 
     //Prints all card of same Color in 1 Row
@@ -163,6 +168,7 @@ public class Printer {
         String input = null;
         while (true) {
             try {
+                System.out.println("    (1)         (2)         (3)         (4)         (5)    "); // To number the cards the player can play
                 System.out.print("Enter a number between 1 to 5 to select a card: ");    
                 input = sc.nextLine();
                 cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
@@ -200,8 +206,9 @@ public class Printer {
 
     // Translate the card into [filename, color]
     public static String[] translateCard(Card c) {
+        String[] details = new String[2];
+
         switch (c.getColour()){
-            String[] details = new String[2];
             case "Red":
                 details[0] = "hatter.txt";
                 details[1] = ANSI_RED;
@@ -231,13 +238,72 @@ public class Printer {
     }
 
     // Convert a card into an ArrayList of Strings to print out
-    public static List<String> renderCard(Card c) {
+    public static ArrayList<String> renderCard(Card c) {
+        // Get the image and the colour of the card
         String[] details = translateCard(c);
-        // TODO: Set the correct file path to the image folder
-        try (Scanner sc = new Scanner(new File(details[0]))) {
-            
-        } catch (Exception e) {
-            // TODO: handle exception
+
+        // Initialise the ArrayList to store the card render
+        ArrayList<String> cardRender = new ArrayList<>(7);
+
+        
+        try (Scanner sc = new Scanner(new File("./image/" + details[0]))) {
+            while (sc.hasNext()) {
+                String line = sc.nextLine();
+                // To add the number on the card, replace % with the value
+                if (c.getValue() == 10) {
+                    line = line.replace("%", "T");
+                } else {
+                    line = line.replace("%", Integer.toString(c.getValue()));
+                }
+                cardRender.add(details[1]+line+ANSI_RESET);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.printf("Missing %s...%n", details[0]);
+        }
+
+        return cardRender;
+    }
+
+    public static void printRenderedCards(ArrayList<Card> cards) {
+        if (cards.isEmpty()) {
+            return;
+        }
+        // We print 10 cards per line for better display
+        int count = 0;
+        ArrayList<String> printList = new ArrayList<>(7);
+        for (int i=0; i < 7; i++) {
+            printList.add("");
+        }
+
+        for (Card c : cards) {
+            // Check if we had hit 10 cards -> if so, flush out the printlist
+            if (count == 10) {
+                // flush out
+                for (int j=0; j < 7; j++) {
+                    System.out.println(printList.get(j));
+                }
+
+                // Refresh the list
+                printList = new ArrayList<>(7);
+                for (int i=0; i < 7; i++) {
+                    printList.add("");
+                }
+            }
+
+            // Get the lines of the card
+            ArrayList<String> renderedCard = renderCard(c);
+                
+            // Add each line of the card to the printList
+            for (int j=0; j < 7; j++) {
+                printList.set(j, printList.get(j) + renderedCard.get(j) + " ");
+            }
+
+            // increment count by 1
+            count += 1;
+        }
+        // Print out the last few cards
+        for (int j=0; j < 7; j++) {
+            System.out.println(printList.get(j));
         }
     }
 }

@@ -76,7 +76,14 @@ public class App {
                 }
 
                 // Now ask the user for number of bots if it is not 6 human players
-                if (humans != 6) {
+                if (humans == 1) {
+                    System.out.printf("How many bots (1-5): ");
+                    input = sc.nextLine();
+                    // Check if the input is an int
+                    bots = Integer.parseInt(input);
+                }
+
+                else if (humans != 6) {
                     System.out.printf("How many bots (0-%d): ", (6 - humans));
                     input = sc.nextLine();
                     // Check if the input is an int

@@ -23,7 +23,7 @@ public class HumanPlayer extends Player {
         // Print the game state and the players hand
         Printer.displayGameState(game);
         System.out.printf("%s Hand%n", super.getName());
-        Printer.printCards(super.getPlayerHand());
+        Printer.printRenderedCards(super.getPlayerHand());
         
         // Ask player to play a card
         Card playedCard = Printer.promptPlayerForCardToPlay(super.getPlayerHand());
