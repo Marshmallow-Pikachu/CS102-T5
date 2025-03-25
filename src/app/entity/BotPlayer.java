@@ -193,7 +193,7 @@ public class BotPlayer extends Player {
     //     System.out.println("Bot hand before: " + bot.getPlayerHand());
     
     //     // Perform discard
-    //     bot.discardCard(allPlayers);
+    //     bot.discardCards(allPlayers);
     
     //     // After discard
     //     System.out.println("Bot hand after: " + bot.getPlayerHand());
