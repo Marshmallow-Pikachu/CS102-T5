@@ -2,6 +2,7 @@ package app.game;
 
 import app.entity.*;
 import app.resource.*;
+import app.utilities.Printer;
 import java.util.*;
 
 // Compile Command
@@ -191,7 +192,9 @@ public class Game {
         for (Player p : players){
             if (p instanceof HumanPlayer) {
                 HumanPlayer human = (HumanPlayer)p;
+                Printer.printCards(p.getPlayerHand());
                 human.discardCard();
+                Printer.printCards(p.getPlayerHand());
                 human.discardCard();
                 human.emptyHandToScoringArea();
             } else{
