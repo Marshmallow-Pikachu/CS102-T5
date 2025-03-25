@@ -1,12 +1,10 @@
 package app;
 
-import java.util.*;
-
-import app.game.*;
 import app.entity.*;
+import app.game.*;
 import app.resource.*;
 import app.utilities.*;
-import app.network.*;
+import java.util.*;
 
 
 public class App {
@@ -149,7 +147,7 @@ public class App {
         game.printWinScreen();
         System.out.println("enter anything to continue!");
         sc.nextLine();
-        Printer.clearScreen();
+        //Printer.clearScreen();
     }
 
     // Helper function for hosting an online game

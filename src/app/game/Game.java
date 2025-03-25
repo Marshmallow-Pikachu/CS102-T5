@@ -138,7 +138,7 @@ public class Game {
     //Gets String to append to print everything in same line
     public ArrayList<String> printCardString(Card c){
         ArrayList<String> returnval = new ArrayList<String>();
-        returnval.add(0, "╭───╮");
+        returnval.add(0, "┌───┐");
         String toInsert;
         if (c.getValue() != 10){
             toInsert = "│ "+c.getValue()+" │";
@@ -146,7 +146,7 @@ public class Game {
             toInsert = "│ "+c.getValue()+"│";
         }
         returnval.add(1, toInsert);
-        returnval.add(2, "╰───╯");
+        returnval.add(2, "└───┘");
         return returnval;
     }
 
