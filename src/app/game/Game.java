@@ -25,7 +25,7 @@ public class Game {
     // Feel free to add to psvm to check if your parts integrate
     private final ArrayList<Player> players; //Added final (shouldnt break anything)
     private final Parade parade;
-    public static Deck deck;
+    private Deck deck;
     private boolean gameEnd;
 
     public Game(ArrayList<Player> players, Deck deck){

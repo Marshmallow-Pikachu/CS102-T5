@@ -147,6 +147,7 @@ public class App {
         while (!game.getGameEnd()) {
             game.initiateRound();
             System.out.printf("%n%n");
+            sc.nextLine();
         }
         System.out.println("Start final round");
         game.initiateFinalRound(players);

@@ -125,6 +125,7 @@ public class BotPlayer extends Player {
     public void takeTurn(Game game) {
         Parade parade = game.getParade();
         Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
+        Printer.displayGameState(game);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
         collectEligibleCardsFromParade(parade, chosenCard);
         if (!game.getGameEnd()) {
