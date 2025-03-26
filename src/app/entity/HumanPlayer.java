@@ -22,8 +22,8 @@ public class HumanPlayer extends Player {
     public void takeTurn(Game game) {
         // Print the game state and the players hand
         Printer.displayGameState(game);
-        System.out.printf("%s Hand%n", super.getName());
-        Printer.printRenderedCards(super.getPlayerHand());
+        System.out.printf("%s's Hand%n", super.getName());
+        Printer.printRenderedHand(super.getPlayerHand());
         
         // Ask player to play a card
         Card playedCard = Printer.promptPlayerForCardToPlay(super.getPlayerHand());

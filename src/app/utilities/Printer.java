@@ -41,7 +41,7 @@ public class Printer {
         String input = null;
         while (true) {
             try {
-                System.out.println("    (1)         (2)         (3)         (4)         (5)    "); // To number the cards the player can play
+                 // To number the cards the player can play
                 System.out.print("Enter a number between 1 to 5 to select a card: ");    
                 input = sc.nextLine();
                 cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
@@ -56,15 +56,8 @@ public class Printer {
         return myHand.get(cardSelectedIndex);
     }
 
-    // compile command: javac -d out -cp "src" src/app/utilities/DisplayPlayerMenu.java
-    // public static void main(String[] args) {
-    //     // run java app.utilities.DisplayPlayerMenu to test this after compiling
-    //     DisplayPlayerMenu menu = new DisplayPlayerMenu();
-    //     menu.promptPlayerForCardToPlay();
-    // }
 
-
-    // Print static logo for our game
+    // For printing the logo for our game on startup
     public static void printLogo() {
         try (Scanner sc = new Scanner(new File("./image/logo.txt"))) {
             System.out.print(ANSIColor.ANSI_PURPLE);
@@ -77,32 +70,42 @@ public class Printer {
         }
     }
 
+    // For printing the App menu for our game
+    public static void printMenu() {
+        System.out.printf("Select on Option:%n");
+        System.out.printf("1. Play Offline%n");
+        System.out.printf("2. Create an Online Game%n");
+        System.out.printf("3. Join an Online Game%n");
+        System.out.printf("4. Quit%n");
+    }
+
     // For displaying cards in hand
-    public static void printRenderedCards(ArrayList<Card> cards) {
-        if (cards.isEmpty()) {
-            return;
-        }
-        // We print 8 cards per line for better display
-        int count = 0;
+    public static void printRenderedHand(ArrayList<Card> cards) {
         CardList printList = new CardList();
 
         for (Card c : cards) {
-            // Check if we had hit 8 cards -> if so, flush out the printlist
-            if (count == 8) {
-                printList.output();
-            }
-
             // Get the lines of the card
             ArrayList<String> renderedCard = Render.renderCard(c);
                 
             // Add to the printList
             printList.add(renderedCard);
 
-            // increment count by 1
-            count += 1;
         }
-        // flush out the last lines
+        // output the hand
         printList.output();
+
+        // Print out the card options
+        String cardSpace = " ".repeat(11);
+        String options = "";
+        switch (cards.size()) {
+            case 5:
+                options = "(5)       ";
+            case 4:
+                options = "(4)" + cardSpace + options;
+            default:
+                options = "       (1)" + cardSpace + "(2)" + cardSpace + "(3)" + cardSpace + options;
+        }
+        System.out.println(options);
     }
 
     // For displaying cards in Parade

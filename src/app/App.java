@@ -14,11 +14,7 @@ public class App {
         int input = 0;
         while (!valid) {
             try {
-                System.out.printf("Select on Option:%n");
-                System.out.printf("1. Play Offline%n");
-                System.out.printf("2. Create an Online Game%n");
-                System.out.printf("3. Join an Online Game%n");
-                System.out.printf("4. Quit%n");
+                Printer.printMenu();
                 System.out.printf("%nSelect on option > ");
                 input = Integer.parseInt(sc.nextLine());
                 if (input < 0 || input > 4) {
@@ -169,7 +165,6 @@ public class App {
 
         // Starting message of the program
         Printer.printLogo();
-        System.out.println("Welcome to Parade!\n");
 
         // Ask the user what option they want
         int option = gameModeOption(sc);
@@ -182,7 +177,7 @@ public class App {
                     offlineGame(sc);
                     break;
                 case 2:
-                    hostGame(sc);
+                    System.out.printf("%nHave yet to implement%n%n");
                     break;
                 case 3:
                     System.out.printf("%nHave yet to implement%n%n");
