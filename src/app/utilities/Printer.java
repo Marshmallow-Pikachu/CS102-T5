@@ -10,7 +10,7 @@ public class Printer {
     // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) and Reset codes
     public static final String ANSI_RESET = "\u001B[0m"; 
     public static final String ANSI_RED    = "\u001B[31m";
-    public static final String ANSI_BLUE   = "\u001B[34m";
+    public static final String ANSI_BLUE   = "\u001B[36m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_BRIGHT_GREEN  = "\u001B[92m";
     public static final String ANSI_BLACK  = "\u001B[30m";
@@ -66,12 +66,7 @@ public class Printer {
                 break;
             }
         }
-        printRenderedCards(redCards);
-        printRenderedCards(blueCards);
-        printRenderedCards(purpleCards);
-        printRenderedCards(greenCards);
-        printRenderedCards(blackCards);
-        printRenderedCards(yellowCards);
+        printCollectionZone(redCards, blueCards, purpleCards, greenCards, blackCards, yellowCards);
         // printSameColor(redCards, ANSI_RED);
         // printSameColor(blueCards, ANSI_BLUE);
         // printSameColor(purpleCards, ANSI_PURPLE);
@@ -255,6 +250,10 @@ public class Printer {
                 } else {
                     line = line.replace("%", Integer.toString(c.getValue()));
                 }
+                // For alice white pinefore specifically
+                line = line.replace("┼─┼", "\u001B[0m┼─┼\u001B[36m");
+                line = line.replace("└─┘", "\u001B[0m└─┘\u001B[36m");
+
                 cardRender.add(details[1]+line+ANSI_RESET);
             }
         } catch (FileNotFoundException e) {
@@ -270,10 +269,7 @@ public class Printer {
         }
         // We print 10 cards per line for better display
         int count = 0;
-        ArrayList<String> printList = new ArrayList<>(7);
-        for (int i=0; i < 7; i++) {
-            printList.add("");
-        }
+        ArrayList<String> printList = generatePrintList();
 
         for (Card c : cards) {
             // Check if we had hit 10 cards -> if so, flush out the printlist
@@ -284,10 +280,7 @@ public class Printer {
                 }
 
                 // Refresh the list
-                printList = new ArrayList<>(7);
-                for (int i=0; i < 7; i++) {
-                    printList.add("");
-                }
+                printList = generatePrintList();
             }
 
             // Get the lines of the card
@@ -307,8 +300,145 @@ public class Printer {
         }
     }
 
-    public static void renderCollectedCards(ArrayList<Card> cards) {
-        // TODO: Add the logic for this
+    // This method assumes that it is fed an ArrayList of the same coloured cards
+    // But it is still able to print a stack of diff coloured cards
+    public static ArrayList<String> renderStackedCards(ArrayList<Card> cards) {
+        if (cards.isEmpty()) {
+            return null;
+        }
+        // Create the first card
+        Card first = cards.get(0);
+        ArrayList<String> renderList = renderCard(first);
+
+        // Create the subsequent cards
+        try(Scanner sc = new Scanner(new File("./image/stacked.txt"))) {
+            for (int i = 1; i < cards.size(); i++) {
+                Card c = cards.get(i);
+                String[] details =  translateCard(c);
+                int lineNo = 0;
+                while (sc.hasNext()) {
+                    String raw = sc.nextLine();
+                    String line = raw.replace("%", Integer.toString(c.getValue()));
+                    line = raw.replace("10", "T");
+                    renderList.set(lineNo, renderList.get(lineNo) + details[1] + line + ANSI_RESET);
+                    lineNo++;
+                }
+                
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Seems like stacked is missing...");
+        }
+        return renderList;
+    }
+
+    // internal helper function to initialise the printList
+    private static ArrayList<String> generatePrintList() {
+        ArrayList<String> printList = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            printList.add("");
+        }
+
+        return printList;
+    }
+
+    private static void addToPrintList(ArrayList<String> printList, ArrayList<String> newList) {
+        for (int i = 0; i < 7; i++) {
+            printList.set(i, printList.get(i) + "   " + newList.get(i));
+        }
+    }
+
+    private static void outputPrintList(ArrayList<String> printList) {
+        for (String line : printList) {
+            System.out.println(line);
+        }
+    }
+
+    public static void printCollectionZone(ArrayList<Card> redCards, ArrayList<Card> blueCards, ArrayList<Card> purpleCards, 
+    ArrayList<Card> greenCards, ArrayList<Card> blackCards, ArrayList<Card> yellowCards) {
+        // Get all the rendered versions of each color
+        ArrayList<String> redList = renderStackedCards(redCards);
+        ArrayList<String> blueList = renderStackedCards(blueCards);
+        ArrayList<String> purpleList = renderStackedCards(purpleCards);
+        ArrayList<String> greenList = renderStackedCards(greenCards);
+        ArrayList<String> blackList = renderStackedCards(blackCards);
+        ArrayList<String> yellowList = renderStackedCards(yellowCards);
+        
+        // initialise the printList
+        ArrayList<String> printList = generatePrintList();
+
+
+        // To keep track of whether we want to print a second row of cards
+        boolean secondRow = false;
+
+        if (redList != null) {
+            addToPrintList(printList, redList);
+            secondRow = true;
+        }
+
+        if (blueList != null) {
+            if (secondRow) {
+                addToPrintList(printList, blueList);
+                outputPrintList(printList);
+                printList = generatePrintList();
+                secondRow = false;
+            } else {
+                addToPrintList(printList, blueList);
+                secondRow = true;
+            }
+        }
+
+        if (purpleList != null) {
+            if (secondRow) {
+                addToPrintList(printList, purpleList);
+                outputPrintList(printList);
+                printList = generatePrintList();
+                secondRow = false;
+            } else {
+                addToPrintList(printList, purpleList);
+                secondRow = true;
+            }
+        }
+
+        if (greenList != null) {
+            if (secondRow) {
+                addToPrintList(printList, greenList);
+                outputPrintList(printList);
+                printList = generatePrintList();
+                secondRow = false;
+            } else {
+                addToPrintList(printList, greenList);
+                secondRow = true;
+            }
+        }
+
+        if (blackList != null) {
+            if (secondRow) {
+                addToPrintList(printList, blackList);
+                outputPrintList(printList);
+                printList = generatePrintList();
+                secondRow = false;
+            } else {
+                addToPrintList(printList, blackList);
+                secondRow = true;
+            }
+        }
+
+        if (yellowList != null) {
+            if (secondRow) {
+                addToPrintList(printList, yellowList);
+                outputPrintList(printList);
+                printList = generatePrintList();
+                secondRow = false;
+            } else {
+                addToPrintList(printList, yellowList);
+                secondRow = true;
+            }
+        }
+
+        // To clear the last card
+        if (secondRow) {
+            outputPrintList(printList);
+        }
     }
 }
 
