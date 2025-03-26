@@ -192,9 +192,9 @@ public class Game {
         for (Player p : players){
             if (p instanceof HumanPlayer) {
                 HumanPlayer human = (HumanPlayer)p;
-                Printer.printCards(p.getPlayerHand());
+                Printer.printRenderedCards(p.getPlayerHand());
                 human.discardCard();
-                Printer.printCards(p.getPlayerHand());
+                Printer.printRenderedCards(p.getPlayerHand());
                 human.discardCard();
                 human.emptyHandToScoringArea();
             } else{

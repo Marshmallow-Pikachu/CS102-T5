@@ -67,92 +67,7 @@ public class Printer {
             }
         }
         printCollectionZone(redCards, blueCards, purpleCards, greenCards, blackCards, yellowCards);
-        // printSameColor(redCards, ANSI_RED);
-        // printSameColor(blueCards, ANSI_BLUE);
-        // printSameColor(purpleCards, ANSI_PURPLE);
-        // printSameColor(greenCards, ANSI_BRIGHT_GREEN);
-        // printSameColor(blackCards, ANSI_BLACK);
-        // printSameColor(yellowCards, ANSI_YELLOW);
     }
-
-    //Prints all card of same Color in 1 Row
-    public static void printSameColor(ArrayList<Card> cards, String cardColor){
-        if (cards.isEmpty()){
-            return;
-        }
-        ArrayList<String> printString = new ArrayList<>();
-        printString.add("");
-        printString.add("");
-        printString.add("");
-        for (Card c : cards){
-            ArrayList<String> string = printCardString(c);
-            printString.set(0, printString.get(0) + string.get(0));
-            printString.set(1, printString.get(1) + string.get(1));
-            printString.set(2, printString.get(2) + string.get(2));
-        }
-        //Print out all cards that are XXX Color 
-        System.out.println(cardColor + printString.get(0));
-        System.out.println(printString.get(1));
-        System.out.println(printString.get(2) + ANSI_RESET);
-    }
-
-    //Gets String to Convert Colour
-    public static String linkCardtoColour(Card c){
-        String cardColor = null;
-        switch (c.getColour()){
-            case "Red":
-            return ANSI_RED;
-            case "Blue":
-            return ANSI_BLUE;
-            case "Purple":
-            return ANSI_PURPLE;
-            case "Green":
-            return ANSI_BRIGHT_GREEN;
-            case "Black":
-            return ANSI_BLACK;
-            case "Yellow":
-            return ANSI_YELLOW;
-        }
-        System.out.println("Error Color Not Matched!");
-        return cardColor;
-    }
-
-
-    public static void printCards(ArrayList<Card> cards){
-        ArrayList<String> cardList = new ArrayList<>();
-        cardList.add("");         
-        cardList.add(""); 
-        cardList.add("");
-        for (Card c : cards){
-            String colorCode = linkCardtoColour(c);
-            ArrayList<String> temp = printCardString(c);
-            cardList.set(0, cardList.get(0) + colorCode + temp.get(0) + ANSI_RESET);
-            cardList.set(1, cardList.get(1) + colorCode + temp.get(1) + ANSI_RESET);
-            cardList.set(2, cardList.get(2) + colorCode + temp.get(2) + ANSI_RESET);
-            //System.out.println(parade.get(2));
-            //System.out.println();
-        }
-        System.out.println(cardList.get(0));
-        System.out.println(cardList.get(1));
-        System.out.println(cardList.get(2));
-    } 
-
-    //Gets String to append to print everything in same line
-    public static ArrayList<String> printCardString(Card c){
-        ArrayList<String> returnval = new ArrayList<String>();
-        returnval.add(0, "┌───┐");
-        String toInsert;
-        if (c.getValue() != 10){
-            toInsert = "│ "+c.getValue()+" │";
-        } else{
-            toInsert = "│ T │";
-        }
-        returnval.add(1, toInsert);
-        returnval.add(2, "└───┘");
-        return returnval;
-    }
-
-
 
     // Player will input a number from 1 to 5, representing the 5 cards in his hand
     // Player input is validated here by my try catch, not sure if there is a need for validateInput.java
@@ -319,7 +234,7 @@ public class Printer {
                 while (sc.hasNext()) {
                     String raw = sc.nextLine();
                     String line = raw.replace("%", Integer.toString(c.getValue()));
-                    line = raw.replace("10", "T");
+                    line = line.replace("10", "T");
                     renderList.set(lineNo, renderList.get(lineNo) + details[1] + line + ANSI_RESET);
                     lineNo++;
                 }
