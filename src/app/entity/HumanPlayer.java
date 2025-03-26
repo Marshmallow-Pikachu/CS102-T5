@@ -40,7 +40,7 @@ public class HumanPlayer extends Player {
     public void discardCard() {
         int index;
         while (true) {
-            System.out.println("Select card to discard by entering its number (1 to " + super.getPlayerHand().size() + "):");
+            System.out.printf("%s: Select card to discard by entering its number (1 to " + super.getPlayerHand().size() + "):\n", getName());
             if (scanner.hasNextInt()) {
                 index = scanner.nextInt() - 1;
                 scanner.nextLine();
