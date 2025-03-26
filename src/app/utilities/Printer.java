@@ -228,7 +228,6 @@ public class Printer {
         // Create the subsequent cards
         for (int i = 1; i < cards.size(); i++) {
             try(Scanner sc = new Scanner(new File("./image/stacked.txt"))) {
-                System.out.println(cards.size());
                     Card c = cards.get(i);
                     String[] details =  translateCard(c);
                     int lineNo = 0;
