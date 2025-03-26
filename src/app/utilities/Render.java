@@ -164,9 +164,9 @@ public class Render {
     return printList;
     }
 
-    public static ArrayList<PrintList> renderCollectionZone(ArrayList<Card> cards) {
+    public static ArrayList<CardList> renderCollectionZone(ArrayList<Card> cards) {
         
-        ArrayList<PrintList> colorList = new ArrayList<>();
+        ArrayList<CardList> colorList = new ArrayList<>();
 
         // Loop through each color and create a PrintList for each of them
         String[] colors = new String[]{"Red", "Blue", "Purple", "Green", "Black", "Yellow"};
@@ -177,7 +177,7 @@ public class Render {
                     sameColorCards.add(c);
                 }
             }
-            colorList.add(new PrintList(renderStackedCards(sameColorCards)));
+            colorList.add(new CardList(renderStackedCards(sameColorCards)));
         }
         
         return colorList;

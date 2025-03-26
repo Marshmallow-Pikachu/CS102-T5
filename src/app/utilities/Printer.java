@@ -84,7 +84,7 @@ public class Printer {
         }
         // We print 8 cards per line for better display
         int count = 0;
-        PrintList printList = new PrintList();
+        CardList printList = new CardList();
 
         for (Card c : cards) {
             // Check if we had hit 8 cards -> if so, flush out the printlist
@@ -112,7 +112,7 @@ public class Printer {
         }
 
         int count = 1;
-        PrintList printList = new PrintList(Render.renderDeck(deckSize));
+        CardList printList = new CardList(Render.renderDeck(deckSize));
 
         for (int i = 0; i < cards.size()-1; i++) {
             // Check if we had hit 10 cards -> if so, flush out the printlist
@@ -139,14 +139,14 @@ public class Printer {
     // For displaying cards in Collection Zone
     public static void printRenderedCollectionZone(ArrayList<Card> cards) {
                 // Get the rendered versions of each color
-                ArrayList<PrintList> colorList = Render.renderCollectionZone(cards);
+                ArrayList<CardList> colorList = Render.renderCollectionZone(cards);
 
                 // To keep track of whether there is already 1 row in the printList
                 // It is false when there is either 0 or 2 rows in the printList
-                PrintList printList = new PrintList();
+                CardList printList = new CardList();
                 boolean isSingleRow = false;
         
-                for (PrintList nextList : colorList) {
+                for (CardList nextList : colorList) {
                     if (!nextList.isNull()) {
                         printList.add(nextList);
                         if (isSingleRow) {

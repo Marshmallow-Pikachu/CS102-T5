@@ -3,16 +3,16 @@ package app.utilities;
 import java.util.ArrayList;
 
 // class 
-public class PrintList {
+public class CardList {
     private ArrayList<String> lines;
 
     // When called, will create 7 lines of empty strings to store the card information
-    public PrintList() {
+    public CardList() {
         reset();
     }
 
 
-    public PrintList(ArrayList<String> newList) {
+    public CardList(ArrayList<String> newList) {
         this.lines = newList;
     }
 
@@ -39,7 +39,7 @@ public class PrintList {
         }
     }
 
-    public void add(PrintList newList) {
+    public void add(CardList newList) {
         for (int i = 0; i < 7; i++) {
             this.lines.set(i, this.lines.get(i) + "   " + newList.lines.get(i));
         }
