@@ -85,7 +85,7 @@ public class DisplayCard {
                 int lineNo = 0;
                 while (sc.hasNext()) {
                         String raw = sc.nextLine();
-                        for (int j = 1; j < 40; j++) {
+                        for (int j = 1; j < 11; j++) {
                             int val = j % 11;
                             String line = raw.replace("%", Integer.toString(val));
                             line = line.replace("10", "T");
