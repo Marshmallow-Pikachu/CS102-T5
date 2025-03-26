@@ -21,11 +21,17 @@ public class Printer {
         ArrayList<Player> players = game.getPlayers();
         // print out the current game state
         
-        System.out.println("----------------------------------------------------------");
+        System.out.println(" " + "-".repeat(97) + " ");
         for (Player p : players) {
-            System.out.printf("%s Scoring Zone%n%n", p.getName());
+            String leftspace = " ".repeat((84-p.getName().length())/2);
+            String rightspace = " ".repeat((84-p.getName().length())/2);
+            if (p.getName().length() % 2 == 1) {
+                leftspace += " ";
+            }
+            System.out.printf("|%s%s Scoring Zone%s|%n", leftspace, p.getName(), rightspace);
+            System.out.println("|" + " ".repeat(97) + "|");
             printCollectedCards(p.getCollectedParadeCards());
-            System.out.println("----------------------------------------------------------");
+            System.out.println(" " + "-".repeat(97) + " ");
         }
 
         System.out.println("============ Parade ============");
@@ -242,6 +248,13 @@ public class Printer {
                 System.out.println("Seems like stacked is missing...");
             }
         }
+
+        // To add the spacers at the end of each card stack
+        for (int i = 0; i < 7; i++) {
+            String spacer = " ".repeat(33 - (cards.size()-1) * 3);
+            renderList.set(i, renderList.get(i) + spacer);
+        }
+
         return renderList;
     }
 
@@ -261,9 +274,16 @@ public class Printer {
         }
     }
 
+
     private static void outputPrintList(ArrayList<String> printList) {
         for (String line : printList) {
-            System.out.println(line);
+            System.out.println("|" + line + "   |");
+        }
+    }
+
+    private static void outputSpacedPrintList(ArrayList<String> printList) {
+        for (String line : printList) {
+            System.out.println("|" + line + " ".repeat(47) + "   |");
         }
     }
 
@@ -351,7 +371,7 @@ public class Printer {
 
         // To clear the last card
         if (secondRow) {
-            outputPrintList(printList);
+            outputSpacedPrintList(printList);
         }
     }
 }
