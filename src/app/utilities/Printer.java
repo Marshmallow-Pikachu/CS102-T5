@@ -226,22 +226,22 @@ public class Printer {
         ArrayList<String> renderList = renderCard(first);
 
         // Create the subsequent cards
-        try(Scanner sc = new Scanner(new File("./image/stacked.txt"))) {
-            for (int i = 1; i < cards.size(); i++) {
-                Card c = cards.get(i);
-                String[] details =  translateCard(c);
-                int lineNo = 0;
-                while (sc.hasNext()) {
-                    String raw = sc.nextLine();
-                    String line = raw.replace("%", Integer.toString(c.getValue()));
-                    line = line.replace("10", "T");
-                    renderList.set(lineNo, renderList.get(lineNo) + details[1] + line + ANSI_RESET);
-                    lineNo++;
-                }
-                
+        for (int i = 1; i < cards.size(); i++) {
+            try(Scanner sc = new Scanner(new File("./image/stacked.txt"))) {
+                System.out.println(cards.size());
+                    Card c = cards.get(i);
+                    String[] details =  translateCard(c);
+                    int lineNo = 0;
+                    while (sc.hasNext()) {
+                        String raw = sc.nextLine();
+                        String line = raw.replace("%", Integer.toString(c.getValue()));
+                        line = line.replace("10", "T");
+                        renderList.set(lineNo, renderList.get(lineNo) + details[1] + line + ANSI_RESET);
+                        lineNo++;
+                    }
+            } catch (FileNotFoundException e) {
+                System.out.println("Seems like stacked is missing...");
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Seems like stacked is missing...");
         }
         return renderList;
     }
