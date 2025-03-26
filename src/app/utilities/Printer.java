@@ -20,7 +20,7 @@ public class Printer {
             }
             System.out.printf("|%s%s Scoring Zone%s|%n", leftspace, p.getName(), rightspace);
             System.out.println("|" + " ".repeat(97) + "|");
-            Render.renderCollectionZone(p.getCollectedParadeCards());
+            printRenderedCollectionZone(p.getCollectedParadeCards());
             System.out.println(" " + "-".repeat(97) + " ");
         }
 
@@ -77,7 +77,7 @@ public class Printer {
         }
     }
 
-
+    // For displaying cards in hand
     public static void printRenderedCards(ArrayList<Card> cards) {
         if (cards.isEmpty()) {
             return;
@@ -105,7 +105,7 @@ public class Printer {
         printList.output();
     }
 
-    // Overloaded function to print the parade
+    // For displaying cards in Parade
     public static void printRenderedParade(ArrayList<Card> cards, int deckSize) {
         if (cards.isEmpty()) {
             return;
@@ -136,8 +136,33 @@ public class Printer {
         
     }
 
+    // For displaying cards in Collection Zone
+    public static void printRenderedCollectionZone(ArrayList<Card> cards) {
+                // Get the rendered versions of each color
+                ArrayList<PrintList> colorList = Render.renderCollectionZone(cards);
 
-
-
+                // To keep track of whether there is already 1 row in the printList
+                // It is false when there is either 0 or 2 rows in the printList
+                PrintList printList = new PrintList();
+                boolean isSingleRow = false;
+        
+                for (PrintList nextList : colorList) {
+                    if (!nextList.isNull()) {
+                        printList.add(nextList);
+                        if (isSingleRow) {
+                            isSingleRow = false;
+                            printList.outputSpaced(isSingleRow);
+                        } else {
+                            isSingleRow = true;
+                        }
+                    }
+                }
+        
+                // To clear the last colors if any
+                if (isSingleRow) {
+                    printList.outputSpaced(isSingleRow);
+                }
     }
+
+}
 

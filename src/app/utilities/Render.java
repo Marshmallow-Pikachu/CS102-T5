@@ -164,7 +164,7 @@ public class Render {
     return printList;
     }
 
-    public static ArrayList<PrintList> sortCollectionZone(ArrayList<Card> cards) {
+    public static ArrayList<PrintList> renderCollectionZone(ArrayList<Card> cards) {
         
         ArrayList<PrintList> colorList = new ArrayList<>();
 
@@ -183,31 +183,5 @@ public class Render {
         return colorList;
     }
 
-    public static void renderCollectionZone(ArrayList<Card> collectedCards) {
-        // Get the rendered versions of each color
-        ArrayList<PrintList> colorList = sortCollectionZone(collectedCards);
-
-        // To keep track of whether there is already 1 row in the printList
-        // It is false when there is either 0 or 2 rows in the printList
-        PrintList printList = new PrintList();
-        boolean isSingleRow = false;
-
-        for (PrintList nextList : colorList) {
-            if (!nextList.isNull()) {
-                printList.add(nextList);
-                if (isSingleRow) {
-                    isSingleRow = false;
-                    printList.outputSpaced(isSingleRow);
-                } else {
-                    isSingleRow = true;
-                }
-            }
-        }
-
-        // To clear the last colors if any
-        if (isSingleRow) {
-            printList.outputSpaced(isSingleRow);
-        }
-    }
 
 }
