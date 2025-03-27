@@ -4,8 +4,6 @@ import java.util.*;
 
 import app.game.Game;
 import app.resource.*;
-import app.utilities.Input;
-import app.utilities.Printer;
 
 public class HumanPlayer extends Player {
 

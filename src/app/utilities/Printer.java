@@ -14,10 +14,11 @@ public class Printer {
         printAllScoringZones(players);
 
         // Display the parade
-        System.out.println("=".repeat(45) + " Parade " + "=".repeat(45));
+        System.out.printf("%n" + "=".repeat(45) + " Parade " + "=".repeat(45) + "%n%n");
         Parade parade = game.getParade();
         int deckSize = game.getDeck().getCards().size();
         printRenderedParade(parade.getParadeCards(), deckSize);
+        System.out.printf("%n%n");
 
     }
 
@@ -53,9 +54,11 @@ public class Printer {
     }
 
     // For displaying cards in hand
-    public static void printRenderedHand(ArrayList<Card> cards) {
+    public static void printRenderedHand(Player player) {
+        System.out.printf("%n   %s's Hand%n", player.getName());
         CardList printList = new CardList();
 
+        ArrayList<Card> cards = player.getPlayerHand();
         for (Card c : cards) {
             // Get the lines of the card
             ArrayList<String> renderedCard = Render.renderCard(c);

@@ -132,12 +132,13 @@ public class App {
 
     // Helper function for running an offline game
     public static void offlineGame(Scanner sc) {
+        
         // initialise deck and players to add to the game
         Deck deck = new Deck();
         deck.shuffle();
         ArrayList<Player> players = getPlayerList(sc, deck);
         Game game = new Game(players, deck);
-        
+
 
         // Start the game loop 
         while (!game.getGameEnd()) {
@@ -152,13 +153,10 @@ public class App {
                 game.nextTurn(playedCard);
             } else {
                 ArrayList<Card> hand = player.getPlayerHand();
-                Printer.printRenderedHand(hand);
+                Printer.printRenderedHand(player);
                 Card playedCard = Input.askForCard(sc, hand);
                 game.nextTurn(playedCard);
             }
-            
-            System.out.printf("%n%n");
-            sc.nextLine();
         }
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
@@ -174,7 +172,7 @@ public class App {
                 game.nextTurn(playedCard);
             } else {
                 ArrayList<Card> hand = player.getPlayerHand();
-                Printer.printRenderedHand(hand);
+                Printer.printRenderedHand(player);
                 Card playedCard = Input.askForCard(sc, hand);
                 game.nextTurn(playedCard);
             }
