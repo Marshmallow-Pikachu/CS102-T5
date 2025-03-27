@@ -141,11 +141,44 @@ public class App {
 
         // Start the game loop 
         while (!game.getGameEnd()) {
-            game.initiateRound();
+            Printer.displayGameState(game);
+
+            // Get the current Player
+            Player player = game.getCurrentPlayer();
+
+            // Check if the player is human or bot
+            if (player instanceof BotPlayer b) {
+                Card playedCard = b.determineCardChoice(game);
+                game.nextTurn(playedCard);
+            } else {
+                ArrayList<Card> hand = player.getPlayerHand();
+                Printer.printRenderedHand(hand);
+                Card playedCard = Input.askForCard(sc, hand);
+                game.nextTurn(playedCard);
+            }
+            
             System.out.printf("%n%n");
             sc.nextLine();
         }
-        System.out.println("Start final round");
+        for (int i = 0; i<game.getPlayers().size(); i++) {
+            Printer.displayGameState(game);
+
+        System.out.println("Final round!");
+
+            // Get the current Player
+            Player player = game.getCurrentPlayer();
+
+            // Check if the player is human or bot
+            if (player instanceof BotPlayer b) {
+                Card playedCard = b.determineCardChoice(game);
+                game.nextTurn(playedCard);
+            } else {
+                ArrayList<Card> hand = player.getPlayerHand();
+                Printer.printRenderedHand(hand);
+                Card playedCard = Input.askForCard(sc, hand);
+                game.nextTurn(playedCard);
+            }
+        }
         game.initiateFinalRound(players);
         Printer.displayGameState(game);
         game.printWinScreen();

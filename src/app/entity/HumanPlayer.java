@@ -4,6 +4,7 @@ import java.util.*;
 
 import app.game.Game;
 import app.resource.*;
+import app.utilities.Input;
 import app.utilities.Printer;
 
 public class HumanPlayer extends Player {
@@ -18,15 +19,8 @@ public class HumanPlayer extends Player {
         super(deck, name);
     }
 
-    
-    public void takeTurn(Game game) {
-        // Print the game state and the players hand
-        Printer.displayGameState(game);
-        System.out.printf("%s's Hand%n", super.getName());
-        Printer.printRenderedHand(super.getPlayerHand());
-        
-        // Ask player to play a card
-        Card playedCard = Printer.promptPlayerForCardToPlay(super.getPlayerHand());
+
+    public void takeTurn(Game game, Card playedCard) {
         Parade parade = game.getParade();
         collectEligibleCardsFromParade(parade, playedCard);
 

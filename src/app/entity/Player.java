@@ -123,7 +123,7 @@ public abstract class Player {
         playerHand.remove(playedCard);
 
     }
-    public abstract void takeTurn(Game game);
+    public abstract void takeTurn(Game game, Card playedCard);
 
     //Testing and Debugging
     //all commands run from parent folder of "app"

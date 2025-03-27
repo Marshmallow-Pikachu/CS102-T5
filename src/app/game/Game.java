@@ -70,6 +70,10 @@ public class Game {
         return this.players;
     }
 
+    public Player getCurrentPlayer() {
+        return this.players.get(0);
+    }
+
     public Deck getDeck() {
         return this.deck;
     }
@@ -152,13 +156,12 @@ public class Game {
     }
 
 
-    
-    public void initiateRound(){ 
-        System.out.println("New Round Start");
-        Player p = this.players.get(0);
+    // If it is a bot player, just pass -1
+    public void nextTurn(Card playedCard){ 
+        Player p = getCurrentPlayer();
         // check if it is final round
         //for (Player p : players){
-            p.takeTurn(this); // Player takes turn
+            p.takeTurn(this, playedCard);
             
             
             //check for final round trigger
@@ -178,11 +181,9 @@ public class Game {
     public void initiateFinalRound(ArrayList<Player> players){ // if a player has all 6 colors, or deck is empty
         //Starts off with the person who initiated last round
         // Reorder the players ArrayList? / Make another ArrayList with Person who started last round as first man? / Any other ideas?
-
-        System.out.println("Final Round!!");
-        for (Player p : players){
-            p.takeTurn(this);
-        }
+        // for (Player p : players){
+        //     p.takeTurn(this);
+        // }
         discardTwoCards();
         flipMajorityCards();
     }

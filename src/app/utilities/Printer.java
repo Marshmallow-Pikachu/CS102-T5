@@ -18,32 +18,15 @@ public class Printer {
         Parade parade = game.getParade();
         int deckSize = game.getDeck().getCards().size();
         printRenderedParade(parade.getParadeCards(), deckSize);
-        
+
     }
 
     
     // Player will input a number from 1 to 5, representing the 5 cards in his hand
     // Player input is validated here by my try catch, not sure if there is a need for validateInput.java
 
-    public static Card promptPlayerForCardToPlay(ArrayList<Card> myHand) { //should be left non-static since this 
-        Scanner sc = new Scanner(System.in);
-        int cardSelectedIndex = -1; 
-        String input = null;
-        while (true) {
-            try {
-                 // To number the cards the player can play
-                System.out.print("Enter a number between 1 to 5 to select a card: ");    
-                input = sc.nextLine();
-                cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
-                if (cardSelectedIndex < 0 || cardSelectedIndex > 4) {
-                    throw new IllegalArgumentException(); // catch below
-                }
-                break; //if didnt throw any exception, break
-            } catch (Exception e) {
-                System.out.println(String.format("%s is not a valid input", input));
-            } 
-        }
-        return myHand.get(cardSelectedIndex);
+    public static void displayPromptForCard(ArrayList<Card> myHand) {
+        
     }
 
 

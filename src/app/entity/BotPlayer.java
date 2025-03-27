@@ -32,7 +32,9 @@ public class BotPlayer extends Player {
     //Bot Algorithm
     //This simple algorithm is aimed at collecting the least amount cards from the parade as possible
     // The bot evaluates each card in its hand and selects the one that results in the fewest removals from the parade.
-    public Card determineCardChoice(ArrayList<Card> botHand, Parade parade) {
+    public Card determineCardChoice(Game game) {
+        ArrayList<Card> botHand = super.getPlayerHand();
+        Parade parade = game.getParade();
         Card bestCard = null;
         int minCardsRemoved = Integer.MAX_VALUE;
 
@@ -122,9 +124,8 @@ public class BotPlayer extends Player {
     }
     
 
-    public void takeTurn(Game game) {
+    public void takeTurn(Game game, Card chosenCard) {
         Parade parade = game.getParade();
-        Card chosenCard = determineCardChoice(super.getPlayerHand(), parade);
         Printer.displayGameState(game);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
         collectEligibleCardsFromParade(parade, chosenCard);
