@@ -11,24 +11,14 @@ public class Printer {
     public static void displayGameState(Game game) {
         // Display each players scoring zone
         ArrayList<Player> players = game.getPlayers();
-        System.out.println(" " + "-".repeat(97) + " ");
-        for (Player p : players) {
-            String leftspace = " ".repeat((84-p.getName().length())/2);
-            String rightspace = " ".repeat((84-p.getName().length())/2);
-            if (p.getName().length() % 2 == 1) {
-                leftspace += " ";
-            }
-            System.out.printf("|%s%s Scoring Zone%s|%n", leftspace, p.getName(), rightspace);
-            System.out.println("|" + " ".repeat(97) + "|");
-            printRenderedCollectionZone(p.getCollectedParadeCards());
-            System.out.println(" " + "-".repeat(97) + " ");
-        }
+        printAllScoringZones(players);
 
         // Display the parade
         System.out.println("=".repeat(45) + " Parade " + "=".repeat(45));
         Parade parade = game.getParade();
         int deckSize = game.getDeck().getCards().size();
         printRenderedParade(parade.getParadeCards(), deckSize);
+        
     }
 
     
@@ -139,10 +129,31 @@ public class Printer {
         
     }
 
+    // For displaying all Collection Zones of every Player
+    public static void printAllScoringZones(ArrayList<Player> players) {
+        // Prints the starting" ------"
+        System.out.println(" " + "-".repeat(97) + " ");
+        for (Player p : players) {
+            // Create the whitespace for the Scoring Zone Title
+            String leftspace = " ".repeat((84-p.getName().length())/2);
+            String rightspace = " ".repeat((84-p.getName().length())/2);
+            if (p.getName().length() % 2 == 1) {
+                leftspace += " ";
+            }
+            // Print "|     Player's Scoring Zone     |"
+            System.out.printf("|%s%s Scoring Zone%s|%n", leftspace, p.getName(), rightspace);
+
+            // Print the cards in the Scoring Zone
+            System.out.println("|" + " ".repeat(97) + "|");
+            printRenderedScoringZone(p.getCollectedParadeCards());
+            System.out.println(" " + "-".repeat(97) + " ");
+        }
+    }
+
     // For displaying cards in Collection Zone
-    public static void printRenderedCollectionZone(ArrayList<Card> cards) {
+    public static void printRenderedScoringZone(ArrayList<Card> cards) {
                 // Get the rendered versions of each color
-                ArrayList<CardList> colorList = Render.renderCollectionZone(cards);
+                ArrayList<CardList> colorList = Render.renderScoringZone(cards);
 
                 // To keep track of whether there is already 1 row in the printList
                 // It is false when there is either 0 or 2 rows in the printList

@@ -164,7 +164,7 @@ public class Render {
     return printList;
     }
 
-    public static ArrayList<CardList> renderCollectionZone(ArrayList<Card> cards) {
+    public static ArrayList<CardList> renderScoringZone(ArrayList<Card> cards) {
         
         ArrayList<CardList> colorList = new ArrayList<>();
 
