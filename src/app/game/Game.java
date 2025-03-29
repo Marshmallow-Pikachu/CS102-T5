@@ -72,22 +72,17 @@ public class Game {
      */
     public void nextTurn(Card playedCard){ 
         Player p = getCurrentPlayer();
-        // check if it is final round
-        //for (Player p : players){
         p.takeTurn(this, playedCard);
         
         //check for final round trigger
         if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
             gameEnd = true;
-            //break;
         }
         if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
             gameEnd = true;
-            //break;
         }
         this.players.remove(p);
         players.add(p);
-        //}
     }
     /**
      * This method starts the final round, where players have to discard 2 cards from their hand and flip the colors which they have majority in color.
