@@ -1,10 +1,8 @@
 package app.entity;
 
-import java.util.*;
-
 import app.game.Game;
 import app.resource.*;
-import app.utilities.Printer;
+import java.util.*;
 
 /**
  * This class contains the implementation of a Bot Player.
@@ -158,7 +156,6 @@ public class BotPlayer extends Player {
      */
     public void takeTurn(Game game, Card chosenCard) {
         Parade parade = game.getParade();
-        Printer.displayGameState(game);
         System.out.println("Bot has chosen to play " + chosenCard.toString());
         collectEligibleCardsFromParade(parade, chosenCard);
         if (!game.getGameEnd()) {
