@@ -7,41 +7,6 @@ import java.lang.*;
  * when a card is played, and allows cards to be flipped in the end game.
  */
 public class Card {
-    /**
-     * Reset color to the default terminal color.
-     */
-    public static final String ANSI_RESET = "\u001B[0m";
-
-    /**
-     * ANSI code for red text.
-     */
-    public static final String ANSI_RED = "\u001B[31m";
-
-    /**
-     * ANSI code for blue text.
-     */
-    public static final String ANSI_BLUE = "\u001B[34m";
-
-    /**
-     * ANSI code for purple text.
-     */
-    public static final String ANSI_PURPLE = "\u001B[35m";
-
-    /**
-     * ANSI code for green text.
-     */
-    public static final String ANSI_BRIGHT_GREEN = "\u001B[92m";
-
-    /**
-     * ANSI code for black text.
-     */
-    public static final String ANSI_BLACK = "\u001B[30m";
-
-    /**
-     * ANSI code for yellow text.
-     */
-    public static final String ANSI_YELLOW = "\u001B[33m";
-
     private int value;
     private String colour;
     private boolean removalMode;
@@ -108,43 +73,4 @@ public class Card {
      * Returns a string representation of the card, including its color and value.
      * @return A string representing the card's attributes.
      */
-    public String toString() {
-        return "Colour: " + colour + ", Number: " + value;
-    }
-
-
-    /**
-     * Prints 1 Card (For Testing)
-    */
-    public void printCard(){
-        System.out.println(linkCardtoColour(colour) + "╭───╮");
-        System.out.printf("│ %d │ %n", value);
-        System.out.println("╰───╯" + ANSI_RESET);
-    }
-
-    /**
-     * Links a card's color to its corresponding ANSI color code.
-     * @param colour The color of the card.
-     * @return The ANSI color code as a string.
-     */
-    public String linkCardtoColour(String colour){
-        String cardColor = null;
-        switch (colour){
-            case "Red":
-            return ANSI_RED;
-            case "Blue":
-            return ANSI_BLUE;
-            case "Purple":
-            return ANSI_PURPLE;
-            case "Green":
-            return ANSI_BRIGHT_GREEN;
-            case "Black":
-            return ANSI_BLACK;
-            case "Yellow":
-            return ANSI_YELLOW;
-        }
-        System.out.println("Error Color Not Matched!");
-        return cardColor;
-    }
-
 }
