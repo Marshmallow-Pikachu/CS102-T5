@@ -3,41 +3,6 @@ package app.resource;
 import java.util.*;
 
 public class Parade {
-    /**
-     * Reset color to the default terminal color.
-     */
-    public static final String ANSI_RESET = "\u001B[0m";
-
-    /**
-     * ANSI code for red text.
-     */
-    public static final String ANSI_RED = "\u001B[31m";
-
-    /**
-     * ANSI code for blue text.
-     */
-    public static final String ANSI_BLUE = "\u001B[34m";
-
-    /**
-     * ANSI code for purple text.
-     */
-    public static final String ANSI_PURPLE = "\u001B[35m";
-
-    /**
-     * ANSI code for green text.
-     */
-    public static final String ANSI_BRIGHT_GREEN = "\u001B[92m";
-
-    /**
-     * ANSI code for black text.
-     */
-    public static final String ANSI_BLACK = "\u001B[30m";
-
-    /**
-     * ANSI code for yellow text.
-     */
-    public static final String ANSI_YELLOW = "\u001B[33m";
-
     private ArrayList<Card> paradeCards = new ArrayList<Card>();
 
     /**
@@ -94,9 +59,7 @@ public class Parade {
     public void addToParade(Card playedCard) {
         paradeCards.add(playedCard); // add playedCard to paradeCards
     }
-
     
-
     //testing and debug
     //commands are run from parent folder of "app", remember to go compile Deck and Card First
     //compile command: javac -d out -cp "src" src/app/resource/parade.java
