@@ -3,19 +3,47 @@ package app.resource;
 import java.util.*;
 
 public class Parade {
-    // Declaring ANSI_RESET so that we can reset the color 
-    public static final String ANSI_RESET = "\u001B[0m"; 
-  
-    // Declaring the color (Red, Blue, Purple, Green, Grey, Orange) 
-    public static final String ANSI_BLACK  = "\u001B[30m";
-    public static final String ANSI_RED    = "\u001B[31m";
-    public static final String ANSI_BLUE   = "\u001B[34m";
-    public static final String ANSI_YELLOW = "\u001B[33m"; 
-    public static final String ANSI_BRIGHT_GREEN  = "\u001B[92m";
+    /**
+     * Reset color to the default terminal color.
+     */
+    public static final String ANSI_RESET = "\u001B[0m";
+
+    /**
+     * ANSI code for red text.
+     */
+    public static final String ANSI_RED = "\u001B[31m";
+
+    /**
+     * ANSI code for blue text.
+     */
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+    /**
+     * ANSI code for purple text.
+     */
     public static final String ANSI_PURPLE = "\u001B[35m";
+
+    /**
+     * ANSI code for green text.
+     */
+    public static final String ANSI_BRIGHT_GREEN = "\u001B[92m";
+
+    /**
+     * ANSI code for black text.
+     */
+    public static final String ANSI_BLACK = "\u001B[30m";
+
+    /**
+     * ANSI code for yellow text.
+     */
+    public static final String ANSI_YELLOW = "\u001B[33m";
 
     private ArrayList<Card> paradeCards = new ArrayList<Card>();
 
+    /**
+     * Initializes a new parade with the first six cards drawn from the given deck.
+     * @param deck The deck from which cards are drawn to form the initial parade.
+     */
     public Parade(Deck deck) { //This constructor should only ever be called once in a usual game of Parade
         // draw 6 cards from deck and add it to parade
         for (int i = 0; i < 6; i++) {
@@ -23,11 +51,18 @@ public class Parade {
             paradeCards.add(drawnCard);
         }
     }
-
+    /**
+     * Gets the current list of cards in the parade.
+     * @return The list of parade cards.
+     */
     public ArrayList<Card> getParadeCards() {
         return this.paradeCards;
     }
-
+    /**
+     * Removes cards from the parade that are eligible based on the played card's color and face value.
+     * @param playedCard The card played by the current player.
+     * @return A list of cards that have been removed from the common parade, to be added to the player's collected parade cards pool
+     */
     public ArrayList<Card> removeEligibleCards(Card playedCard) {
         ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); 
         if (playedCard.getValue() >= paradeCards.size()) {
@@ -44,7 +79,7 @@ public class Parade {
                 removableCardsFromParadeList.add(currentParadeCard); 
             }
         }
-        for(Card removingCard:removableCardsFromParadeList) {
+        for(Card removingCard : removableCardsFromParadeList) {
             paradeCards.remove(removingCard);
         }
         for (Card c : paradeCards){
@@ -52,20 +87,10 @@ public class Parade {
         }
         return removableCardsFromParadeList;
     }
-
-    //public ArrayList<Card> removeEligibleCards(Card playedCard) {
-    //     ArrayList<Card> removableCardsFromParadeList = new ArrayList<>(); //list of cards that are removed from parade
-
-    //     for (Card currentParadeCard : paradeCards) {
-    //         // checking eligibility of cards to be removed from Parade to Players' Hand
-    //         if (currentParadeCard.getValue() <= playedCard.getValue() || currentParadeCard.getColour().equals(playedCard.getColour())) {
-    //             removableCardsFromParadeList.add(currentParadeCard);  
-    //         }
-    //     }
-    //     paradeCards.removeAll(removableCardsFromParadeList);
-    //     return removableCardsFromParadeList;
-    // }
-
+    /**
+     * Adds the played card to the end of the parade.
+     * @param playedCard The card that was played and added to the parade.
+     */
     public void addToParade(Card playedCard) {
         paradeCards.add(playedCard); // add playedCard to paradeCards
     }

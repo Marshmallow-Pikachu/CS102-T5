@@ -5,7 +5,20 @@ import java.util.Scanner;
 
 import app.resource.Card;
 
+/**
+ * This class contains utility methods for handling user inputs.
+ */
 public class Input {
+    /**
+     * Prompts the user to select a card from their hand by entering a number representing the card's position in playerHand.
+     * 
+     * @param sc The scanner used for input reading.
+     * @param myHand An ArrayList of type Card representing the player's current hand.
+     * @return The Card selected by the user.
+     * 
+     * This method checks for a valid index, and will reprompt the user until a valid number is entered.
+     * Numbers outside 1-5 are invalid, as well as other inputs.
+     */
     public static Card askForCard(Scanner sc, ArrayList<Card> myHand) {
         int cardSelectedIndex = -1; 
         String input = null;

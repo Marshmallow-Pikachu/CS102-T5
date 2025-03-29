@@ -6,9 +6,23 @@ import app.resource.*;
 import app.utilities.*;
 import java.util.*;
 
-
+/**
+ * Main class to run and manage the game application. It handles game modes, player interactions,
+ * and the game loop.
+ */
 public class App {
+    /**
+     * Default constructor for initializing the application.
+     */
+    public App() {
+
+    }
     // Menu for selecting the game mode
+    /**
+     * Prompts the user's for the game mode. Offline, Create Online game, Join Online Game, or Quit
+     * @param sc The scanner to read user input.
+     * @return The chosen game mode as int.
+     */
     public static int gameModeOption(Scanner sc) {
         boolean valid = false;
         int input = 0;
@@ -30,6 +44,12 @@ public class App {
     }
 
     // Helper function to create the arraylist of players to add to the game
+    /**
+     * Creates an ArrayList of players for the game, containing humans and/or bots players. Minimum 2 to start.
+     * @param sc The scanner for user input.
+     * @param deck The common deck instance.
+     * @return An ArrayList of players that is initialised based on the input from scanner.
+     */
     public static ArrayList<Player> getPlayerList(Scanner sc, Deck deck) {
         // initialise ArrayList<Player> to return players
         ArrayList<Player> players = new ArrayList<>();
@@ -131,6 +151,10 @@ public class App {
     } 
 
     // Helper function for running an offline game
+    /**
+     * Runs the main game loop for an offline game, handling player turns, game state updates, and end game logic.
+     * @param sc The scanner for reading user inputs.
+     */
     public static void offlineGame(Scanner sc) {
         
         // initialise deck and players to add to the game
@@ -157,12 +181,19 @@ public class App {
                 Card playedCard = Input.askForCard(sc, hand);
                 game.nextTurn(playedCard);
             }
+        }  
+        // Player that triggered game end
+        Player gameEnder = game.getPlayers().getLast();
+        if (gameEnder.hasSixColors()) {
+            System.out.printf("%s has collected 6 colors!\n", gameEnder.getName());
+        } else {
+            System.out.println("There are no more cards in the deck!");
         }
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
 
-        System.out.println("Final round!");
-
+            System.out.println("Final round!");
+        
             // Get the current Player
             Player player = game.getCurrentPlayer();
 
@@ -186,10 +217,16 @@ public class App {
     }
 
     // Helper function for hosting an online game
+    
     public static void hostGame(Scanner sc) {
         
     }
 
+    /**
+     * Main method initialises the application and handles user input in the game's menu.
+     * @param args (not used
+     * )
+     */
     public static void main(String[] args) {
         // Initialise Scanner to read inputs
         Scanner sc = new Scanner(System.in);

@@ -7,8 +7,16 @@ import java.util.Scanner;
 import app.resource.Card;
 
 // Helper class to convert cards to ArrayList
+/**
+ * This class contains utility methods for rendering text images our cards and the scoring zone.
+ */
 public class Render {
     // Translate the card into [filename, color]
+    /**
+     * Translates card attributes to include text images and ANSI color codes.
+     * @param c The card to translate.
+     * @return A String [] containing details of the filename for the card image and the corresponding ANSI color code.
+     */
     public static String[] translateCard(Card c) {
         String[] details = new String[2];
 
@@ -42,6 +50,11 @@ public class Render {
     }
 
     // Convert a card into an ArrayList<Strings> to print out
+    /**
+     * Renders a card into a list of strings for display.
+     * @param c The card to be rendered.
+     * @return An ArrayList of String representing the rendered card.
+     */
     public static ArrayList<String> renderCard(Card c) {
         // Get the image and the colour of the card
         String[] details = translateCard(c);
@@ -73,6 +86,11 @@ public class Render {
     }
 
     // Highlight a played Card
+    /**
+     * Highlights the last played card in the parade for visual clarity.
+     * @param c The card to be highlighted.
+     * @return An ArrayList of String representing the highlighted card.
+     */
     public static ArrayList<String> renderPlayedCard(Card c) {
         ArrayList<String> printList = renderCard(c);
 
@@ -97,6 +115,11 @@ public class Render {
     }
 
     // Convert an ArrayList<Cards> into a stacked row of cards to print out
+    /**
+     * Renders a stacked representation of multiple cards. This is to keep things neat and prevent console width compatibility issues
+     * @param cards The list of cards to render in a stacked format.
+     * @return An ArrayList of strings representing the stacked cards.
+     */
     public static ArrayList<String> renderStackedCards(ArrayList<Card> cards) {
         if (cards.isEmpty()) {
             return null;
@@ -133,6 +156,11 @@ public class Render {
     }
 
     // Convert an int deckSize into a deck with that number to print out
+    /**
+     * Renders a deck visual based on the number of cards left.
+     * @param deckSize The number of cards left in the deck.
+     * @return An ArrayList of strings representing the deck.
+     */
     public static ArrayList<String> renderDeck(int deckSize) {
         ArrayList<String> printList = new ArrayList<>();
 
@@ -161,9 +189,13 @@ public class Render {
         } catch (FileNotFoundException e) {
             System.out.println("Missing the deck.txt file");
         }
-    return printList;
+        return printList;
     }
-
+    /**
+     * Renders the scoring zones, seperated by color.
+     * @param cards The list of cards to render.
+     * @return An ArrayList of type CardList, each representing a color section in the scoring zone.
+     */
     public static ArrayList<CardList> renderScoringZone(ArrayList<Card> cards) {
         
         ArrayList<CardList> colorList = new ArrayList<>();

@@ -8,18 +8,51 @@ import java.util.*;
 // Compile Command
 //javac -cp "src" src/app/game/Game.java 
 
+/**
+ * Handles the main gameplay logic for Parade. This class manages the game state,
+ * the parade,  deck, and player turns.
+ */
 public class Game {
-    // Declaring ANSI_RESET so that we can reset the color 
-    public static final String ANSI_RESET = "\u001B[0m"; 
-    // Declaring the color (Red, Blue, Purple, Green, Black, Yellow) 
-    public static final String ANSI_RED    = "\u001B[31m";
-    public static final String ANSI_BLUE   = "\u001B[34m";
+    /**
+     * Reset color to the default terminal color.
+     */
+    public static final String ANSI_RESET = "\u001B[0m";
+
+    /**
+     * ANSI code for red text.
+     */
+    public static final String ANSI_RED = "\u001B[31m";
+
+    /**
+     * ANSI code for blue text.
+     */
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+    /**
+     * ANSI code for purple text.
+     */
     public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_BRIGHT_GREEN  = "\u001B[92m";
-    public static final String ANSI_BLACK  = "\u001B[30m";
+
+    /**
+     * ANSI code for green text.
+     */
+    public static final String ANSI_BRIGHT_GREEN = "\u001B[92m";
+
+    /**
+     * ANSI code for black text.
+     */
+    public static final String ANSI_BLACK = "\u001B[30m";
+
+    /**
+     * ANSI code for yellow text.
+     */
     public static final String ANSI_YELLOW = "\u001B[33m";
 
-    public static final ArrayList<String> colourList = new ArrayList<>();
+    /**
+     * A list of the 6 colors used in the game.
+     * "Red", "Blue", "Purple", "Green", "Black", "Yellow".
+     */
+    public static final ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
 
 
     // Feel free to add to psvm to check if your parts integrate
@@ -28,20 +61,24 @@ public class Game {
     private Deck deck;
     private boolean gameEnd;
 
+    /**
+     * Constructs a new game with the specified players and a deck.
+     * @param players The list of players participating in the game.
+     * @param deck The current deck instance for the game.
+     */
     public Game(ArrayList<Player> players, Deck deck){
-        colourList.add("Red");
-        colourList.add("Blue");
-        colourList.add("Purple");
-        colourList.add("Green");
-        colourList.add("Black");
-        colourList.add("Yellow");
         parade = new Parade(deck);
         this.deck = deck;
         this.players = players;
         System.out.println("Game Started");
     }
 
-    //Gets String to Convert Colour
+    
+    /**
+     * Gets String to Convert Colour
+     * @param c The input card
+     * @return The ANSI color code of the card as a string.
+     */
     public String linkCardtoColour(Card c){
         String cardColor = null;
         switch (c.getColour()){
@@ -61,19 +98,31 @@ public class Game {
         System.out.println("This error should not happen, Error Color Not Matched!");
         return cardColor;
     }
-
+    /**
+     * Returns the parade instance.
+     * @return The current parade.
+     */
     public Parade getParade() {
         return this.parade;
     }
-
+    /**
+     * Returns the list of players in the game.
+     * @return The players currently in the game.
+     */
     public ArrayList<Player> getPlayers() {
         return this.players;
     }
-
+    /**
+     * Retrieves the current player, who is always the first in the list.
+     * @return The current player.
+     */
     public Player getCurrentPlayer() {
         return this.players.get(0);
     }
-
+    /**
+     * Retrieves the deck used in the game.
+     * @return The deck.
+     */
     public Deck getDeck() {
         return this.deck;
     }
@@ -157,27 +206,35 @@ public class Game {
 
 
     // If it is a bot player, just pass -1
+    /**
+     * Starts the next player's turn.
+     * Checks if game end is to be triggered.
+     * Removes the current player who is first in the list, and places him at the last position of the list. 
+     * @param playedCard The card played by the current player.
+     */
     public void nextTurn(Card playedCard){ 
         Player p = getCurrentPlayer();
         // check if it is final round
         //for (Player p : players){
-            p.takeTurn(this, playedCard);
-            
-            
-            //check for final round trigger
-            if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
-                gameEnd = true;
-                //break;
-            }
-            if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
-                gameEnd = true;
-                //break;
-            }
-            this.players.remove(p);
-            players.add(p);
+        p.takeTurn(this, playedCard);
+        
+        //check for final round trigger
+        if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+            gameEnd = true;
+            //break;
+        }
+        if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+            gameEnd = true;
+            //break;
+        }
+        this.players.remove(p);
+        players.add(p);
         //}
     }
-
+    /**
+     * This method starts the final round, where players have to discard 2 cards from their hand and flip the colors which they have majority in color.
+     * @param players The list of players in the game
+     */
     public void initiateFinalRound(ArrayList<Player> players){ // if a player has all 6 colors, or deck is empty
         //Starts off with the person who initiated last round
         // Reorder the players ArrayList? / Make another ArrayList with Person who started last round as first man? / Any other ideas?
@@ -189,6 +246,9 @@ public class Game {
     }
 
     //This Function needs to be uncommented and changed, discardCard() is not longer a function of player, it now has seperate implementations in HumanPlayer and BotPlayer
+    /**
+     * This method helps human players and bot players discard their cards. 
+     */
     public void discardTwoCards(){
         for (Player p : players){
             if (p instanceof HumanPlayer) {
@@ -208,7 +268,12 @@ public class Game {
             // p.emptyHandToScoringArea();
         }
     }
-
+    /**
+     * Calculates the count of each color in a list of cards.
+     * @param cardList The list of cards.
+     * @param colourList The list of 6 colors.
+     * @return An ArrayList of type Integer containing the counts of each color.
+     */
     public ArrayList<Integer> getCountOfColors(ArrayList<Card> cardList, ArrayList<String> colourList){
         ArrayList<Integer> returnList = new ArrayList<>();
         returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);returnList.add(0);
@@ -222,7 +287,11 @@ public class Game {
         return returnList;
     }
 
-    //Flip cards, based on index in sequence
+     /**
+     * Flips cards of a specific color based on the given index, which corresponds to a color in the color list.
+     * @param cardList The list of cards to be flipped.
+     * @param val The index in the color list to flip.
+     */
     public void flipCardsByColour(ArrayList<Card> cardList,int val){
         String colour = null;
         colour = colourList.get(val); //if theres errors remove the line and uncomment below
@@ -252,7 +321,11 @@ public class Game {
             }
         }
     }
-
+    /**
+     * Logic for 2 players, which runs with a separate flipping logic
+     * Flips cards for two players based on their collected card counts. 
+     * Cards are flipped if one player has 2 more of a color than the other.
+     */
     public void flipTwoPlayers(){
         ArrayList<Card> p1 = players.get(0).getCollectedParadeCards();
             ArrayList<Card> p2 = players.get(1).getCollectedParadeCards();
@@ -267,7 +340,10 @@ public class Game {
                 }
             }
     }
-
+    /**
+     * Calculates the highest number of each color collected by any player.
+     * @return An ArrayList of type Integer containing the highest counts for each color.
+     */
     public ArrayList<Integer> getMajorityForEachColour(){
         ArrayList<Integer> colourCount = new ArrayList<>(6);
         colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);
@@ -290,7 +366,10 @@ public class Game {
         }
         return colourCount;
     }
-
+    /**
+     * For Games with more than 2 players.
+     * Flips cards for each player based on who holds the majority of each color.
+     */
     public void flipMajorityCards(){
         if (players.size() == 2){ // 2 Players
             this.flipTwoPlayers();
@@ -308,7 +387,11 @@ public class Game {
             }
         }
     } 
-
+    /**
+     * Determines the winner of the game by counting points. 
+     * Flipped cards count for 1 point, ignoring face value.
+     * @return An ArrayList of players who have the lowest score. Can have multiple players with the same score and tie.
+     */
     public ArrayList<Player> determineWinner(){
         //Count numbers in scoring zone
         ArrayList<Player> returnList = new ArrayList<>();
@@ -350,7 +433,10 @@ public class Game {
             System.out.println("Winner is : " + winnerList.get(0).getName());
         }
     }
-
+    /**
+     * Checks if the game has ended.
+     * @return True if the game has ended, otherwise false.
+     */
     public boolean getGameEnd(){
         return gameEnd;
     }

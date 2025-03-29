@@ -2,6 +2,10 @@ package app.resource;
 
 import java.util.*;
 
+/**
+ * Represents a deck of cards used in the game. The deck is initialized with a fixed set of cards. 
+ * Each deck contains 66 total cards, 11 of each color, with values 0-10.
+ */
 public class Deck {
     private ArrayList<Card> cards = new ArrayList<>();
     private boolean isEmpty;
@@ -11,6 +15,10 @@ public class Deck {
      * 6 different colors [Black|Blue|Red|Green|Yellow|Purple]
      * each color [0-10]
      * total 11 cards per colour
+     */
+
+    /**
+     * Constructor for a new deck of 66 unique cards, with 11 cards for each of the 6 colors from 0-10.
      */
     public Deck() {
         String[] colours = { "Black", "Blue", "Red", "Green", "Yellow", "Purple" };
@@ -22,15 +30,24 @@ public class Deck {
             }
         }
     }
-
+    /**
+     * Checks if the deck is empty.
+     * @return true if there are no cards left in the deck, false otherwise.
+     */
     public boolean getIsEmpty() {
         return isEmpty;
     }
-
+    /**
+     * Shuffles the cards in the deck.
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
-
+    /**
+     * Draws the "top" card from the deck and removes it from the deck.
+     * For simplicity, consider index 0 the top card. 
+     * @return The "top" card from the deck.
+     */
     public Card drawCard() {
         // It should return a Card and remove that from its own array list
 
@@ -42,7 +59,10 @@ public class Deck {
 
         return toReturn;
     }
-    
+    /**
+     * Getter for the current List of cards in the deck.
+     * @return A list of cards currently in the deck.
+     */
     public ArrayList<Card> getCards() {
         return cards;
     }

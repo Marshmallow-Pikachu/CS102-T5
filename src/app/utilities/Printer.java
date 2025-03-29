@@ -6,8 +6,16 @@ import app.resource.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * This class contains static methods that display the game state,
+ * player hands, the parade, the cards, scoring zones, and the game splashscreen.
+ */
 public class Printer {
     // To display the current game state
+    /**
+     * Displays the current game state, including each player's scoring zone and the common parade.
+     * @param game The current game instance.
+     */
     public static void displayGameState(Game game) {
         // Display each players scoring zone
         ArrayList<Player> players = game.getPlayers();
@@ -26,12 +34,20 @@ public class Printer {
     // Player will input a number from 1 to 5, representing the 5 cards in his hand
     // Player input is validated here by my try catch, not sure if there is a need for validateInput.java
 
+    // is not used?
+    /**
+     * Displays a prompt for the player to select a card from their hand.
+     * @param myHand The current player's hand.
+     */
     public static void displayPromptForCard(ArrayList<Card> myHand) {
         
     }
 
 
     // For printing the logo for our game on startup
+    /**
+     * Prints the game logo from a text file.
+     */
     public static void printLogo() {
         try (Scanner sc = new Scanner(new File("./image/logo.txt"))) {
             System.out.print(ANSIColor.ANSI_PURPLE);
@@ -45,6 +61,9 @@ public class Printer {
     }
 
     // For printing the App menu for our game
+    /**
+     * Prints the main menu options for the game.
+     */
     public static void printMenu() {
         System.out.printf("Select on Option:%n");
         System.out.printf("1. Play Offline%n");
@@ -54,6 +73,10 @@ public class Printer {
     }
 
     // For displaying cards in hand
+    /**
+     * Prints the player's hand in using text render images.
+     * @param player The player's hand.
+     */
     public static void printRenderedHand(Player player) {
         System.out.printf("%n   %s's Hand%n", player.getName());
         CardList printList = new CardList();
@@ -85,6 +108,11 @@ public class Printer {
     }
 
     // For displaying cards in Parade
+    /**
+     * Displays the cards in the parade.
+     * @param cards The list of cards currently in the parade.
+     * @param deckSize The number of cards remaining in the deck.
+     */
     public static void printRenderedParade(ArrayList<Card> cards, int deckSize) {
         if (cards.isEmpty()) {
             return;
@@ -116,6 +144,10 @@ public class Printer {
     }
 
     // For displaying all Collection Zones of every Player
+    /**
+     * Displays the scoring zones for all players.
+     * @param players The list of all players in the game.
+     */
     public static void printAllScoringZones(ArrayList<Player> players) {
         // Prints the starting" ------"
         System.out.println(" " + "-".repeat(97) + " ");
@@ -137,6 +169,10 @@ public class Printer {
     }
 
     // For displaying cards in Collection Zone
+    /**
+     * Displays the collection zone for scoring, segmented by color.
+     * @param cards The list of cards in the scoring zone.
+     */
     public static void printRenderedScoringZone(ArrayList<Card> cards) {
                 // Get the rendered versions of each color
                 ArrayList<CardList> colorList = Render.renderScoringZone(cards);
