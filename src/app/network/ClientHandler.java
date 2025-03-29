@@ -9,7 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-public class ClientHandler implements Runnable{
+public class ClientHandler implements Runnable {
     
     // To hold all the clients
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
@@ -46,6 +46,9 @@ public class ClientHandler implements Runnable{
         }
     }
 
+    public static int getSize() {
+        return clientHandlers.size();
+    }
     // We need to use this function to listen for messages
     // If we did not split new threads with this, we will have to wait for 
     // each client to send a message first before we can do anything

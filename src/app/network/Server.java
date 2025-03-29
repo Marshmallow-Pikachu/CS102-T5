@@ -7,17 +7,19 @@ import java.net.Socket;
 import app.network.ClientHandler;
 
 
-public class Server {
+public class Server implements Runnable {
     
     // initialise the server socket to listen for cilents
     private ServerSocket serverSocket;
+    private int playerCount;
 
     // constructor for Server
-    public Server(ServerSocket serverSocket) {
+    public Server(ServerSocket serverSocket, int playerCount) {
         this.serverSocket = serverSocket;
+        this.playerCount = playerCount;
     }
 
-    public boolean startServer(int PlayerCount) {
+    public boolean startServer() {
         
         try {
             // keep the server up until the socket is closed
@@ -34,7 +36,7 @@ public class Server {
                 Thread thread = new Thread(clientHandler);
                 thread.start();
 
-                if (clientHandler.clientHandlers.size() == PlayerCount) {
+                if (ClientHandler.getSize() == this.playerCount) {
                     return true;
                 }
             }   
@@ -59,6 +61,14 @@ public class Server {
         }
     }
 
+    @Override
+    public void run() {
+        if (startServer()) {
+            System.out.println("Ready to play game!");
+            closeServerSocket();;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
             System.err.println("Usage: java Server <port number>");
@@ -67,9 +77,9 @@ public class Server {
    
         int port = Integer.parseInt(args[0]);
         ServerSocket serverSocket = new ServerSocket(port);
-        Server server = new Server(serverSocket);
+        Server server = new Server(serverSocket, 2);
         System.out.println("Server is online!");
-        if (server.startServer(2)) {
+        if (server.startServer()) {
             System.out.println("Ready to play game!");
         };
     }

@@ -2,8 +2,14 @@ package app;
 
 import app.entity.*;
 import app.game.*;
+import app.network.Client;
+import app.network.Server;
 import app.resource.*;
 import app.utilities.*;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.*;
 
 /**
@@ -192,8 +198,8 @@ public class App {
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
 
-            System.out.println("Final round!");
-        
+        System.out.println("Final round!");
+
             // Get the current Player
             Player player = game.getCurrentPlayer();
 
@@ -208,7 +214,11 @@ public class App {
                 game.nextTurn(playedCard);
             }
         }
+
+        // To do the discarding
         game.initiateFinalRound(players);
+
+        // To print the last game state
         Printer.displayGameState(game);
         game.printWinScreen();
         System.out.println("enter anything to continue!");
@@ -219,7 +229,31 @@ public class App {
     // Helper function for hosting an online game
     
     public static void hostGame(Scanner sc) {
-        
+        try {
+            ServerSocket serverSocket = new ServerSocket(25000);
+            Server server = new Server(serverSocket, 2);
+
+            Thread thread = new Thread(server);
+
+            thread.run();
+            
+        } catch (IOException e) {
+            System.out.println("Something went wrong with the server");
+            e.printStackTrace();
+        }
+    }
+
+    public static void joinGame(Scanner sc) {
+        try {
+            Socket socket = new Socket("127.0.0.1", 25000);
+            Client client = new Client(socket, "username");
+
+            client.listenForMessage();
+            client.sendMessage();
+        } catch (IOException e) {
+            System.out.println("Unable to join server");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -245,10 +279,10 @@ public class App {
                     offlineGame(sc);
                     break;
                 case 2:
-                    System.out.printf("%nHave yet to implement%n%n");
+                    hostGame(sc);
                     break;
                 case 3:
-                    System.out.printf("%nHave yet to implement%n%n");
+                    joinGame(sc);
                     break;
             }
             option = gameModeOption(sc);
