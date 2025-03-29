@@ -198,8 +198,8 @@ public class App {
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
 
-        System.out.println("Final round!");
-
+            System.out.println("Final round!");
+        
             // Get the current Player
             Player player = game.getCurrentPlayer();
 
@@ -214,11 +214,7 @@ public class App {
                 game.nextTurn(playedCard);
             }
         }
-
-        // To do the discarding
         game.initiateFinalRound(players);
-
-        // To print the last game state
         Printer.displayGameState(game);
         game.printWinScreen();
         System.out.println("enter anything to continue!");
