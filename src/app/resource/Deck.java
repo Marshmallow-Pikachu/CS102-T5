@@ -50,13 +50,10 @@ public class Deck {
      */
     public Card drawCard() {
         // It should return a Card and remove that from its own array list
-
         // Card at index(0) is considered top of deck
         Card toReturn = cards.get(0);
         cards.remove(0);
-
         if (cards.isEmpty()) isEmpty = true;
-
         return toReturn;
     }
     /**
