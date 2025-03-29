@@ -178,17 +178,19 @@ public class Game {
         ArrayList<Integer> colourCount = new ArrayList<>(6);
         colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);
         for (Player p : players){ //Get Majority of Each Colour
-            ArrayList<Card> collectedCards = p.getCollectedParadeCards();
-
+            //ArrayList<Card> collectedCards = p.getCollectedParadeCards();
             //Index 0: Red, Index 1: Blue, Index 2: Purple, Index 3: Green, Index 4: Black, Index 5, Yellow
-            List<Integer> counts = new ArrayList<>(); //Gets Number of Each Color in Hand
-            for (String colour : colourList) {
-                long count = collectedCards.stream()
-                                        .filter(card -> colour.equals(card.getColour()))
-                                        .count();
-                counts.add((int)count);
-            }
-            for (int i = 0; i < 6; i++){ //Populate colourCount with MAX no. of colour in game
+            // List<Integer> counts = new ArrayList<>(); //Gets Number of Each Color in Hand
+            // for (String colour : colourList) {
+            //     long count = collectedCards.stream()
+            //                             .filter(card -> colour.equals(card.getColour()))
+            //                             .count();
+            //     counts.add((int)count);
+            // }
+            
+            //Populate colourCount with MAX no. of colour in game
+            ArrayList<Integer> counts = p.obtainPlayerColourCounts(p.getPlayerHand());
+            for (int i = 0; i < 6; i++){ 
                 if (colourCount.get(i) < counts.get(i)){
                     colourCount.set(i, counts.get(i));
                 }
