@@ -73,4 +73,7 @@ public class Card {
      * Returns a string representation of the card, including its color and value.
      * @return A string representing the card's attributes.
      */
+    public String toString() {
+        return "Colour: " + colour + ", Number: " + value;
+    }
 }
