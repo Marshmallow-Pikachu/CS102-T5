@@ -73,8 +73,8 @@ public class Render {
                     line = line.replace("%", Integer.toString(c.getValue()));
                 }
                 // For alice white pinefore specifically
-                line = line.replace("┼─┼", "\u001B[0m┼─┼\u001B[36m");
-                line = line.replace("└─┘", "\u001B[0m└─┘\u001B[36m");
+                line = line.replace("┼─┼", "\u001B[0m┼─┼\u001B[34m");
+                line = line.replace("└─┘", "\u001B[0m└─┘\u001B[34m");
 
                 cardRender.add(details[1]+line+ANSIColor.ANSI_RESET);
             }
