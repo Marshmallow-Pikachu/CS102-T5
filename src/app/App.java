@@ -49,6 +49,7 @@ public class App {
         return input;
     }
 
+
     // Helper function to create the arraylist of players to add to the game
     /**
      * Creates an ArrayList of players for the game, containing humans and/or bots players. Minimum 2 to start.
@@ -64,24 +65,6 @@ public class App {
         boolean valid = false;
         System.out.print("How many human players (1-6): ");
         String input = sc.nextLine();
-        
-        if (input.equals("auto")) {
-            // Default list of bot names to randomise
-            ArrayList<String> paradeBotNames = new ArrayList<>();
-            paradeBotNames.add("Alice");
-            paradeBotNames.add("Mad Hatter");
-            paradeBotNames.add("White Rabbit");
-            paradeBotNames.add("Humpty Dumpty");
-            paradeBotNames.add("Cheshire Cat");
-            paradeBotNames.add("Dodo Bird");
-
-            for (int i = 0; i < 6; i++) {
-                players.add(new BotPlayer(deck, paradeBotNames.get(i)));
-            };
-
-            Collections.shuffle(players);
-            return players;
-        }
 
         while (!valid) {
             try {
@@ -129,19 +112,10 @@ public class App {
                         players.add(new HumanPlayer(deck, input));
                     }
 
-                    // Default list of bot names to randomise
-                    ArrayList<String> paradeBotNames = new ArrayList<>();
-                    paradeBotNames.add("Alice");
-                    paradeBotNames.add("Mad Hatter");
-                    paradeBotNames.add("White Rabbit");
-                    paradeBotNames.add("Humpty Dumpty");
-                    paradeBotNames.add("Cheshire Cat");
-                    paradeBotNames.add("Dodo Bird");
-                    Collections.shuffle(paradeBotNames);
-
-                    for (int i = 0; i < bots; i++) {
-                        players.add(new BotPlayer(deck, paradeBotNames.get(i)));
-                    };
+                    // Add the bots in and shuffle the players
+                    players.addAll(AppUtils.generateBotPlayers(bots, deck));
+                    Collections.shuffle(players);
+                
                 }
 
             
@@ -226,23 +200,34 @@ public class App {
     
     public static void hostGame(Scanner sc) {
         try {
-            ServerSocket serverSocket = new ServerSocket(25000);
-            Server server = new Server(serverSocket, 2);
+            int[] players = Input.askForNumberOfPlayers(sc);
+
+            ServerSocket serverSocket = new ServerSocket(25102);
+            Server server = new Server(serverSocket, players);
 
             Thread thread = new Thread(server);
 
-            thread.run();
+            thread.start();
             
         } catch (IOException e) {
             System.out.println("Something went wrong with the server");
             e.printStackTrace();
         }
+        joinGame(sc, "127.0.0.1");
     }
 
-    public static void joinGame(Scanner sc) {
+    public static void joinGame(Scanner sc, String ipAddress) {
         try {
-            Socket socket = new Socket("127.0.0.1", 25000);
-            Client client = new Client(socket, "username");
+            if (ipAddress == null) {
+                System.out.print("Enter the server address: ");
+                ipAddress = sc.nextLine();
+            }
+            
+
+            System.out.print("Enter your name: ");
+            String name = sc.nextLine();
+            Socket socket = new Socket(ipAddress, 25102);
+            Client client = new Client(socket, name);
 
             client.listenForMessage();
             client.sendMessage();
@@ -278,7 +263,7 @@ public class App {
                     hostGame(sc);
                     break;
                 case 3:
-                    joinGame(sc);
+                    joinGame(sc, null);
                     break;
             }
             option = gameModeOption(sc);
@@ -286,8 +271,5 @@ public class App {
 
         // Exiting message once the user is done playing
         System.out.println("\n Bye bye! Hope you had fun playing Parade! See you next time!\n");
-
-        
-
     }
 }

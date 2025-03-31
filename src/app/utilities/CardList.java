@@ -62,25 +62,29 @@ public class CardList {
     }
 
     // Display cards in list, and reset itself once done
-    public void output() {
+    public String output() {
+        String output = "";
         for (String line : lines) {
-            System.out.println(line);
+            output += line + "\n";
         }
         reset();
+        return output;
     }
 
     // Display cards in list with spaces, and reset itself once done
-    public void outputSpaced(boolean isSingleRow) {
+    public String outputSpaced(boolean isSingleRow) {
+        String output = "";
         if (isSingleRow) {
             for (String line : lines) {
-                System.out.println("|" + line + " ".repeat(47) + "   |");
+                output += "|" + line + " ".repeat(47) + "   |\n";
             }
             
         } else {
             for (String line : lines) {
-                System.out.println("|" + line + "   |");
+                output += "|" + line + "   |\n";
             }
         }
         reset();
+        return output;
     }
 }
