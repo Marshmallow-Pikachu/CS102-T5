@@ -9,7 +9,6 @@ import app.entity.*;
 import app.game.*;
 import app.resource.*;
 import app.utilities.AppUtils;
-import app.utilities.Input;
 import app.utilities.Printer;
 
 
@@ -90,7 +89,6 @@ public class Server implements Runnable {
                 Player p = game.getCurrentPlayer();
                 ClientHandler.broadcast(Printer.stringGameState(game));
                 
-
                 if (p instanceof BotPlayer b) {
                     Card playedCard = b.determineCardChoice(game);
                     game.nextTurn(playedCard);
@@ -98,6 +96,7 @@ public class Server implements Runnable {
                 Card playedCard = ClientHandler.promptPlayers(p.getName(), p);
                 game.nextTurn(playedCard);
                 }
+            }
                 // Let the game run until it is over
 
                 Player gameEnder = game.getPlayers().getLast();
@@ -113,7 +112,7 @@ public class Server implements Runnable {
                     System.out.println("Final round!");
                 
                     // Get the current Player
-                    p = game.getCurrentPlayer();
+                    Player p = game.getCurrentPlayer();
 
                     // Check if the player is human or bot
                     if (p instanceof BotPlayer b) {
@@ -127,14 +126,16 @@ public class Server implements Runnable {
                 }
                 game.initiateFinalRound(game.getPlayers());
                 Printer.displayGameState(game);
-        game.printWinScreen();
-        System.out.println("Thank you for playing!");
+                game.printWinScreen();
+                System.out.println("Thank you for playing!");
 
             }
             
             closeServerSocket();
+            ClientHander.closeEverything(); // TODO: Close all clients
+            System.out.println("End of game");
         }
-    }
+    
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {

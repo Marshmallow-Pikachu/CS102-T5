@@ -46,7 +46,7 @@ public class ANSIColor {
     /**
      * ANSI code for black text.
      */
-    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_BLACK = "\u001B[37m";
 
     /**
      * ANSI code for yellow text.

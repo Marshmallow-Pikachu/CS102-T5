@@ -308,7 +308,7 @@ public class Printer {
             // Print the cards in the Scoring Zone
             output += "|" + " ".repeat(97) + "|\n";
             output += stringRenderedScoringZone(p.getCollectedParadeCards());
-            output += "|" + " ".repeat(97) + "|\n";
+            output += " " + "-".repeat(97) + " \n";
         }
 
         return output;
@@ -335,7 +335,7 @@ public class Printer {
                 cardList.add(nextList);
                 if (isSingleRow) {
                     isSingleRow = false;
-                    output = cardList.outputSpaced(isSingleRow);
+                    output += cardList.outputSpaced(isSingleRow);
                 } else {
                     isSingleRow = true;
                 }
@@ -344,7 +344,7 @@ public class Printer {
 
         // To clear the last colors if any
         if (isSingleRow) {
-            output = cardList.outputSpaced(isSingleRow);
+            output += cardList.outputSpaced(isSingleRow);
         }
         return output;
     }
