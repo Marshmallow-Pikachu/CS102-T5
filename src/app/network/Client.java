@@ -14,6 +14,7 @@ public class Client {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username;
+    private boolean ready;
 
     public Client(Socket socket, String username) {
 
@@ -22,6 +23,7 @@ public class Client {
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.username = username;
+            this.ready = false;
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
@@ -36,10 +38,14 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             while (socket.isConnected()) {
-                String messageToSend = scanner.nextLine();
-                bufferedWriter.write(messageToSend);
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                String message = scanner.nextLine();
+                if (ready) {
+                    System.out.println(message);
+                    bufferedWriter.write(message);
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+                    ready = false;
+                }
             }
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
@@ -55,12 +61,17 @@ public class Client {
                 while (socket.isConnected()) {
                     try {
                         message = bufferedReader.readLine();
+                        
                         if (message == null) {
                             System.out.println("Server has died :(");
                             closeEverything(socket, bufferedReader, bufferedWriter);
                         }
                         if (message.equals("Thank you for playing!")) {
-                            closeEverything(socket, bufferedReader, bufferedWriter);;
+                            closeEverything(socket, bufferedReader, bufferedWriter);
+                        }
+                        if (message.equals("Your turn")) {
+                            ready = true;
+                            continue;
                         }
                         System.out.println(message);
                     } catch (IOException e) {

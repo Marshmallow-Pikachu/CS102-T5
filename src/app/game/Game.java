@@ -218,21 +218,7 @@ public class Game {
         return returnList;
     }
 
-    public void printWinScreen(){
-        ArrayList<Player> winnerList = this.determineWinner();
-        if (winnerList.size() > 1){ //If Draw
-            System.out.print("Draw between ");
-            for (int i = 0; i < winnerList.size(); i++){
-                System.out.printf(winnerList.get(i).getName());
-                if (i != winnerList.size()-1){
-                    System.out.printf(" and ");
-                }
-            }
-            System.out.println(".");
-        }else{
-            System.out.println("Winner is : " + winnerList.get(0).getName());
-        }
-    }
+
     /**
      * Checks if the game has ended.
      * @return True if the game has ended, otherwise false.

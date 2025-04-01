@@ -205,7 +205,7 @@ public class App {
 
         game.flipMajorityCards();
         Printer.displayGameState(game);
-        game.printWinScreen();
+        Printer.printWinScreen(game);
         System.out.println("enter anything to continue!");
         sc.nextLine();
         //Printer.clearScreen();

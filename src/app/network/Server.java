@@ -117,7 +117,7 @@ public class Server implements Runnable {
 
                     // Check if the player is human or bot
                     if (p instanceof BotPlayer b) {
-                        ClientHandler.promptPlayers(null, null);
+                        ClientHandler.promptPlayers(b.getName(), null);
                         Card playedCard = b.determineCardChoice(game);
                         game.nextTurn(playedCard);
                     } else {
@@ -139,16 +139,18 @@ public class Server implements Runnable {
                 }
 
                 game.flipMajorityCards();
-                Printer.displayGameState(game);
-                game.printWinScreen();
-                System.out.println("Thank you for playing!");
-                ClientHandler.broadcast("Thank you for playing!");
+                String finalResult = Printer.stringGameState(game) + "\n" +  
+                                     Printer.stringWinScreen(game) + "\nThank you for playing!\n";
+                ClientHandler.broadcast(finalResult);
+                
             }
             
             closeServerSocket();
-            System.out.println("End of game");
+
+            
         }
     
+
 
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {

@@ -202,6 +202,22 @@ public class Printer {
         System.out.println(output);
     }
     
+
+    public static void printWinScreen(Game game){
+        ArrayList<Player> winnerList = game.determineWinner();
+        if (winnerList.size() > 1){ //If Draw
+            System.out.print("Draw between ");
+            for (int i = 0; i < winnerList.size(); i++){
+                System.out.printf(winnerList.get(i).getName());
+                if (i != winnerList.size()-1){
+                    System.out.printf(" and ");
+                }
+            }
+            System.out.println(".");
+        }else{
+            System.out.println("Winner is : " + winnerList.get(0).getName());
+        }
+    }
 // String methods here
 
     public static String stringGameState(Game game) {
@@ -365,5 +381,24 @@ public class Printer {
         String output = "You have discarded:\n" + cardList.output();
         return output;
     }
+
+    public static String stringWinScreen(Game game){
+        String output = "";
+        ArrayList<Player> winnerList = game.determineWinner();
+        if (winnerList.size() > 1){ //If Draw
+            output += "Draw between ";
+            for (int i = 0; i < winnerList.size(); i++){
+                output += winnerList.get(i).getName();
+                if (i != winnerList.size()-1){
+                    output += " and ";
+                }
+            }
+            output += ".\n";
+        }else{
+            output += "Winner is : " + winnerList.get(0).getName();
+        }
+        return output;
+    }
+// String m
 }
 

@@ -133,6 +133,11 @@ public class ClientHandler implements Runnable {
                             clientHandler.bufferedWriter.write(String.format("Enter a number between 1 to 5 to select a card: "));
                             clientHandler.bufferedWriter.newLine();
                             clientHandler.bufferedWriter.flush();
+
+                            clientHandler.bufferedWriter.write("Your turn");
+                            clientHandler.bufferedWriter.newLine();
+                            clientHandler.bufferedWriter.flush();
+
                             input = clientHandler.bufferedReader.readLine();
                             cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
                             if (cardSelectedIndex < 0 || cardSelectedIndex > 4) {
@@ -169,11 +174,33 @@ public class ClientHandler implements Runnable {
                             clientHandler.bufferedWriter.newLine();
                             clientHandler.bufferedWriter.flush();
                             
-                            clientHandler.bufferedWriter.write("Select a card to discard (1 to " + h.getPlayerHand().size() + "): ");
-                            clientHandler.bufferedWriter.newLine();
-                            clientHandler.bufferedWriter.flush();
-                            
+
                             //TODO: Write the discard code
+                            int count = 0;
+                            while (count < 2) {
+                                try {
+                                    // To number the cards the player can play
+                                    clientHandler.bufferedWriter.write("Select a card to discard (1 to " + h.getPlayerHand().size() + "): ");
+                                    clientHandler.bufferedWriter.newLine();
+                                    clientHandler.bufferedWriter.flush();
+                                    clientHandler.bufferedWriter.write("Your turn");
+                                    clientHandler.bufferedWriter.newLine();
+                                    clientHandler.bufferedWriter.flush();
+                                    String input = clientHandler.bufferedReader.readLine();
+                                    int cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
+                                    if (cardSelectedIndex < 0 || cardSelectedIndex > h.getPlayerHand().size() -1  ) {
+                                        throw new IllegalArgumentException(); // catch below
+                                    }
+                                    Card discarded = h.getPlayerHand().get(cardSelectedIndex);
+                                    h.discardCard(cardSelectedIndex);
+                                    clientHandler.bufferedWriter.write(Printer.stringDiscard(discarded));
+                                    count++;
+                                } catch (Exception e) {
+                                    clientHandler.bufferedWriter.write("It is not a valid option");
+                                    clientHandler.bufferedWriter.newLine();
+                                    clientHandler.bufferedWriter.flush();
+                                } 
+                            }
                             // Read the first input
                             // Validate
                             // Remove if correct
@@ -202,7 +229,6 @@ public class ClientHandler implements Runnable {
         for (int i = 0; i<clientHandlers.size(); i++) {
             try {
                 ClientHandler clientHandler = clientHandlers.get(i);
-                System.out.println(message);
                 clientHandler.bufferedWriter.write(message); // send the message
                 clientHandler.bufferedWriter.newLine();            // create a new line for each client receiving msg
                 clientHandler.bufferedWriter.flush();              // In case the buffer is not full, fill up the buffer so message can be sent
