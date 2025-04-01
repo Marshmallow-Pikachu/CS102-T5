@@ -33,5 +33,6 @@ public class AppUtils {
             botPlayers.add(new BotPlayer(deck, paradeBotNames.get(i)));
         };
         return botPlayers;
-        }
+    }
+
 }

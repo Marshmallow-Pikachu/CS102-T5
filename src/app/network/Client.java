@@ -32,7 +32,7 @@ public class Client {
         try {
             bufferedWriter.write(username);
             bufferedWriter.newLine();
-            bufferedWriter.flush(); // TODO: Figure out how big the buffer is
+            bufferedWriter.flush();
 
             Scanner scanner = new Scanner(System.in);
             while (socket.isConnected()) {
@@ -50,16 +50,19 @@ public class Client {
         new Thread(new Runnable() { // TODO: WittCode Runnable()
             @Override
             public void run() {
-                String msgFromGroupChat;
+                String message;
 
                 while (socket.isConnected()) {
                     try {
-                        msgFromGroupChat = bufferedReader.readLine();
-                        if (msgFromGroupChat == null) {
-                            System.out.println("SERVER: Server has died");
+                        message = bufferedReader.readLine();
+                        if (message == null) {
+                            System.out.println("Server has died :(");
                             closeEverything(socket, bufferedReader, bufferedWriter);
                         }
-                        System.out.println(msgFromGroupChat);
+                        if (message.equals("Thank you for playing!")) {
+                            closeEverything(socket, bufferedReader, bufferedWriter);;
+                        }
+                        System.out.println(message);
                     } catch (IOException e) {
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     } 
@@ -82,7 +85,7 @@ public class Client {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            
         }
     }
 

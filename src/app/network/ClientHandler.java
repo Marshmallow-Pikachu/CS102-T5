@@ -3,6 +3,7 @@ package app.network;
 import java.util.ArrayList;
 
 import app.entity.Player;
+import app.entity.HumanPlayer;
 import app.resource.Card;
 import app.utilities.Printer;
 
@@ -25,7 +26,6 @@ public class ClientHandler implements Runnable {
     private String clientUsername;
 
     public ClientHandler(Socket socket) {
-
         try {
             this.socket = socket;
             // getOutputStream returns a byte stream
@@ -79,7 +79,14 @@ public class ClientHandler implements Runnable {
     }
 
     public static boolean addClientHandler(ClientHandler clientHandler, String username) {
-        if (playerList.indexOf(username) == -1) {
+        ArrayList<String> paradeBotNames = new ArrayList<>();
+        paradeBotNames.add("Alice");
+        paradeBotNames.add("Mad Hatter");
+        paradeBotNames.add("White Rabbit");
+        paradeBotNames.add("Humpty Dumpty");
+        paradeBotNames.add("Cheshire Cat");
+        paradeBotNames.add("Dodo Bird");
+        if (playerList.indexOf(username) == -1 && paradeBotNames.indexOf(username) == -1) {
             clientHandlers.add(clientHandler);
             playerList.add(username);
             return true;
@@ -151,11 +158,51 @@ public class ClientHandler implements Runnable {
         return null;
     }
 
+    public static Card promptDiscards(ArrayList<Player> players) {
+        try {
+            for (int i = 0; i < clientHandlers.size(); i++) {
+                ClientHandler clientHandler = clientHandlers.get(i);
+                for (Player p : players) {
+                    if (p instanceof HumanPlayer h) {
+                        if (h.getName().equals(clientHandler.getName())) {
+                            clientHandler.bufferedWriter.write(Printer.stringRenderedHand(h));
+                            clientHandler.bufferedWriter.newLine();
+                            clientHandler.bufferedWriter.flush();
+                            
+                            clientHandler.bufferedWriter.write("Select a card to discard (1 to " + h.getPlayerHand().size() + "): ");
+                            clientHandler.bufferedWriter.newLine();
+                            clientHandler.bufferedWriter.flush();
+                            
+                            //TODO: Write the discard code
+                            // Read the first input
+                            // Validate
+                            // Remove if correct
+
+                            // Read the second input
+                            // Validate
+                            // Remove if correct
+
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        // Smth would be wrong if it ends up here
+        return null;
+    }
+
+
     public static void broadcast(String message) {
         // for each clientHandler in the array list client handlers
         for (int i = 0; i<clientHandlers.size(); i++) {
             try {
                 ClientHandler clientHandler = clientHandlers.get(i);
+                System.out.println(message);
                 clientHandler.bufferedWriter.write(message); // send the message
                 clientHandler.bufferedWriter.newLine();            // create a new line for each client receiving msg
                 clientHandler.bufferedWriter.flush();              // In case the buffer is not full, fill up the buffer so message can be sent
@@ -192,8 +239,6 @@ public class ClientHandler implements Runnable {
     public void removeClientHander() {
         if (clientHandlers.contains(this)){
             clientHandlers.remove(this);
-            System.out.println(this.clientUsername + " has left the chat...");
-            broadcastMessage("SERVER: " + this.clientUsername + " has left the chat!");
         }
     }
 

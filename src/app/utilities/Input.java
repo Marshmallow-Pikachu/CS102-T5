@@ -1,7 +1,6 @@
 package app.utilities;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 import app.entity.HumanPlayer;
@@ -39,6 +38,26 @@ public class Input {
             } 
         }
         return myHand.get(cardSelectedIndex);
+    }
+
+    // Return the index of card to be discarded
+    public static int askForDiscard(Scanner sc, HumanPlayer player) {
+        int index;
+        Printer.printRenderedHand(player);
+        while (true) {
+            System.out.printf("Select a card to discard (1 to " + player.getPlayerHand().size() + "): ");
+            if (sc.hasNextInt()) {
+                index = sc.nextInt() - 1;
+                sc.nextLine();
+                if (index >=0 && index < player.getPlayerHand().size()) {
+                    break; //exit loop on valid input
+                }
+            } else {
+                sc.nextLine(); //discard invalid input
+            }
+            System.out.println("Invalid choice. Please enter a number between 1 and " + player.getPlayerHand().size() + ".");
+        }
+        return index;
     }
 
     // Returns an int array of how many human and bot players
@@ -92,4 +111,6 @@ public class Input {
         // This shouldn't run
         return null;
     }
+
+
 }

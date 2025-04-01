@@ -84,35 +84,8 @@ public class Game {
         this.players.remove(p);
         players.add(p);
     }
-    /**
-     * This method starts the final round, where players have to discard 2 cards from their hand and flip the colors which they have majority in color.
-     * @param players The list of players in the game
-     */
-    public void initiateFinalRound(ArrayList<Player> players){ // if a player has all 6 colors, or deck is empty
-        discardTwoCards();
-        flipMajorityCards();
-    }
 
-    //This Function needs to be uncommented and changed, discardCard() is not longer a function of player, it now has seperate implementations in HumanPlayer and BotPlayer
-    /**
-     * This method helps human players and bot players discard their cards. 
-     */
-    public void discardTwoCards(){
-        for (Player p : players){
-            if (p instanceof HumanPlayer) {
-                HumanPlayer human = (HumanPlayer)p;
-                Printer.printRenderedHand(p);
-                human.discardCard();
-                Printer.printRenderedHand(p);
-                human.discardCard();
-                human.emptyHandToScoringArea();
-            } else{
-                BotPlayer bot = (BotPlayer)p;
-                bot.discardCards(players);
-                bot.emptyHandToScoringArea();
-            }
-        }
-    }
+
     /**
      * Calculates the count of each color in a list of cards.
      * @param cardList The list of cards.

@@ -1,9 +1,8 @@
 package app.entity;
 
-import java.util.*;
-
 import app.game.Game;
 import app.resource.*;
+import app.utilities.Printer;
 
 /**
  * Represents a human player in the game of Parade.
@@ -11,8 +10,6 @@ import app.resource.*;
  */
 
 public class HumanPlayer extends Player {
-
-    private static final Scanner scanner = new Scanner(System.in); // Persistent Scanner
     /**
      * Constructs a HumanPlayer with a given deck and player name.
      * @param deck The deck from which the player will draw cards.
@@ -41,22 +38,8 @@ public class HumanPlayer extends Player {
      * Prompts the player for a card to discard.
      * Will reprompt until a valid choice is made.
      */
-    public void discardCard() {
-        int index;
-        while (true) {
-            System.out.printf("%s: Select card to discard by entering its number (1 to " + super.getPlayerHand().size() + "):\n", getName());
-            if (scanner.hasNextInt()) {
-                index = scanner.nextInt() - 1;
-                scanner.nextLine();
-                if (index >=0 && index < super.getPlayerHand().size()) {
-                    break; //exit loop on valid input
-                }
-            } else {
-                scanner.nextLine(); //discard invalid input
-            }
-            System.out.println("Invalid choice. Please enter a number between 1 and " + super.getPlayerHand().size() + ".");
-        }
+    public void discardCard(int index) {
         Card discardedCard = super.getPlayerHand().remove(index);
-        System.out.println("You discarded: " + discardedCard);
+        Printer.printDiscard(discardedCard);
     }
 }

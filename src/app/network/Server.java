@@ -9,6 +9,7 @@ import app.entity.*;
 import app.game.*;
 import app.resource.*;
 import app.utilities.AppUtils;
+import app.utilities.Input;
 import app.utilities.Printer;
 
 
@@ -124,15 +125,27 @@ public class Server implements Runnable {
                         game.nextTurn(playedCard);
                     }
                 }
-                game.initiateFinalRound(game.getPlayers());
+
+                // Initiate final round mechanic
+                ClientHandler.promptDiscards(game.getPlayers());
+                for (Player p : game.getPlayers()){
+                    if (p instanceof HumanPlayer human) {
+                        human.emptyHandToScoringArea();
+                    } else {
+                        BotPlayer bot = (BotPlayer) p;
+                        bot.discardCards(game.getPlayers());
+                        bot.emptyHandToScoringArea();
+                    }
+                }
+
+                game.flipMajorityCards();
                 Printer.displayGameState(game);
                 game.printWinScreen();
                 System.out.println("Thank you for playing!");
-
+                ClientHandler.broadcast("Thank you for playing!");
             }
             
             closeServerSocket();
-            ClientHander.closeEverything(); // TODO: Close all clients
             System.out.println("End of game");
         }
     

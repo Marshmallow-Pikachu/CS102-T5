@@ -188,7 +188,22 @@ public class App {
                 game.nextTurn(playedCard);
             }
         }
-        game.initiateFinalRound(players);
+
+        // Initiate final round mechanic
+        for (Player p : players){
+            if (p instanceof HumanPlayer) {
+                HumanPlayer human = (HumanPlayer)p;
+                human.discardCard(Input.askForDiscard(sc, human));
+                human.discardCard(Input.askForDiscard(sc, human));
+                human.emptyHandToScoringArea();
+            } else{
+                BotPlayer bot = (BotPlayer)p;
+                bot.discardCards(players);
+                bot.emptyHandToScoringArea();
+            }
+        }
+
+        game.flipMajorityCards();
         Printer.displayGameState(game);
         game.printWinScreen();
         System.out.println("enter anything to continue!");

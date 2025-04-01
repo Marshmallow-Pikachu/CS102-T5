@@ -193,6 +193,15 @@ public class Printer {
                 }
     }
 
+
+    public static void printDiscard(Card card) {
+        CardList cardList = new CardList();
+        cardList.add(Render.renderCard(card));
+
+        String output = "You have discarded:\n" + cardList.output();
+        System.out.println(output);
+    }
+    
 // String methods here
 
     public static String stringGameState(Game game) {
@@ -349,5 +358,12 @@ public class Printer {
         return output;
     }
 
+    public static String stringDiscard(Card card) {
+        CardList cardList = new CardList();
+        cardList.add(Render.renderCard(card));
+
+        String output = "You have discarded:\n" + cardList.output();
+        return output;
+    }
 }
 
