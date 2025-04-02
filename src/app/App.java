@@ -8,8 +8,10 @@ import app.resource.*;
 import app.utilities.*;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.*;
 import java.util.*;
 
 /**
@@ -218,7 +220,7 @@ public class App {
         try {
             int[] players = Input.askForNumberOfPlayers(sc);
 
-            ServerSocket serverSocket = new ServerSocket(25102);
+            ServerSocket serverSocket = new ServerSocket(25102, 0, Inet4Address.getByName("0.0.0.0"));
             Server server = new Server(serverSocket, players);
 
             Thread thread = new Thread(server);
@@ -242,7 +244,8 @@ public class App {
 
             System.out.print("Enter your name: ");
             String name = sc.nextLine();
-            Socket socket = new Socket(ipAddress, 25102);
+            InetAddress serverAdd = Inet4Address.getByName(ipAddress);
+            Socket socket = new Socket(serverAdd, 25102);
             Client client = new Client(socket, name);
 
             client.listenForMessage();
