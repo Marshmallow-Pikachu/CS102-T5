@@ -115,27 +115,6 @@ public abstract class Player {
         return count;
     }
 
-    //Marc
-    // public void discardCard() {
-    //     int index;
-    //     while (true) {
-    //         System.out.println("Select card to discard by entering its number (1 to " + playerHand.size() + "):");
-    //         if (scanner.hasNextInt()) {
-    //             index = scanner.nextInt() - 1;
-    //             scanner.nextLine();
-    //             if (index >=0 && index < playerHand.size()) {
-    //                 break; //exit loop on valid input
-    //             }
-    //         } else {
-    //             scanner.nextLine(); //discard invalid input
-    //         }
-    //         System.out.println("Invalid choice. Please enter a number between 1 and " + playerHand.size() + ".");
-    //     }
-    //     Card discardedCard = playerHand.remove(index);
-    //     System.out.println("You discarded: " + discardedCard);
-    // }
-
-
     /**
      * This method is used for the final round only.
      * This method will add a card to the player's collected parade card pool if the player has cards remaining

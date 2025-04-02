@@ -64,36 +64,5 @@ public class Deck {
         return cards;
     }
     
-    /*
-     * uncomment the code below to test Deck class
-     * in terminal:
-     * javac -d out app/resource/Card.java
-     * javac -d out app/resource/Deck.java
-     * java -cp "out" app.resource.Deck
-     */
-
-    // public static void main(String[] args) {
-    //     Deck testDeck = new Deck();
-    //     ArrayList<Card> testCards = testDeck.getCards();
-
-    //     System.out.println("First ten cards before shuffling");
-    //     for (int i = 0; i < 10; i++) {
-    //         System.out.println(testCards.get(i).toString());
-    //     }
-    //     System.out.println();
-
-    //     System.out.println("First ten cards after shuffling");
-    //     testDeck.shuffle();
-    //     for (int i = 0; i < 10; i++) {
-    //         System.out.println(testCards.get(i).toString());
-    //     }
-    //     System.out.println();
-
-    //     System.out.println("First ten cards after drawing a card");
-    //     Card drawnCard = testDeck.drawCard();
-    //     System.out.println("Drawn card: " + drawnCard.toString());
-    //     for (int i = 0; i < 10; i++) {
-    //         System.out.println(testCards.get(i).toString());
-    //     }
-    // }
+    
 }

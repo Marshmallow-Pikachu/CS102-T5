@@ -19,11 +19,6 @@ public class BotPlayer extends Player {
         super(deck, name);
     }
 
-    // public int countRemovals(Card playedCard, Parade parade) {
-    //     int paradeSize = parade.size();
-
-    // }
-
      /**
      * Simulates the removal of eligible cards without modifying the actual parade.
      * Returns a list of cards that would be removed if the given card were played.
@@ -87,7 +82,6 @@ public class BotPlayer extends Player {
                 colourCardsToKeep.add(c);
             }
         }
-        // System.out.println("debug here:" + colourCardsToKeep);
 
         //sort coloured cards to keep by value
         colourCardsToKeep.sort(Comparator.comparingInt(Card::getValue));
@@ -134,19 +128,7 @@ public class BotPlayer extends Player {
             }
             return highestColourCounts;
         }
-    // Chris - This method is implemented in abstract player already
-    // public ArrayList<Integer> obtainPlayerColourCounts (ArrayList<Card> playerHand) {
-    //     ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
-    //     ArrayList<Integer> colorCount = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
-    //     for (Card c : playerHand) {
-    //         for (int i = 0; i < 6; i++) {
-    //             if (c.getColour().equals(colourList.get(i))) {
-    //                 colorCount.set(i, colorCount.get(i) + 1);
-    //             }
-    //         }
-    //     }
-    //     return colorCount;
-    // }
+
     
     /**
      * Performs the actions for a bot player's turn in the game.

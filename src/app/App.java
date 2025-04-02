@@ -171,6 +171,8 @@ public class App {
         } else {
             System.out.println("There are no more cards in the deck!");
         }
+
+        // Last round of playing cards
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
 
@@ -194,7 +196,7 @@ public class App {
         // Initiate final round mechanic
         for (Player p : players){
             if (p instanceof HumanPlayer) {
-                HumanPlayer human = (HumanPlayer)p;
+                HumanPlayer human = (HumanPlayer) p;
                 human.discardCard(Input.askForDiscard(sc, human));
                 human.discardCard(Input.askForDiscard(sc, human));
                 human.emptyHandToScoringArea();
@@ -211,7 +213,6 @@ public class App {
         Printer.printWinScreen(game);
         System.out.println("enter anything to continue!");
         sc.nextLine();
-        //Printer.clearScreen();
     }
 
     // Helper function for hosting an online game

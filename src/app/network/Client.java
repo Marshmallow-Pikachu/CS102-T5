@@ -40,7 +40,6 @@ public class Client {
             while (socket.isConnected() && !gameEnd) {
                 String message = sc.nextLine();
                 if (ready) {
-                    System.out.println(message);
                     bufferedWriter.write(message);
                     bufferedWriter.newLine();
                     bufferedWriter.flush();

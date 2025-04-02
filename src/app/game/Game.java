@@ -2,7 +2,6 @@ package app.game;
 
 import app.entity.*;
 import app.resource.*;
-import app.utilities.Printer;
 import java.util.*;
 
 /**
@@ -25,7 +24,6 @@ public class Game {
         parade = new Parade(deck);
         this.deck = deck;
         this.players = players;
-        System.out.println("Game Started");
     }
     /**
      * Returns the parade instance.
@@ -73,14 +71,15 @@ public class Game {
     public void nextTurn(Card playedCard){ 
         Player p = getCurrentPlayer();
         p.takeTurn(this, playedCard);
-        
-        //check for final round trigger
-        if (p.hasSixColors()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+        //check for final round triggers
+        if (p.hasSixColors()){ 
             gameEnd = true;
         }
-        if (deck.getIsEmpty()){ // Start Last Round Condition REMEMBER WHO STARTS THE LAST ROUND FIRST
+        if (deck.getIsEmpty()){
             gameEnd = true;
         }
+
+        // Move first player to last place in arraylist
         this.players.remove(p);
         players.add(p);
     }
@@ -146,16 +145,6 @@ public class Game {
         ArrayList<Integer> colourCount = new ArrayList<>(6);
         colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);
         for (Player p : players){ //Get Majority of Each Colour
-            //ArrayList<Card> collectedCards = p.getCollectedParadeCards(); 
-            //Index 0: Red, Index 1: Blue, Index 2: Purple, Index 3: Green, Index 4: Black, Index 5, Yellow
-            // List<Integer> counts = new ArrayList<>(); //Gets Number of Each Color in Hand
-            // for (String colour : colourList) {
-            //     long count = collectedCards.stream()
-            //                             .filter(card -> colour.equals(card.getColour()))
-            //                             .count();
-            //     counts.add((int)count);
-            // }
-            
             //Populate colourCount with MAX no. of colour in game
             ArrayList<Integer> counts = p.obtainPlayerColourCounts(p.getPlayerHand()); //Ive not verified this method from player so im leaving the above to use in case this somehow breaks
             for (int i = 0; i < 6; i++){ 

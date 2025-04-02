@@ -1,7 +1,5 @@
 package app.resource;
 
-import java.lang.*;
-
 /**
  * Represents a card instance in the game with a color and number value. This class also helps set removable cards in the parade
  * when a card is played, and allows cards to be flipped in the end game.
