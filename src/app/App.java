@@ -205,6 +205,7 @@ public class App {
 
         game.flipMajorityCards();
         Printer.displayGameState(game);
+        Printer.printScoreList(game.calculateScore());
         Printer.printWinScreen(game);
         System.out.println("enter anything to continue!");
         sc.nextLine();
@@ -245,7 +246,7 @@ public class App {
             Client client = new Client(socket, name);
 
             client.listenForMessage();
-            client.sendMessage();
+            client.sendMessage(sc);
         } catch (IOException e) {
             System.out.println("Unable to join server");
             e.printStackTrace();

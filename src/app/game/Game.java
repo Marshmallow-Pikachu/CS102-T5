@@ -187,6 +187,24 @@ public class Game {
             }
         }
     } 
+
+    public Map<String, Integer> calculateScore() {
+        Map<String, Integer> scoreList = new HashMap<>();
+        for (Player p : players) {
+            int count = 0;
+            for (Card c : p.getCollectedParadeCards()){ // Count score for each player
+                if (c.getFlipped()){ //checked if flipped
+                    count++;
+                } else{
+                    count += c.getValue();
+                }
+            }
+            scoreList.put(p.getName(), count);
+        }
+
+        return scoreList;
+    }
+
     /**
      * Determines the winner of the game by counting points. 
      * Flipped cards count for 1 point, ignoring face value.
@@ -212,7 +230,6 @@ public class Game {
             } else if (lowest == count){ //Check if there is a draw
                 returnList.add(p);
             }
-            System.out.println(p.getName() + " Points: " + count);
         }
         returnList.add(lowestcurrent);
         return returnList;

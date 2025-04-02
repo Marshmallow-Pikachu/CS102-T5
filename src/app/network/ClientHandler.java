@@ -19,11 +19,13 @@ public class ClientHandler implements Runnable {
     // To hold all the clients
     public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
     public static ArrayList<String> playerList = new ArrayList<>();
+    public static boolean gameOngoing = false;
     
     private Socket socket;                  // socket to connect
     private BufferedReader bufferedReader; // for reading client inputs
     private BufferedWriter bufferedWriter; // for sending data to client
     private String clientUsername;
+    
 
     public ClientHandler(Socket socket) {
         try {
@@ -52,7 +54,7 @@ public class ClientHandler implements Runnable {
             for (ClientHandler c : clientHandlers) {
                 playerListMsg += String.format("%s\n", c.getName());
             }
-            broadcastMessage(playerListMsg);
+            broadcast(playerListMsg);
             
             // Log the username of the client in the server
             System.out.println(this.clientUsername + " has joined the game!");
@@ -74,8 +76,12 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         while (socket.isConnected()) {
+            if (!ClientHandler.gameOngoing) {
+                break;
+            }
         }
         closeEverything();
+        System.out.println("ClientHandler closed");
     }
 
     public static boolean addClientHandler(ClientHandler clientHandler, String username) {
@@ -174,8 +180,6 @@ public class ClientHandler implements Runnable {
                             clientHandler.bufferedWriter.newLine();
                             clientHandler.bufferedWriter.flush();
                             
-
-                            //TODO: Write the discard code
                             int count = 0;
                             while (count < 2) {
                                 try {
@@ -201,16 +205,13 @@ public class ClientHandler implements Runnable {
                                     clientHandler.bufferedWriter.flush();
                                 } 
                             }
-                            // Read the first input
-                            // Validate
-                            // Remove if correct
-
-                            // Read the second input
-                            // Validate
-                            // Remove if correct
-
+                            continue;
                         }
                     }
+                    clientHandler.bufferedWriter.write(String.format("Waiting for %s to discard their cards", p.getName()));
+                    clientHandler.bufferedWriter.newLine();
+                    clientHandler.bufferedWriter.flush();
+
                 }
             }
         } catch (IOException e) {
@@ -241,26 +242,15 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void broadcastMessage(String messageToSend) {
-        // for each clientHandler in the array list client handlers
-        for (int i = 0; i<clientHandlers.size(); i++) {
-            try {
-                ClientHandler clientHandler = clientHandlers.get(i);
-                // Prevent sending the same message back to yourself
-                if (!clientHandler.clientUsername.equals(clientUsername)) {
-                    clientHandler.bufferedWriter.write(messageToSend); // send the message
-                    clientHandler.bufferedWriter.newLine();            // create a new line for each client receiving msg
-                    clientHandler.bufferedWriter.flush();              // In case the buffer is not full, fill up the buffer so message can be sent
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            }
+    public static void setConnection(boolean bool) {
+        if (bool) {
+            gameOngoing = true;
+        } else {
+            gameOngoing = false;
+            playerList = new ArrayList<>();
         }
         
-        
-    } 
+    }
 
     public void removeClientHander() {
         if (clientHandlers.contains(this)){

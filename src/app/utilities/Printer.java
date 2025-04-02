@@ -202,6 +202,11 @@ public class Printer {
         System.out.println(output);
     }
     
+    public static void printScoreList(Map<String, Integer> scoreList) {
+        for (String name : scoreList.keySet()) {
+            System.out.println(name + ": " + scoreList.get(name));
+        }
+    }
 
     public static void printWinScreen(Game game){
         ArrayList<Player> winnerList = game.determineWinner();
@@ -382,6 +387,13 @@ public class Printer {
         return output;
     }
 
+    public static String stringScoreList(Map<String, Integer> scoreList) {
+        String output = "";
+        for (String name : scoreList.keySet()) {
+            output += name + ": " + scoreList.get(name) + "\n";
+        }
+        return output;
+    }
     public static String stringWinScreen(Game game){
         String output = "";
         ArrayList<Player> winnerList = game.determineWinner();

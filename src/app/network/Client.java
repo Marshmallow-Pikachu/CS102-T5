@@ -15,6 +15,7 @@ public class Client {
     private BufferedWriter bufferedWriter;
     private String username;
     private boolean ready;
+    private boolean gameEnd;
 
     public Client(Socket socket, String username) {
 
@@ -30,15 +31,14 @@ public class Client {
 
     }
 
-    public void sendMessage() {
+    public void sendMessage(Scanner sc) {
         try {
             bufferedWriter.write(username);
             bufferedWriter.newLine();
             bufferedWriter.flush();
 
-            Scanner scanner = new Scanner(System.in);
-            while (socket.isConnected()) {
-                String message = scanner.nextLine();
+            while (socket.isConnected() && !gameEnd) {
+                String message = sc.nextLine();
                 if (ready) {
                     System.out.println(message);
                     bufferedWriter.write(message);
@@ -50,10 +50,12 @@ public class Client {
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
+
+        System.out.println("Client Send Message close");
     }
 
     public void listenForMessage() {
-        new Thread(new Runnable() { // TODO: WittCode Runnable()
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 String message;
@@ -67,7 +69,10 @@ public class Client {
                             closeEverything(socket, bufferedReader, bufferedWriter);
                         }
                         if (message.equals("Thank you for playing!")) {
+                            System.out.println(message);
+                            gameEnd = true;
                             closeEverything(socket, bufferedReader, bufferedWriter);
+                            break;
                         }
                         if (message.equals("Your turn")) {
                             ready = true;
@@ -79,6 +84,7 @@ public class Client {
                     } 
 
                 }
+                System.out.println("Client listen for message close");
             }
         }).start();
     }
@@ -119,6 +125,6 @@ public class Client {
         Client client = new Client(socket, username);
 
         client.listenForMessage();
-        client.sendMessage();
+        client.sendMessage(scanner);
     }
 }

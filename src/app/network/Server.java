@@ -33,15 +33,19 @@ public class Server implements Runnable {
             Deck deck = new Deck();
             deck.shuffle();
 
+            // Reset the client handlers
+            ClientHandler.setConnection(true);
+
             // keep the server up until the socket is closed
             while (!serverSocket.isClosed()) {
+                
                 // Listen for a new player
                 Socket socket = serverSocket.accept();
 
                 // to allow more than one client to connect on our server
                 // Split each cilent to a different thread
                 ClientHandler clientHandler = new ClientHandler(socket);
-
+                
                 // The thread will invoke the run() method in clientHandler
                 Thread thread = new Thread(clientHandler);
                 thread.start();
@@ -139,13 +143,18 @@ public class Server implements Runnable {
                 }
 
                 game.flipMajorityCards();
-                String finalResult = Printer.stringGameState(game) + "\n" +  
-                                     Printer.stringWinScreen(game) + "\nThank you for playing!\n";
-                ClientHandler.broadcast(finalResult);
+                ClientHandler.broadcast(Printer.stringGameState(game));
+                ClientHandler.broadcast(Printer.stringScoreList(game.calculateScore()));
+                ClientHandler.broadcast(Printer.stringWinScreen(game));
+                ClientHandler.broadcast("Thank you for playing!");
+
+                ClientHandler.setConnection(false);
                 
+                closeServerSocket();
+                System.out.println("Server goes bye bye");
             }
             
-            closeServerSocket();
+            
 
             
         }
