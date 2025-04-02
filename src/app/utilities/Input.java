@@ -1,10 +1,12 @@
 package app.utilities;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import app.entity.HumanPlayer;
+import app.entity.Player;
 import app.resource.Card;
+import app.resource.Deck;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 
 /**
  * This class contains utility methods for handling user inputs.
@@ -111,6 +113,99 @@ public class Input {
         // This shouldn't run
         return null;
     }
+
+    public static int gameModeOption(Scanner sc) {
+        boolean valid = false;
+        int input = 0;
+        while (!valid) {
+            try {
+                Printer.printMenu();
+                System.out.printf("%nSelect on option > ");
+                input = Integer.parseInt(sc.nextLine());
+                if (input < 0 || input > 4) {
+                    System.out.printf("%nInvalid Option :(%n%n");
+                    continue;
+                }
+                valid = true;
+            } catch (NumberFormatException e){
+                System.out.printf("%nInvalid Option :(%n%n");
+            }
+        }
+        return input;
+    }
+
+    
+    public static ArrayList<Player> getPlayerList(Scanner sc, Deck deck) {
+    // initialise ArrayList<Player> to return players
+    ArrayList<Player> players = new ArrayList<>();
+
+    // Ask user for the amount of players to add
+    boolean valid = false;
+    System.out.print("How many human players (1-6): ");
+    String input = sc.nextLine();
+
+    while (!valid) {
+        try {
+            // Check if the user inputted a number
+            int humans = Integer.parseInt(input);
+            int bots = 0;
+
+            // Check if the user inputted a number between 1 to 6
+            if (humans < 1 | humans > 6) {
+                System.out.println("\nInvalid number of players.\n");
+                System.out.print("How many human players (1-6): ");
+                input = sc.nextLine();
+                continue;
+            }
+
+            // Now ask the user for number of bots if it is not 6 human players
+            if (humans == 1) {
+                System.out.printf("How many bots (1-5): ");
+                input = sc.nextLine();
+                // Check if the input is an int
+                bots = Integer.parseInt(input);
+            }
+
+            else if (humans != 6) {
+                System.out.printf("How many bots (0-%d): ", (6 - humans));
+                input = sc.nextLine();
+                // Check if the input is an int
+                bots = Integer.parseInt(input);
+            }
+
+            // Check if the number isn't between 2 to 6
+            if (humans + bots < 2 | humans + bots > 6 | bots < 0) {
+                System.out.println("\nInvalid number of players.\n");
+                System.out.print("How many human players (1-6): ");
+                input = sc.nextLine();
+                continue;
+            } else {
+                // Once number is correct, can start creating players
+                valid = true;
+                System.out.println();
+
+                for (int i = 1; i < humans + 1; i++) {
+                    System.out.printf("Name of player %d: ", i);
+                    input = sc.nextLine();
+                    players.add(new HumanPlayer(deck, input));
+                }
+
+                // Add the bots in and shuffle the players
+                players.addAll(AppUtils.generateBotPlayers(bots, deck));
+                Collections.shuffle(players);
+            
+            }
+
+        
+        } catch (NumberFormatException e) {
+            System.out.println("\nInvalid number of players.\n");
+            System.out.print("How many human players (1-6): ");
+            input = sc.nextLine();
+        }
+
+        }
+    return players;
+    } 
 
 
 }
