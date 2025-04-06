@@ -25,21 +25,6 @@ public class App {
     public App() {
 
     }
-    // Menu for selecting the game mode
-    /**
-     * Prompts the user's for the game mode. Offline, Create Online game, Join Online Game, or Quit
-     * @param sc The scanner to read user input.
-     * @return The chosen game mode as int.
-     */
-
-    // Helper function to create the arraylist of players to add to the game
-    /**
-     * Creates an ArrayList of players for the game, containing humans and/or bots players. Minimum 2 to start.
-     * @param sc The scanner for user input.
-     * @param deck The common deck instance.
-     * @return An ArrayList of players that is initialised based on the input from scanner.
-     */
-    
 
     // Helper function for running an offline game
     /**
@@ -75,17 +60,17 @@ public class App {
         }  
         // Player that triggered game end
         Player gameEnder = game.getPlayers().getLast();
+        String message = "";
         if (gameEnder.hasSixColors()) {
-            System.out.printf("%s has collected 6 colors!\n", gameEnder.getName());
+            message = String.format("%s has collected 6 colors!\n", gameEnder.getName());
         } else {
-            System.out.println("There are no more cards in the deck!");
+            message = "There are no more cards in the deck!";
         }
-
+        message += "Final Round!\n";
         // Last round of playing cards
         for (int i = 0; i<game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
-
-            System.out.println("Final round!");
+            System.out.println(message);
         
             // Get the current Player
             Player player = game.getCurrentPlayer();
@@ -106,7 +91,11 @@ public class App {
         for (Player p : players){
             if (p instanceof HumanPlayer) {
                 HumanPlayer human = (HumanPlayer) p;
-                human.discardCard(Input.askForDiscard(sc, human));
+                for (int i = 0; i < 2; i ++) {
+                    Card discard = human.discardCard(Input.askForDiscard(sc, human));
+                    Printer.printDiscard(discard);
+                }
+                
                 human.discardCard(Input.askForDiscard(sc, human));
                 human.emptyHandToScoringArea();
             } else{
@@ -120,7 +109,6 @@ public class App {
         Printer.displayGameState(game);
         Printer.printScoreList(game.calculateScore());
         Printer.printWinScreen(game);
-        System.out.println("enter anything to continue!");
         sc.nextLine();
     }
 
@@ -160,9 +148,9 @@ public class App {
 
             client.listenForMessage();
             client.sendMessage(sc);
+            System.out.println("Press anything to continue");
         } catch (IOException e) {
             System.out.println("Unable to join server");
-            e.printStackTrace();
         }
     }
 

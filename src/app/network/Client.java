@@ -25,6 +25,7 @@ public class Client {
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.username = username;
             this.ready = false;
+            this.gameEnd = false;
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
@@ -50,7 +51,6 @@ public class Client {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
 
-        System.out.println("Client Send Message close");
     }
 
     public void listenForMessage() {
@@ -62,16 +62,23 @@ public class Client {
                 while (socket.isConnected()) {
                     try {
                         message = bufferedReader.readLine();
-                        
                         if (message == null) {
-                            System.out.println("Server has died :(");
+                            System.out.println("Something went wrong when connecting to the server...");
+                            gameEnd = true;
                             closeEverything(socket, bufferedReader, bufferedWriter);
+                            break;
                         }
                         if (message.equals("Thank you for playing!")) {
                             System.out.println(message);
                             gameEnd = true;
                             closeEverything(socket, bufferedReader, bufferedWriter);
                             break;
+                        }
+
+                        if (message.equals("Something went wrong during the game. Ask the host to try again...")) {
+                            System.out.println(message);
+                            gameEnd = true;
+                            closeEverything(socket, bufferedReader, bufferedWriter);
                         }
                         if (message.equals("Your turn")) {
                             ready = true;
@@ -80,10 +87,16 @@ public class Client {
                         System.out.println(message);
                     } catch (IOException e) {
                         closeEverything(socket, bufferedReader, bufferedWriter);
+                    } catch (NullPointerException e) {
+                        closeEverything(socket, bufferedReader, bufferedWriter);
+                    } catch (Exception e) {
+                        System.out.println("Something went wrong when trying to shutdown client");
                     } 
 
                 }
-                System.out.println("Client listen for message close");
+
+                System.out.println("enter anything to continue!");
+                closeEverything(socket, bufferedReader, bufferedWriter);
             }
         }).start();
     }

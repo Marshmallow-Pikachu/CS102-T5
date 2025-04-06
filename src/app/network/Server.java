@@ -9,7 +9,6 @@ import app.entity.*;
 import app.game.*;
 import app.resource.*;
 import app.utilities.AppUtils;
-import app.utilities.Input;
 import app.utilities.Printer;
 
 
@@ -51,7 +50,7 @@ public class Server implements Runnable {
                 thread.start();
 
                 if (ClientHandler.getSize() == this.playerCount[0]) {
-                    for (String s : ClientHandler.playerList) {
+                    for (String s : ClientHandler.clientHandlers.keySet()) {
                         players.add(new HumanPlayer(deck, s));
                     }
                     ArrayList<Player> botPlayers = AppUtils.generateBotPlayers(playerCount[1], deck);
@@ -75,6 +74,76 @@ public class Server implements Runnable {
 
     }
 
+    public void executeTurn() {
+        Player p = game.getCurrentPlayer();
+        ClientHandler.broadcast(Printer.stringGameState(game));
+        ClientHandler.displayHands(game.getPlayers());
+
+        if (p instanceof BotPlayer b) {
+            Card playedCard = b.determineCardChoice(game);
+            game.nextTurn(playedCard);
+        } else {
+        Card playedCard = ClientHandler.promptPlayers(game.getPlayers());
+        game.nextTurn(playedCard);
+        }
+    }
+
+    public void executeLastTurn() {
+        // Let the game run until it is over
+        Player gameEnder = game.getPlayers().getLast();
+        String message = "";
+        if (gameEnder.hasSixColors()) {
+            message = String.format("%s has collected 6 colors!\n", gameEnder.getName());
+        } else {
+            message = "There are no more cards in the deck!\n";
+        }
+        message += "Final Round!\n";
+
+        for (int i = 0; i<game.getPlayers().size(); i++) {
+            ClientHandler.broadcast(Printer.stringGameState(game));
+            ClientHandler.displayHands(game.getPlayers());
+
+            // Get the current Player
+            Player p = game.getCurrentPlayer();
+
+            // Check if the player is human or bot
+            if (p instanceof BotPlayer b) {
+                ClientHandler.promptPlayers(null);
+                Card playedCard = b.determineCardChoice(game);
+                game.nextTurn(playedCard);
+            } else {
+                ClientHandler.broadcast(message);
+                Card playedCard = ClientHandler.promptPlayers(game.getPlayers());
+                game.nextTurn(playedCard);
+            }
+        }
+    }
+
+    public void executeDiscards() {
+        ClientHandler.broadcast(Printer.stringGameState(game));
+        ClientHandler.promptDiscards(game.getPlayers());
+        for (Player p : game.getPlayers()){
+            if (p instanceof HumanPlayer human) {
+                human.emptyHandToScoringArea();
+            } else{
+                BotPlayer bot = (BotPlayer) p;
+                bot.discardCards(game.getPlayers());
+                bot.emptyHandToScoringArea();
+            }
+        }
+    }
+
+    public void showFinalGameResults() {
+        game.flipMajorityCards();
+        ClientHandler.broadcast(Printer.stringGameState(game));
+        ClientHandler.broadcast(Printer.stringScoreList(game.calculateScore()));
+        ClientHandler.broadcast(Printer.stringWinScreen(game));
+        ClientHandler.broadcast("Thank you for playing!");
+
+        ClientHandler.setConnection(false);
+    }
+
+
     public void closeServerSocket() {
         try {
             if (serverSocket != null) {
@@ -85,73 +154,28 @@ public class Server implements Runnable {
         }
     }
 
+
+
     @Override
     public void run() {
         if (startServer()) {
-            System.out.println("Ready to play game!");
-            Game game = this.game;
-            while (!game.getGameEnd()) {
-                Player p = game.getCurrentPlayer();
-                ClientHandler.broadcast(Printer.stringGameState(game));
-                
-                if (p instanceof BotPlayer b) {
-                    Card playedCard = b.determineCardChoice(game);
-                    game.nextTurn(playedCard);
-                } else {
-                Card playedCard = ClientHandler.promptPlayers(p.getName(), p);
-                game.nextTurn(playedCard);
+            try {
+                System.out.println("Ready to play game!");
+                Game game = this.game;
+                while (!game.getGameEnd()) {
+                    executeTurn();
+                    
                 }
-            }
-                // Let the game run until it is over
-
-                Player gameEnder = game.getPlayers().getLast();
-                if (gameEnder.hasSixColors()) {
-                    ClientHandler.broadcast(String.format("%s has collected 6 colors!\n", gameEnder.getName()));
-                    System.out.printf("%s has collected 6 colors!\n", gameEnder.getName());
-                } else {
-                    ClientHandler.broadcast("There are no more cards in the deck!\n");
-                }
-                for (int i = 0; i<game.getPlayers().size(); i++) {
-                    ClientHandler.broadcast(Printer.stringGameState(game));
-
-                    System.out.println("Final round!");
-                
-                    // Get the current Player
-                    Player p = game.getCurrentPlayer();
-
-                    // Check if the player is human or bot
-                    if (p instanceof BotPlayer b) {
-                        ClientHandler.promptPlayers(b.getName(), null);
-                        Card playedCard = b.determineCardChoice(game);
-                        game.nextTurn(playedCard);
-                    } else {
-                        Card playedCard = ClientHandler.promptPlayers(p.getName(), p);
-                        game.nextTurn(playedCard);
-                    }
-                }
-
                 // Initiate final round mechanic
-                ClientHandler.promptDiscards(game.getPlayers());
-                for (Player p : game.getPlayers()){
-                    if (p instanceof HumanPlayer human) {
-                        human.emptyHandToScoringArea();
-                    } else {
-                        BotPlayer bot = (BotPlayer) p;
-                        bot.discardCards(game.getPlayers());
-                        bot.emptyHandToScoringArea();
-                    }
-                }
-
-                game.flipMajorityCards();
-                ClientHandler.broadcast(Printer.stringGameState(game));
-                ClientHandler.broadcast(Printer.stringScoreList(game.calculateScore()));
-                ClientHandler.broadcast(Printer.stringWinScreen(game));
-                ClientHandler.broadcast("Thank you for playing!");
-
-                ClientHandler.setConnection(false);
-                
-                closeServerSocket();
-                System.out.println("Server goes bye bye");
+                executeLastTurn();
+                executeDiscards();
+                showFinalGameResults();
+            } catch (Exception e) {
+                System.out.println("Something went wrong...");
+                e.printStackTrace();
+            }
+            ClientHandler.broadcast("Something went wrong...");
+            closeServerSocket();
             }
             
             
@@ -160,19 +184,4 @@ public class Server implements Runnable {
         }
     
 
-
-    public static void main(String[] args) throws IOException {
-        if (args.length != 1) {
-            System.err.println("Usage: java Server <port number>");
-            System.exit(1);
-         }
-   
-        int port = Integer.parseInt(args[0]);
-        ServerSocket serverSocket = new ServerSocket(port);
-        Server server = new Server(serverSocket, new int[]{2, 0});
-        System.out.println("Server is online!");
-        if (server.startServer()) {
-            System.out.println("Ready to play game!");
-        };
-    }
 }

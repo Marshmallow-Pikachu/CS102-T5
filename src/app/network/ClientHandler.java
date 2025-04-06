@@ -1,6 +1,6 @@
 package app.network;
 
-import java.util.ArrayList;
+import java.util.*;
 
 import app.entity.Player;
 import app.entity.HumanPlayer;
@@ -17,8 +17,7 @@ import java.io.IOException;
 public class ClientHandler implements Runnable {
     
     // To hold all the clients
-    public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
-    public static ArrayList<String> playerList = new ArrayList<>();
+    public static Map<String, ClientHandler> clientHandlers = new HashMap<>();
     public static boolean gameOngoing = false;
     
     private Socket socket;                  // socket to connect
@@ -26,7 +25,7 @@ public class ClientHandler implements Runnable {
     private BufferedWriter bufferedWriter; // for sending data to client
     private String clientUsername;
     
-
+    
     public ClientHandler(Socket socket) {
         try {
             this.socket = socket;
@@ -39,37 +38,33 @@ public class ClientHandler implements Runnable {
             
             // ReadLine is the same as nextLine for console
             this.clientUsername = bufferedReader.readLine();
-
+            
             // Add this new client to our list of clients if the username hasn't existed
             if (!addClientHandler(this, clientUsername)) {
-                this.bufferedWriter.write("Sorry, the username you have used is taken :("); // send the message
-                this.bufferedWriter.newLine();            // create a new line for each client receiving msg
-                this.bufferedWriter.flush(); 
                 this.socket.close();
                 return;
             }
-
+            
             // To send message to all clients
             String playerListMsg = "Players:\n";
-            for (ClientHandler c : clientHandlers) {
+            for (ClientHandler c : clientHandlers.values()) {
                 playerListMsg += String.format("%s\n", c.getName());
             }
             broadcast(playerListMsg);
             
-            // Log the username of the client in the server
-            System.out.println(this.clientUsername + " has joined the game!");
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
-    }
-
-    public String getName() {
-        return this.clientUsername;
     }
 
     public static int getSize() {
         return clientHandlers.size();
     }
+
+    public String getName() {
+        return this.clientUsername;
+    }
+    
     // We need to use this function to listen for messages
     // If we did not split new threads with this, we will have to wait for 
     // each client to send a message first before we can do anything
@@ -81,159 +76,147 @@ public class ClientHandler implements Runnable {
             }
         }
         closeEverything();
-        System.out.println("ClientHandler closed");
     }
-
-    public static boolean addClientHandler(ClientHandler clientHandler, String username) {
-        ArrayList<String> paradeBotNames = new ArrayList<>();
-        paradeBotNames.add("Alice");
-        paradeBotNames.add("Mad Hatter");
-        paradeBotNames.add("White Rabbit");
-        paradeBotNames.add("Humpty Dumpty");
-        paradeBotNames.add("Cheshire Cat");
-        paradeBotNames.add("Dodo Bird");
-        if (playerList.indexOf(username) == -1 && paradeBotNames.indexOf(username) == -1) {
-            clientHandlers.add(clientHandler);
-            playerList.add(username);
+    
+    public static boolean addClientHandler(ClientHandler clientHandler, String username) throws IOException {
+        List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
+        "Humpty Dumpty", "Cheshire Cat", "Dodo Bird");
+        if (username.length() > 80 || username.length() < 1) {
+            clientHandler.sendMessage("username must be between 1 to 80 characters long."); 
+            return false;
+        }
+        if (!clientHandlers.keySet().contains(username) && paradeBotNames.indexOf(username) == -1) {
+            clientHandlers.put(username, clientHandler);
             return true;
         }
+        clientHandler.sendMessage("Sorry this username has been taken :("); 
         return false;
     }
+    
+    public void removeClientHander() {
+        if (clientHandlers.keySet().contains(this.clientUsername)){
+            clientHandlers.remove(this.clientUsername);
+        }
+    }
 
-    public static Card promptPlayers(String name, Player current) {
-
-        // for each clientHandler in the array list client handlers
-        for (int i = 0; i<clientHandlers.size(); i++) {
+    public static void displayHands(ArrayList<Player> players) {
+        for (Player player : players) {
             try {
-                ClientHandler clientHandler = clientHandlers.get(i);
-                if (clientHandler.getName().equals(name)) {
-                    
-                    clientHandler.bufferedWriter.write(Printer.stringRenderedHand(current));
-                    clientHandler.bufferedWriter.newLine();
-                    clientHandler.bufferedWriter.flush();
-                } else {
-                    clientHandler.bufferedWriter.write(String.format("Waiting for %s to take their turn...", name));
-                    clientHandler.bufferedWriter.newLine();
-                    clientHandler.bufferedWriter.flush();
+                if (player instanceof HumanPlayer) {
+                    ClientHandler clientHandler = clientHandlers.get(player.getName());
+                    clientHandler.sendMessage(Printer.stringRenderedHand(player));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
             }
         }
+    }
 
-        if (current == null) {
+    public static ClientHandler getCurrentClientToTakeTurn(ArrayList<Player> players) throws IOException {
+        // Get the name of the current player
+        String currentName = players.get(0).getName();
+        
+        // Let everyone else know whose turn is it
+        for (String name : clientHandlers.keySet()) {
+            if (!currentName.equals(name)) {
+                ClientHandler clientHandler = clientHandlers.get(name);
+                clientHandler.sendMessage(String.format("Waiting for %s to take their turn...", currentName));
+            }
+        }
+        return clientHandlers.get(currentName);
+    }
+
+    public static Card promptPlayers(ArrayList<Player> players) {
+        if (players == null) {
             return null;
         }
-
+        // This for loop is to display either the player's hand or the waiting command
         try {
-            for (int i = 0; i < clientHandlers.size(); i++) {
-                ClientHandler clientHandler = clientHandlers.get(i);
-                if (clientHandler.getName() == name) {
-                    int cardSelectedIndex = -1; 
-                    String input = null;
-                    while (true) {
-                        try {
-                            // To number the cards the player can play
-                            clientHandler.bufferedWriter.write(String.format("Enter a number between 1 to 5 to select a card: "));
-                            clientHandler.bufferedWriter.newLine();
-                            clientHandler.bufferedWriter.flush();
-
-                            clientHandler.bufferedWriter.write("Your turn");
-                            clientHandler.bufferedWriter.newLine();
-                            clientHandler.bufferedWriter.flush();
-
-                            input = clientHandler.bufferedReader.readLine();
-                            cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
-                            if (cardSelectedIndex < 0 || cardSelectedIndex > 4) {
-                                throw new IllegalArgumentException(); // catch below
-                            }
-                            break; //if didnt throw any exception, break
-                        } catch (Exception e) {
-                            clientHandler.bufferedWriter.write("It is not a valid option");
-                            clientHandler.bufferedWriter.newLine();
-                            clientHandler.bufferedWriter.flush();
-                        } 
-                    }
-                    return current.getPlayerHand().get(cardSelectedIndex);
-                }
-            }
-        } catch (IOException e) {
+            ClientHandler currentHandler = getCurrentClientToTakeTurn(players);
+            Player currentPlayer = players.get(0);
             
+            int cardSelectedIndex = -1; 
+            String input = null;
+            while (true) {
+                try {
+                    // To number the cards the player can play
+                    currentHandler.sendMessage("Enter a number between 1 to 5 to select a card: ");
+
+                    // To trigger the client to be able to send us a message
+                    currentHandler.activate();
+                    input = currentHandler.bufferedReader.readLine();
+                    
+                    cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
+                    if (cardSelectedIndex < 0 || cardSelectedIndex > 4) {
+                        throw new IllegalArgumentException(); // catch below
+                    }
+                    break; //if didnt throw any exception, break
+                } catch (IOException e) {
+                    System.out.println("Sockets went wrong");
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    currentHandler.sendMessage("It is not a valid option");
+                } 
+            }
+            return currentPlayer.getPlayerHand().get(cardSelectedIndex);
+
+        } catch (IOException e) {
+            System.out.println("Something went wrong with promptPlayers");
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            System.out.println("Unable to find the clientHandler");
         }
 
         // Smth would be wrong if it ends up here
         return null;
     }
 
-    public static Card promptDiscards(ArrayList<Player> players) {
+    public static void promptDiscards(ArrayList<Player> players) {
         try {
-            for (int i = 0; i < clientHandlers.size(); i++) {
-                ClientHandler clientHandler = clientHandlers.get(i);
-                for (Player p : players) {
-                    if (p instanceof HumanPlayer h) {
-                        if (h.getName().equals(clientHandler.getName())) {
-                            clientHandler.bufferedWriter.write(Printer.stringRenderedHand(h));
-                            clientHandler.bufferedWriter.newLine();
-                            clientHandler.bufferedWriter.flush();
-                            
-                            int count = 0;
-                            while (count < 2) {
-                                try {
-                                    // To number the cards the player can play
-                                    clientHandler.bufferedWriter.write("Select a card to discard (1 to " + h.getPlayerHand().size() + "): ");
-                                    clientHandler.bufferedWriter.newLine();
-                                    clientHandler.bufferedWriter.flush();
-                                    clientHandler.bufferedWriter.write("Your turn");
-                                    clientHandler.bufferedWriter.newLine();
-                                    clientHandler.bufferedWriter.flush();
-                                    String input = clientHandler.bufferedReader.readLine();
-                                    int cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
-                                    if (cardSelectedIndex < 0 || cardSelectedIndex > h.getPlayerHand().size() -1  ) {
-                                        throw new IllegalArgumentException(); // catch below
-                                    }
-                                    Card discarded = h.getPlayerHand().get(cardSelectedIndex);
-                                    h.discardCard(cardSelectedIndex);
-                                    clientHandler.bufferedWriter.write(Printer.stringDiscard(discarded));
-                                    count++;
-                                } catch (Exception e) {
-                                    clientHandler.bufferedWriter.write("It is not a valid option");
-                                    clientHandler.bufferedWriter.newLine();
-                                    clientHandler.bufferedWriter.flush();
-                                } 
+            ClientHandler.displayHands(players);
+            for (int i = 0; i < players.size(); i++) {
+                Player player = players.get(0);
+                if (player instanceof HumanPlayer human) {
+                    ClientHandler currentHandler = getCurrentClientToTakeTurn(players);
+                    int count = 0;
+                    while (count < 2) {
+                        try {
+                            if (count != 0) {
+                                currentHandler.sendMessage(Printer.stringRenderedHand(player));
                             }
-                            continue;
+                            currentHandler.sendMessage("Select a card to discard (1 to " + human.getPlayerHand().size() + "): ");
+                            currentHandler.activate();
+                            String input = currentHandler.bufferedReader.readLine();
+                            int cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
+                            Card discarded = human.getPlayerHand().get(cardSelectedIndex);
+                            human.discardCard(cardSelectedIndex);
+                            currentHandler.sendMessage(Printer.stringDiscard(discarded));
+                            count++;
+                        } catch (IllegalArgumentException e) {
+                            currentHandler.sendMessage("It is not a valid option");
                         }
                     }
-                    clientHandler.bufferedWriter.write(String.format("Waiting for %s to discard their cards", p.getName()));
-                    clientHandler.bufferedWriter.newLine();
-                    clientHandler.bufferedWriter.flush();
-
                 }
+                // rotate the players
+                players.remove(player);
+                players.add(player);
             }
         } catch (IOException e) {
-            
+            System.out.println("Something went wrong with promptDiscards");
+            e.printStackTrace();
         } catch (NullPointerException e) {
+            System.out.println("Something went wrong with finding a clientHandler or player");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Something else went wrong with promptDiscards");
             e.printStackTrace();
         }
-
-        // Smth would be wrong if it ends up here
-        return null;
     }
-
 
     public static void broadcast(String message) {
         // for each clientHandler in the array list client handlers
-        for (int i = 0; i<clientHandlers.size(); i++) {
+        for (ClientHandler clientHandler : clientHandlers.values()) {
             try {
-                ClientHandler clientHandler = clientHandlers.get(i);
-                clientHandler.bufferedWriter.write(message); // send the message
-                clientHandler.bufferedWriter.newLine();            // create a new line for each client receiving msg
-                clientHandler.bufferedWriter.flush();              // In case the buffer is not full, fill up the buffer so message can be sent
-            
+                clientHandler.sendMessage(message);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
@@ -247,15 +230,20 @@ public class ClientHandler implements Runnable {
             gameOngoing = true;
         } else {
             gameOngoing = false;
-            playerList = new ArrayList<>();
+            clientHandlers = new HashMap<>();
         }
         
     }
 
-    public void removeClientHander() {
-        if (clientHandlers.contains(this)){
-            clientHandlers.remove(this);
-        }
+
+    public void sendMessage(String message) throws IOException {
+        this.bufferedWriter.write(message);
+        this.bufferedWriter.newLine();
+        this.bufferedWriter.flush();
+    }
+
+    public void activate() throws IOException {
+        this.sendMessage("Your turn");
     }
 
     public void closeEverything() {

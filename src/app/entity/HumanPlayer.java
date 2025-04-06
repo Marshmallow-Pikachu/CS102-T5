@@ -38,8 +38,10 @@ public class HumanPlayer extends Player {
      * Prompts the player for a card to discard.
      * Will reprompt until a valid choice is made.
      */
-    public void discardCard(int index) {
-        Card discardedCard = super.getPlayerHand().remove(index);
-        Printer.printDiscard(discardedCard);
+    public Card discardCard(int index) throws IllegalArgumentException {
+        if (index < 0 || index > super.getPlayerHand().size() -1  ) {
+            throw new IllegalArgumentException(); // catch below
+        }
+        return super.getPlayerHand().remove(index);
     }
 }

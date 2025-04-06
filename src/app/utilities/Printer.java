@@ -89,8 +89,10 @@ public class Printer {
                 options = "(5)       ";
             case 4:
                 options = "(4)" + cardSpace + options;
+            case 3:
+                options = "(3)" + cardSpace + options;
             default:
-                options = "       (1)" + cardSpace + "(2)" + cardSpace + "(3)" + cardSpace + options;
+                options = "       (1)" + cardSpace + "(2)" + cardSpace + options;
         }
         System.out.println(options);
     }
@@ -203,6 +205,7 @@ public class Printer {
     }
     
     public static void printScoreList(Map<String, Integer> scoreList) {
+        System.out.println("Final Scores:");
         for (String name : scoreList.keySet()) {
             System.out.println(name + ": " + scoreList.get(name));
         }
@@ -270,8 +273,10 @@ public class Printer {
                 options = "(5)       ";
             case 4:
                 options = "(4)" + cardSpace + options;
+            case 3:
+                options = "(3)" + cardSpace + options;
             default:
-                options = "       (1)" + cardSpace + "(2)" + cardSpace + "(3)" + cardSpace + options;
+                options = "       (1)" + cardSpace + "(2)" + cardSpace + options;
         }
         output += options;
 
@@ -388,7 +393,7 @@ public class Printer {
     }
 
     public static String stringScoreList(Map<String, Integer> scoreList) {
-        String output = "";
+        String output = "Final Scores:";
         for (String name : scoreList.keySet()) {
             output += name + ": " + scoreList.get(name) + "\n";
         }
