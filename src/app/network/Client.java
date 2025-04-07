@@ -8,6 +8,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
 
+/**
+ * This class contains the implementation of a client.
+ * It is used for each player to join the game server
+ */
 public class Client {
     
     private Socket socket;
@@ -17,6 +21,11 @@ public class Client {
     private boolean ready;
     private boolean gameEnd;
 
+    /**
+     * The constructor for a client
+     * @param socket the socket to connect the client to the server
+     * @param username the username of the player
+     */
     public Client(Socket socket, String username) {
 
         try {
@@ -32,6 +41,12 @@ public class Client {
 
     }
 
+    /**
+     * To send a message to the game server
+     * The game server will send a message to activate the client to actually send 
+     * a response to the server, else it will discard any other input
+     * @param sc - The scanner to read inputs from terminal
+     */
     public void sendMessage(Scanner sc) {
         try {
             bufferedWriter.write(username);
@@ -53,6 +68,11 @@ public class Client {
 
     }
 
+    /**
+     * Method to listen for messages from the game server. Uses a thread so that
+     * we are able to listen to messages while continuing to read the terminal to
+     * send messages
+     */
     public void listenForMessage() {
         new Thread(new Runnable() {
             @Override
@@ -63,7 +83,7 @@ public class Client {
                     try {
                         message = bufferedReader.readLine();
                         if (message == null) {
-                            System.out.println("Something went wrong when connecting to the server...");
+                            System.out.println("Something went wrong with the connection to server...");
                             gameEnd = true;
                             closeEverything(socket, bufferedReader, bufferedWriter);
                             break;
@@ -101,6 +121,12 @@ public class Client {
         }).start();
     }
 
+    /**
+     * Method to shutdown the client
+     * @param socket The client's socket
+     * @param bufferedReader The client's bufferedReader that reads messages from server
+     * @param bufferedWriter The client's bufferedWriter that sends messages to server
+     */
     public void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         // prevent NullPointerException
         try {
@@ -116,27 +142,5 @@ public class Client {
         } catch (IOException e) {
             
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        if (args.length != 2) {
-            System.err.println(
-                "Usage: java Client <host name> <port number>");
-            System.exit(1);
-        }
-
-        String hostName = args[0];
-        int port = Integer.parseInt(args[1]);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your username: ");
-        String username = scanner.nextLine();
-
- 
-        Socket socket = new Socket(hostName, port);
-        Client client = new Client(socket, username);
-
-        client.listenForMessage();
-        client.sendMessage(scanner);
     }
 }

@@ -5,7 +5,7 @@ import java.util.*;
 import app.entity.Player;
 import app.entity.HumanPlayer;
 import app.resource.Card;
-import app.utilities.Printer;
+import app.utilities.Stringer;
 
 import java.net.Socket;
 import java.io.BufferedReader;
@@ -14,6 +14,11 @@ import java.io.OutputStreamWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+/**
+ * This class is used to handle all the clients input and outputs.
+ * The static methods are used to send and recieve messages to all clients.
+ * The instance methods are used to send and recieve messages to just one client.
+ */
 public class ClientHandler implements Runnable {
     
     // To hold all the clients
@@ -25,7 +30,10 @@ public class ClientHandler implements Runnable {
     private BufferedWriter bufferedWriter; // for sending data to client
     private String clientUsername;
     
-    
+    /**
+     * The constructor for the ClientHandler
+     * @param socket the socket for the client
+     */
     public ClientHandler(Socket socket) {
         try {
             this.socket = socket;
@@ -57,17 +65,26 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Getter method to return the number of clients connected
+     * @return the number of clients connected
+     */
     public static int getSize() {
         return clientHandlers.size();
     }
 
+    /**
+     * Getter method to return the client's username
+     * @return the client's username
+     */
     public String getName() {
         return this.clientUsername;
     }
     
-    // We need to use this function to listen for messages
-    // If we did not split new threads with this, we will have to wait for 
-    // each client to send a message first before we can do anything
+    /**
+     * The main function to allow the clientHandler code to keep functioning
+     * while the game is ongoing.
+     */
     @Override
     public void run() {
         while (socket.isConnected()) {
@@ -78,6 +95,13 @@ public class ClientHandler implements Runnable {
         closeEverything();
     }
     
+    /**
+     * Static method for ClientHandler to validate the username of a client before adding them into the server
+     * @param clientHandler The clientHandler to be added
+     * @param username The client's username
+     * @return whether the client's username is valid or not
+     * @throws IOException
+     */
     public static boolean addClientHandler(ClientHandler clientHandler, String username) throws IOException {
         List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
         "Humpty Dumpty", "Cheshire Cat", "Dodo Bird");
@@ -93,18 +117,26 @@ public class ClientHandler implements Runnable {
         return false;
     }
     
+    /**
+     * To remove the client handler from ClientHandlers.
+     * It will be used when our game is finished
+     */
     public void removeClientHander() {
         if (clientHandlers.keySet().contains(this.clientUsername)){
             clientHandlers.remove(this.clientUsername);
         }
     }
 
+    /**
+     * Method used to display each player's hand
+     * @param players The list of players currently in the game
+     */
     public static void displayHands(ArrayList<Player> players) {
         for (Player player : players) {
             try {
                 if (player instanceof HumanPlayer) {
                     ClientHandler clientHandler = clientHandlers.get(player.getName());
-                    clientHandler.sendMessage(Printer.stringRenderedHand(player));
+                    clientHandler.sendMessage(Stringer.stringRenderedHand(player));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,6 +144,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Method to return the clientHandler of the current player,
+     * It will also let other players know whose turn is it
+     * @param players the list of players in the game
+     * @return The clientHandler of the current player
+     * @throws IOException
+     */
     public static ClientHandler getCurrentClientToTakeTurn(ArrayList<Player> players) throws IOException {
         // Get the name of the current player
         String currentName = players.get(0).getName();
@@ -126,10 +165,12 @@ public class ClientHandler implements Runnable {
         return clientHandlers.get(currentName);
     }
 
+    /**
+     * The method is to ask the current player to play a card
+     * @param players the list of players playing the game
+     * @return the card the current player wants to play
+     */
     public static Card promptPlayers(ArrayList<Player> players) {
-        if (players == null) {
-            return null;
-        }
         // This for loop is to display either the player's hand or the waiting command
         try {
             ClientHandler currentHandler = getCurrentClientToTakeTurn(players);
@@ -170,6 +211,10 @@ public class ClientHandler implements Runnable {
         return null;
     }
 
+    /**
+     * This method prompts each user to discard two cards
+     * @param players the list of players in the game
+     */
     public static void promptDiscards(ArrayList<Player> players) {
         try {
             ClientHandler.displayHands(players);
@@ -181,7 +226,7 @@ public class ClientHandler implements Runnable {
                     while (count < 2) {
                         try {
                             if (count != 0) {
-                                currentHandler.sendMessage(Printer.stringRenderedHand(player));
+                                currentHandler.sendMessage(Stringer.stringRenderedHand(player));
                             }
                             currentHandler.sendMessage("Select a card to discard (1 to " + human.getPlayerHand().size() + "): ");
                             currentHandler.activate();
@@ -189,7 +234,7 @@ public class ClientHandler implements Runnable {
                             int cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
                             Card discarded = human.getPlayerHand().get(cardSelectedIndex);
                             human.discardCard(cardSelectedIndex);
-                            currentHandler.sendMessage(Printer.stringDiscard(discarded));
+                            currentHandler.sendMessage(Stringer.stringDiscard(discarded));
                             count++;
                         } catch (IllegalArgumentException e) {
                             currentHandler.sendMessage("It is not a valid option");
@@ -212,6 +257,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * This method is for sending a message to all players
+     * @param message the message to be sent
+     */
     public static void broadcast(String message) {
         // for each clientHandler in the array list client handlers
         for (ClientHandler clientHandler : clientHandlers.values()) {
@@ -225,6 +274,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * This method is to reset the class ClientHandler so that it is able to create a new game server
+     * @param bool whether to switch on the ClientHandler for game server or off to reset
+     */
     public static void setConnection(boolean bool) {
         if (bool) {
             gameOngoing = true;
@@ -235,17 +288,28 @@ public class ClientHandler implements Runnable {
         
     }
 
-
+    /**
+     * Instance method for clientHandler to send message to a client
+     * @param message the message to be sent
+     * @throws IOException
+     */
     public void sendMessage(String message) throws IOException {
         this.bufferedWriter.write(message);
         this.bufferedWriter.newLine();
         this.bufferedWriter.flush();
     }
 
+    /**
+     * Instance method to activate a client to send a response to us
+     * @throws IOException
+     */
     public void activate() throws IOException {
         this.sendMessage("Your turn");
     }
 
+    /**
+     * Instance method to shutdown the clientHandler
+     */
     public void closeEverything() {
         removeClientHander();
 

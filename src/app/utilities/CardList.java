@@ -2,7 +2,6 @@ package app.utilities;
 
 import java.util.ArrayList;
 
-// class 
 /**
  * Manages a list of lines, used for printing a pretty card.
  */

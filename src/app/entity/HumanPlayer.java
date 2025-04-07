@@ -2,7 +2,6 @@ package app.entity;
 
 import app.game.Game;
 import app.resource.*;
-import app.utilities.Printer;
 
 /**
  * Represents a human player in the game of Parade.
@@ -35,8 +34,10 @@ public class HumanPlayer extends Player {
         }
     }
     /**
-     * Prompts the player for a card to discard.
-     * Will reprompt until a valid choice is made.
+     * Prompts the user for a card to discard
+     * @param index the index of the card to be discarded
+     * @return the card that is discarded
+     * @throws IllegalArgumentException when the index is incorrect
      */
     public Card discardCard(int index) throws IllegalArgumentException {
         if (index < 0 || index > super.getPlayerHand().size() -1  ) {

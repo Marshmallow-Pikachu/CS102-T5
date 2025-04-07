@@ -15,7 +15,8 @@ import java.net.*;
 import java.util.*;
 
 /**
- * Main class to run and manage the game application. It handles game modes, player interactions,
+ * Main class to run and manage the game application. It handles game modes,
+ * player interactions,
  * and the game loop.
  */
 public class App {
@@ -26,38 +27,25 @@ public class App {
 
     }
 
-    // Helper function for running an offline game
-    /**
-     * Runs the main game loop for an offline game, handling player turns, game state updates, and end game logic.
-     * @param sc The scanner for reading user inputs.
-     */
-    public static void offlineGame(Scanner sc) {
-        
-        // initialise deck and players to add to the game
-        Deck deck = new Deck();
-        deck.shuffle();
-        ArrayList<Player> players = Input.getPlayerList(sc, deck);
-        Game game = new Game(players, deck);
+    public static void executeTurn(Scanner sc, Game game) {
+        Printer.displayGameState(game);
 
+        // Get the current Player
+        Player player = game.getCurrentPlayer();
 
-        // Start the game loop 
-        while (!game.getGameEnd()) {
-            Printer.displayGameState(game);
+        // Check if the player is human or bot
+        if (player instanceof BotPlayer b) {
+            Card playedCard = b.determineCardChoice(game);
+            game.nextTurn(playedCard);
+        } else {
+            ArrayList<Card> hand = player.getPlayerHand();
+            Printer.printRenderedHand(player);
+            Card playedCard = Input.askForCard(sc, hand);
+            game.nextTurn(playedCard);
+        }
+    }
 
-            // Get the current Player
-            Player player = game.getCurrentPlayer();
-
-            // Check if the player is human or bot
-            if (player instanceof BotPlayer b) {
-                Card playedCard = b.determineCardChoice(game);
-                game.nextTurn(playedCard);
-            } else {
-                ArrayList<Card> hand = player.getPlayerHand();
-                Printer.printRenderedHand(player);
-                Card playedCard = Input.askForCard(sc, hand);
-                game.nextTurn(playedCard);
-            }
-        }  
+    public static void executeLastTurn(Scanner sc, Game game) {
         // Player that triggered game end
         Player gameEnder = game.getPlayers().getLast();
         String message = "";
@@ -68,10 +56,10 @@ public class App {
         }
         message += "Final Round!\n";
         // Last round of playing cards
-        for (int i = 0; i<game.getPlayers().size(); i++) {
+        for (int i = 0; i < game.getPlayers().size(); i++) {
             Printer.displayGameState(game);
             System.out.println(message);
-        
+
             // Get the current Player
             Player player = game.getCurrentPlayer();
 
@@ -86,34 +74,64 @@ public class App {
                 game.nextTurn(playedCard);
             }
         }
+    }
 
-        // Initiate final round mechanic
-        for (Player p : players){
+    public static void executeDiscard(Scanner sc, Game game) {
+        ArrayList<Player> players = game.getPlayers();
+        for (Player p : players) {
             if (p instanceof HumanPlayer) {
                 HumanPlayer human = (HumanPlayer) p;
-                for (int i = 0; i < 2; i ++) {
+                for (int i = 0; i < 2; i++) {
                     Card discard = human.discardCard(Input.askForDiscard(sc, human));
                     Printer.printDiscard(discard);
                 }
-                
+
                 human.discardCard(Input.askForDiscard(sc, human));
                 human.emptyHandToScoringArea();
-            } else{
-                BotPlayer bot = (BotPlayer)p;
+            } else {
+                BotPlayer bot = (BotPlayer) p;
                 bot.discardCards(players);
                 bot.emptyHandToScoringArea();
             }
         }
+    }
 
+    public static void showFinalGameResults(Game game) {
         game.flipMajorityCards();
         Printer.displayGameState(game);
         Printer.printScoreList(game.calculateScore());
         Printer.printWinScreen(game);
+    }
+
+    /**
+     * Runs the main game loop for an offline game, handling player turns, game
+     * state updates, and end game logic.
+     * 
+     * @param sc The scanner for reading user inputs.
+     */
+    public static void offlineGame(Scanner sc) {
+
+        // initialise deck and players to add to the game
+        Deck deck = new Deck();
+        deck.shuffle();
+        ArrayList<Player> players = Input.getPlayerList(sc, deck);
+        Game game = new Game(players, deck);
+
+        // Start the game loop
+        while (!game.getGameEnd()) {
+            executeTurn(sc, game);
+        }
+
+        // Initiate final round mechanic
+        executeLastTurn(sc, game);
+        executeDiscard(sc, game);
+        showFinalGameResults(game);
+
+        // To let the user see the final game results before showing the menu again
         sc.nextLine();
     }
 
     // Helper function for hosting an online game
-    
     public static void hostGame(Scanner sc) {
         try {
             int[] players = Input.askForNumberOfPlayers(sc);
@@ -124,7 +142,7 @@ public class App {
             Thread thread = new Thread(server);
 
             thread.start();
-            
+
         } catch (IOException e) {
             System.out.println("Something went wrong with the server");
             e.printStackTrace();
@@ -138,7 +156,6 @@ public class App {
                 System.out.print("Enter the server address: ");
                 ipAddress = sc.nextLine();
             }
-            
 
             System.out.print("Enter your name: ");
             String name = sc.nextLine();
@@ -155,9 +172,11 @@ public class App {
     }
 
     /**
-     * Main method initialises the application and handles user input in the game's menu.
+     * Main method initialises the application and handles user input in the game's
+     * menu.
+     * 
      * @param args (not used
-     * )
+     *             )
      */
     public static void main(String[] args) {
         // Initialise Scanner to read inputs
@@ -169,7 +188,7 @@ public class App {
         // Ask the user what option they want
         int option = Input.gameModeOption(sc);
 
-        // This is the main game starting loop, everything inside is to 
+        // This is the main game starting loop, everything inside is to
         while (option != 4) {
             switch (option) {
                 // Offline game
