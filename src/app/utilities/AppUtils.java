@@ -2,6 +2,7 @@ package app.utilities;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import app.entity.BotPlayer;
 import app.entity.Player;
@@ -19,13 +20,9 @@ public class AppUtils {
         ArrayList<Player> botPlayers = new ArrayList<>();
 
         // Default list of bot names to randomise
-        ArrayList<String> paradeBotNames = new ArrayList<>();
-        paradeBotNames.add("Alice");
-        paradeBotNames.add("Mad Hatter");
-        paradeBotNames.add("White Rabbit");
-        paradeBotNames.add("Humpty Dumpty");
-        paradeBotNames.add("Cheshire Cat");
-        paradeBotNames.add("Dodo Bird");
+        List<String> rawParadeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
+        "Humpty Dumpty", "Cheshire Cat", "Dodo Bird");
+        List<String> paradeBotNames = new ArrayList<>(rawParadeBotNames);
         Collections.shuffle(paradeBotNames);
 
         // Add the bots to the ArrayList and return them

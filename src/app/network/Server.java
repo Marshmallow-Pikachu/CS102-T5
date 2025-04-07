@@ -2,8 +2,12 @@ package app.network;
 
 import java.io.*;
 import java.util.*;
+import java.util.regex.*;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import app.entity.*;
 import app.game.*;
@@ -182,6 +186,28 @@ public class Server implements Runnable {
         }
     }
 
+    public void showIpAddress() throws SocketException {
+        Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
+        System.out.println("\nIP address for friends to join: ");
+        Pattern p = Pattern.compile("[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}");
+        while(netInterfaces.hasMoreElements())
+        {
+            NetworkInterface n = (NetworkInterface) netInterfaces.nextElement();
+            Enumeration<InetAddress> ee = n.getInetAddresses();
+            while (ee.hasMoreElements())
+            {
+                InetAddress i = (InetAddress) ee.nextElement();
+                String address = i.getHostAddress();
+                Matcher m = p.matcher(address);
+                boolean matchFound = m.find();
+                if (matchFound && !address.equals("127.0.0.1")) {
+                    System.out.println(address);
+                }
+            }
+        }
+        System.out.println();
+    }
+
     /**
      * To override the abstract method in Runnable.
      * Similar to a main method, this is used to run the game server on a different
@@ -193,6 +219,12 @@ public class Server implements Runnable {
     @Override
     public void run() {
         // Initiate the game server
+        try {
+            showIpAddress();
+        } catch (SocketException e) {
+            System.out.println("Check your wifi settings to find your ip address");
+        }
+        
         if (startServer()) {
             try {
                 // Start running the game

@@ -3,7 +3,6 @@ package app;
 import app.entity.*;
 import app.game.*;
 import app.network.Client;
-import app.network.ClientHandler;
 import app.network.Server;
 import app.resource.*;
 import app.utilities.*;
@@ -150,7 +149,10 @@ public class App {
      * @param sc Scanner to read inputs from the terminal
      */
     public static void hostGame(Scanner sc) {
+        String name = null;
         try {
+            name = Input.getUsername("Enter your username: ", sc, null);
+
             int[] players = Input.askForNumberOfPlayers(sc);
 
             ServerSocket serverSocket = new ServerSocket(25102, 0, Inet4Address.getByName("0.0.0.0"));
@@ -169,15 +171,36 @@ public class App {
             
 
         }
-        joinGame(sc, "127.0.0.1");
+        joinGame(sc, name, "127.0.0.1");
     }
 
+    /**
+     * Method for host to join the game server
+     * @param sc Scanner to read inputs from the terminal
+     * @param ipAddress The ip address of the game server
+     */
+    public static void joinGame(Scanner sc, String name, String ipAddress) {
+        try {
+            InetAddress serverAdd = Inet4Address.getByName(ipAddress);
+            Socket socket = new Socket(serverAdd, 25102);
+            Client client = new Client(socket, name);
+
+            client.listenForMessage();
+            client.sendMessage(sc);
+        } catch (IOException e) {
+            System.out.println("Unable to join server");
+        }
+    }
+
+    /**
+     * Method to join the game server
+     * @param sc Scanner to read inputs from the terminal
+     * @param ipAddress The ip address of the game server
+     */
     public static void joinGame(Scanner sc, String ipAddress) {
         try {
-            if (ipAddress == null) {
-                System.out.print("Enter the server address: ");
-                ipAddress = sc.nextLine();
-            }
+            System.out.print("Enter the server address: ");
+            ipAddress = sc.nextLine();
 
             System.out.print("Enter your name: ");
             String name = sc.nextLine();
@@ -196,8 +219,7 @@ public class App {
      * Main method initialises the application and handles user input in the game's
      * menu.
      * 
-     * @param args (not used
-     *             )
+     * @param args (not used)
      */
     public static void main(String[] args) {
         // Initialise Scanner to read inputs

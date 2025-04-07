@@ -6,6 +6,7 @@ import app.resource.Card;
 import app.resource.Deck;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -185,9 +186,9 @@ public class Input {
                 System.out.println();
 
                 for (int i = 1; i < humans + 1; i++) {
-                    System.out.printf("Name of player %d: ", i);
-                    input = sc.nextLine();
-                    players.add(new HumanPlayer(deck, input));
+                    String message = String.format("Name of player %d: ", i);
+                    String name = getUsername(message, sc, players);
+                    players.add(new HumanPlayer(deck, name));
                 }
 
                 // Add the bots in and shuffle the players
@@ -207,5 +208,39 @@ public class Input {
     return players;
     } 
 
+    public static String getUsername(String message, Scanner sc, ArrayList<Player> players) {
+        String username = null;
+        List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
+        "Humpty Dumpty", "Cheshire Cat", "Dodo Bird");
 
+        outer:
+        while (username == null) {
+            System.out.print(message);
+            username = sc.nextLine();
+
+            if (players != null && players.size() != 0) {
+                for (Player p : players) {
+                    if (p.getName().equals(username)) {
+                        System.out.println("Sorry this username is taken :(");
+                        username = null;
+                        continue outer;
+                    }
+                }
+            }
+
+            if (paradeBotNames.contains(username)) {
+                System.out.println("Sorry the bots have taken this username");
+                username = null;
+                continue;
+            }
+
+            if (username.length() < 1 || username.length() > 80) {
+                System.out.println("Username must be between 1 to 80 characters long.");
+                username = null;
+                continue;
+            }
+        }
+
+        return username;
+    }
 }
