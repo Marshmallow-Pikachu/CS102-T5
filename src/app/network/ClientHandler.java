@@ -5,7 +5,7 @@ import java.util.*;
 import app.entity.Player;
 import app.entity.HumanPlayer;
 import app.resource.Card;
-import app.utilities.Stringer;
+import app.utilities.Printer;
 
 import java.net.Socket;
 import java.io.BufferedReader;
@@ -136,7 +136,7 @@ public class ClientHandler implements Runnable {
             try {
                 if (player instanceof HumanPlayer) {
                     ClientHandler clientHandler = clientHandlers.get(player.getName());
-                    clientHandler.sendMessage(Stringer.stringRenderedHand(player));
+                    clientHandler.sendMessage(Printer.stringRenderedHand(player));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -226,7 +226,7 @@ public class ClientHandler implements Runnable {
                     while (count < 2) {
                         try {
                             if (count != 0) {
-                                currentHandler.sendMessage(Stringer.stringRenderedHand(player));
+                                currentHandler.sendMessage(Printer.stringRenderedHand(player));
                             }
                             currentHandler.sendMessage("Select a card to discard (1 to " + human.getPlayerHand().size() + "): ");
                             currentHandler.activate();
@@ -234,7 +234,7 @@ public class ClientHandler implements Runnable {
                             int cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
                             Card discarded = human.getPlayerHand().get(cardSelectedIndex);
                             human.discardCard(cardSelectedIndex);
-                            currentHandler.sendMessage(Stringer.stringDiscard(discarded));
+                            currentHandler.sendMessage(Printer.stringDiscard(discarded));
                             count++;
                         } catch (IllegalArgumentException e) {
                             currentHandler.sendMessage("It is not a valid option");

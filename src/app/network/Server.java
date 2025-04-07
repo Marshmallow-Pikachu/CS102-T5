@@ -9,7 +9,7 @@ import app.entity.*;
 import app.game.*;
 import app.resource.*;
 import app.utilities.AppUtils;
-import app.utilities.Stringer;
+import app.utilities.Printer;
 
 /**
  * This class contains the implementation of a Game server.
@@ -93,7 +93,7 @@ public class Server implements Runnable {
      */
     public void executeTurn() {
         // Print out the current game state
-        ClientHandler.broadcast(Stringer.stringGameState(game));
+        ClientHandler.broadcast(Printer.stringGameState(game));
         ClientHandler.displayHands(game.getPlayers());
 
         // Get the current player to play their turn
@@ -126,7 +126,7 @@ public class Server implements Runnable {
         // Run the last turn for each of the players
         for (int i = 0; i < game.getPlayers().size(); i++) {
             // Show the current game state
-            ClientHandler.broadcast(Stringer.stringGameState(game));
+            ClientHandler.broadcast(Printer.stringGameState(game));
             ClientHandler.displayHands(game.getPlayers());
 
             // Get the current Player
@@ -148,7 +148,7 @@ public class Server implements Runnable {
      * Helper function to help ask each player to discard their cards.
      */
     public void executeDiscards() {
-        ClientHandler.broadcast(Stringer.stringGameState(game));
+        ClientHandler.broadcast(Printer.stringGameState(game));
         ClientHandler.promptDiscards(game.getPlayers());
         for (Player p : game.getPlayers()) {
             if (p instanceof HumanPlayer human) {
@@ -166,9 +166,9 @@ public class Server implements Runnable {
      */
     public void showFinalGameResults() {
         game.flipMajorityCards();
-        ClientHandler.broadcast(Stringer.stringGameState(game));
-        ClientHandler.broadcast(Stringer.stringScoreList(game.calculateScore()));
-        ClientHandler.broadcast(Stringer.stringWinScreen(game));
+        ClientHandler.broadcast(Printer.stringGameState(game));
+        ClientHandler.broadcast(Printer.stringScoreList(game.calculateScore()));
+        ClientHandler.broadcast(Printer.stringWinScreen(game));
         ClientHandler.broadcast("Thank you for playing!");
 
         ClientHandler.setConnection(false);
