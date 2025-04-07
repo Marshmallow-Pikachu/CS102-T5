@@ -186,6 +186,11 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * A method to display the possible IP addresses that clients can use to connect to
+     * the host
+     * @throws SocketException if there is no configured interface, this error is thrown
+     */
     public void showIpAddress() throws SocketException {
         Enumeration<NetworkInterface> netInterfaces = NetworkInterface.getNetworkInterfaces();
         System.out.println("\nIP address for friends to join: ");

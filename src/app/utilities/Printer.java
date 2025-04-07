@@ -11,6 +11,11 @@ import java.util.*;
  * player hands, the parade, the cards, scoring zones, and the game splashscreen.
  */
 public class Printer {
+
+    /**
+     * Default constructor of Printer
+     */
+    public Printer(){}
     /**
      * Prints the game logo from a text file.
      */
@@ -155,7 +160,7 @@ public class Printer {
     }
 
     /**
-     * Displays the collection zone for scoring, segmented by color.
+     * Displays the scoring zone for scoring, segmented by color.
      * @param cards The list of cards in the scoring zone.
      */
     public static void printRenderedScoringZone(ArrayList<Card> cards) {
@@ -188,8 +193,8 @@ public class Printer {
     }
 
     /**
-     * 
-     * @param card
+     * Displays the discarded card
+     * @param card The card discarded
      */
     public static void printDiscard(Card card) {
         CardList cardList = new CardList();
@@ -199,6 +204,10 @@ public class Printer {
         System.out.println(output);
     }
     
+    /**
+     * Displays the list of scores of all players
+     * @param scoreList A map of name : score of all players
+     */
     public static void printScoreList(Map<String, Integer> scoreList) {
         System.out.println("Final Scores:");
         for (String name : scoreList.keySet()) {
@@ -206,6 +215,10 @@ public class Printer {
         }
     }
 
+    /**
+     * Displays who has won the game
+     * @param game The game instance
+     */
     public static void printWinScreen(Game game){
         ArrayList<Player> winnerList = game.determineWinner();
         if (winnerList.size() > 1){ //If Draw
@@ -222,7 +235,12 @@ public class Printer {
         }
     }
 
-
+    /**
+     * Returns the current game state, including each player's scoring zone and the common parade
+     * as a string.
+     * @param game The current game instance.
+     * @return the game state as a string
+     */
     public static String stringGameState(Game game) {
         String output = "";
         // Display each players scoring zone
@@ -239,8 +257,9 @@ public class Printer {
     }
 
     /**
-     * Prints the player's hand in using text render images.
+     * Returns the player's hand in using text render images as a string.
      * @param player The player's hand.
+     * @return the rendered hand as a string
      */
     public static String stringRenderedHand(Player player) {
         String output = "";
@@ -278,9 +297,10 @@ public class Printer {
     }
 
     /**
-     * Displays the cards in the parade.
+     * Returns the cards in the parade as a string.
      * @param cards The list of cards currently in the parade.
      * @param deckSize The number of cards remaining in the deck.
+     * @return the parade as a string
      */
     public static String stringRenderedParade(ArrayList<Card> cards, int deckSize) {
         String output = "";
@@ -315,8 +335,9 @@ public class Printer {
     }
 
     /**
-     * Displays the scoring zones for all players.
+     * Returns the scoring zones for all players as a string.
      * @param players The list of all players in the game.
+     * @return the scoring zones as a string
      */
     public static String stringAllScoringZones(ArrayList<Player> players) {
         String output = "";
@@ -341,10 +362,10 @@ public class Printer {
         return output;
     }
 
-    // For displaying cards in Collection Zone
     /**
-     * Displays the collection zone for scoring, segmented by color.
+     * Returns the scoring zone for scoring, segmented by color, as a string.
      * @param cards The list of cards in the scoring zone.
+     * @return the scoring zone as a string
      */
     public static String stringRenderedScoringZone(ArrayList<Card> cards) {
         String output = "";
@@ -376,6 +397,11 @@ public class Printer {
         return output;
     }
 
+    /**
+     * Returns a string of why the game has entered its last round
+     * @param game the instance of game
+     * @return The message of why the game has entered its last round
+     */
     public static String stringGameEndMessage(Game game) {
         // Get the last round reason
         Player gameEnder = game.getPlayers().getLast();
@@ -390,6 +416,11 @@ public class Printer {
         return message;
     }
     
+    /**
+     * return the discarded card as a string
+     * @param card The card discarded
+     * @return A string of the discarded card
+     */
     public static String stringDiscard(Card card) {
         CardList cardList = new CardList();
         cardList.add(Render.renderCard(card));
@@ -398,6 +429,11 @@ public class Printer {
         return output;
     }
 
+    /**
+     * Returns the list of scores of all players as a string
+     * @param scoreList A map of name : score of all players
+     * @return a string of all the scores of all the players
+     */
     public static String stringScoreList(Map<String, Integer> scoreList) {
         String output = "Final Scores:";
         for (String name : scoreList.keySet()) {
@@ -406,6 +442,11 @@ public class Printer {
         return output;
     }
     
+    /**
+     * Return who has won the game as a string
+     * @param game The game instance
+     * @return a string of who has won the game
+     */
     public static String stringWinScreen(Game game){
         String output = "";
         ArrayList<Player> winnerList = game.determineWinner();

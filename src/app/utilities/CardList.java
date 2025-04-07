@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class CardList {
     private ArrayList<String> lines;
 
-    // When called, will create 7 lines of empty strings to store the card information
     /**
      * Constructs a new CardList with 7 empty lines.
      */
@@ -24,7 +23,6 @@ public class CardList {
         this.lines = newList;
     }
 
-    // Reset the rows in PrintList
     /**
      * Resets the lines in the CardList, initializing it to contain 7 empty strings.
      */
@@ -35,7 +33,6 @@ public class CardList {
         }
     }
 
-    // To check if the rows have been set to null
     /**
      * Checks if the lines list is null.
      * @return true if lines is null, false otherwise.
@@ -47,20 +44,30 @@ public class CardList {
         return false;
     }
 
-    
+    /**
+     * Method to add raw output from Render to itself
+     * @param newList raw output from Render
+     */
     public void add(ArrayList<String> newList) {
         for (int i = 0; i < 7; i++) {
             this.lines.set(i, this.lines.get(i) + "   " + newList.get(i));
         }
     }
 
+    /**
+     * Method to add another CardList to itself
+     * @param newList another CardList
+     */
     public void add(CardList newList) {
         for (int i = 0; i < 7; i++) {
             this.lines.set(i, this.lines.get(i) + "   " + newList.lines.get(i));
         }
     }
 
-    // Display cards in list, and reset itself once done
+    /**
+     * Outputs the cards as a string to be printed, then reset itself
+     * @return The string version of the cards
+     */
     public String output() {
         String output = "";
         for (String line : lines) {
@@ -70,7 +77,12 @@ public class CardList {
         return output;
     }
 
-    // Display cards in list with spaces, and reset itself once done
+    /**
+     * Outputs the cards in list with spaces, and reset itself once done
+     * It is used in printing of scoring zone
+     * @param isSingleRow if the card list is by itself or with another row
+     * @return A string version of the cards to be used in scoring zone
+     */
     public String outputSpaced(boolean isSingleRow) {
         String output = "";
         if (isSingleRow) {

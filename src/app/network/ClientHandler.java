@@ -21,8 +21,14 @@ import java.io.IOException;
  */
 public class ClientHandler implements Runnable {
     
-    // To hold all the clients
+    /**
+     * To initialise an empty map to keep track of the clients
+     */
     public static Map<String, ClientHandler> clientHandlers = new HashMap<>();
+
+    /**
+     * To initialise a boolean to keep track of whether the game has ended or not
+     */
     public static boolean gameOngoing = false;
     
     private Socket socket;                  // socket to connect
@@ -100,7 +106,7 @@ public class ClientHandler implements Runnable {
      * @param clientHandler The clientHandler to be added
      * @param username The client's username
      * @return whether the client's username is valid or not
-     * @throws IOException
+     * @throws IOException If an error occurs when trying to send message to the client
      */
     public static boolean addClientHandler(ClientHandler clientHandler, String username) throws IOException {
         List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
@@ -149,7 +155,7 @@ public class ClientHandler implements Runnable {
      * It will also let other players know whose turn is it
      * @param players the list of players in the game
      * @return The clientHandler of the current player
-     * @throws IOException
+     * @throws IOException If an error occurs when trying to send message to the client
      */
     public static ClientHandler getCurrentClientToTakeTurn(ArrayList<Player> players) throws IOException {
         // Get the name of the current player
@@ -291,7 +297,7 @@ public class ClientHandler implements Runnable {
     /**
      * Instance method for clientHandler to send message to a client
      * @param message the message to be sent
-     * @throws IOException
+     * @throws IOException If an error occurs when trying to send message to the client
      */
     public void sendMessage(String message) throws IOException {
         this.bufferedWriter.write(message);
@@ -301,7 +307,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * Instance method to activate a client to send a response to us
-     * @throws IOException
+     * @throws IOException If an error occurs when trying to send message to the client
      */
     public void activate() throws IOException {
         this.sendMessage("Your turn");

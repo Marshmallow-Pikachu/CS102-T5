@@ -9,6 +9,10 @@ import java.util.*;
  * the parade,  deck, and player turns.
  */
 public class Game {
+
+    /**
+     * To initialise the possible colours in the card game
+     */
     public static final ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
     private final ArrayList<Player> players;
     private final Parade parade;
@@ -177,6 +181,10 @@ public class Game {
         }
     } 
 
+    /**
+     * Method to get the scores of each player
+     * @return a map of Name : score of each player
+     */
     public Map<String, Integer> calculateScore() {
         Map<String, Integer> scoreList = new HashMap<>();
         for (Player p : players) {
@@ -224,9 +232,4 @@ public class Game {
         return returnList;
     }
 
-
-    /**
-     * Checks if the game has ended.
-     * @return True if the game has ended, otherwise false.
-     */
 }

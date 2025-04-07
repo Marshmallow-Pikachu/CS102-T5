@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import app.resource.Card;
 
-// Helper class to convert cards to ArrayList
 /**
  * This class contains utility methods for rendering text images our cards and the scoring zone.
  */
 public class Render {
-    // Translate the card into [filename, color]
+
+    /**
+     * Default constructor of Render
+     */
+    public Render(){}
     /**
      * Translates card attributes to include text images and ANSI color codes.
      * @param c The card to translate.
@@ -49,7 +52,6 @@ public class Render {
         return details;
     }
 
-    // Convert a card into an ArrayList<Strings> to print out
     /**
      * Renders a card into a list of strings for display.
      * @param c The card to be rendered.
@@ -85,7 +87,6 @@ public class Render {
         return cardRender;
     }
 
-    // Highlight a played Card
     /**
      * Highlights the last played card in the parade for visual clarity.
      * @param c The card to be highlighted.
@@ -114,7 +115,6 @@ public class Render {
         return printList;
     }
 
-    // Convert an ArrayList<Cards> into a stacked row of cards to print out
     /**
      * Renders a stacked representation of multiple cards. This is to keep things neat and prevent console width compatibility issues
      * @param cards The list of cards to render in a stacked format.
@@ -155,7 +155,6 @@ public class Render {
         return renderList;
     }
 
-    // Convert an int deckSize into a deck with that number to print out
     /**
      * Renders a deck visual based on the number of cards left.
      * @param deckSize The number of cards left in the deck.
@@ -191,6 +190,7 @@ public class Render {
         }
         return printList;
     }
+    
     /**
      * Renders the scoring zones, seperated by color.
      * @param cards The list of cards to render.

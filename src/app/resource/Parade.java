@@ -2,6 +2,10 @@ package app.resource;
 
 import java.util.*;
 
+/**
+ * Represents the Parade, the cards that are displayed for all players in the game and the 
+ * list of cards that they will be adding to and collecting from
+ */
 public class Parade {
     private ArrayList<Card> paradeCards = new ArrayList<Card>();
 

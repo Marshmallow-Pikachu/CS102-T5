@@ -13,15 +13,19 @@ import java.util.Scanner;
  * This class contains utility methods for handling user inputs.
  */
 public class Input {
+
+    /**
+     * Default Contructor of Input
+     */
+    public Input() {}
     /**
      * Prompts the user to select a card from their hand by entering a number representing the card's position in playerHand.
-     * 
+     * This method checks for a valid index, and will reprompt the user until a valid number is entered.
+     * Numbers outside 1-5 are invalid, as well as other inputs.
      * @param sc The scanner used for input reading.
      * @param myHand An ArrayList of type Card representing the player's current hand.
      * @return The Card selected by the user.
      * 
-     * This method checks for a valid index, and will reprompt the user until a valid number is entered.
-     * Numbers outside 1-5 are invalid, as well as other inputs.
      */
     public static Card askForCard(Scanner sc, ArrayList<Card> myHand) {
         int cardSelectedIndex = -1; 
@@ -43,7 +47,14 @@ public class Input {
         return myHand.get(cardSelectedIndex);
     }
 
-    // Return the index of card to be discarded
+    /**
+     * Prompts the user to discard a card from their hand by entering a number representing the card's position in playerHand.
+     * This method checks for a valid index, and will reprompt the user until a valid number is entered.
+     * Numbers outside 1-HandSize are invalid, as well as other inputs.
+     * @param sc Scanner to read input from terminal
+     * @param player The player who we are asking discard from
+     * @return the index of the card to be discarded
+     */
     public static int askForDiscard(Scanner sc, HumanPlayer player) {
         int index;
         Printer.printRenderedHand(player);
@@ -63,7 +74,13 @@ public class Input {
         return index;
     }
 
-    // Returns an int array of how many human and bot players
+    /**
+     * Prompt the user to enter how many human and bot players for the game.
+     * Used in Server, minimum 2 human players and a max of 6 players total
+     * Will keep prompting user until a valid combination of players has been entered
+     * @param sc Scanner to read input from terminal
+     * @return An int array of [noOfHumanPlayers, noOfBotPlayers]
+     */
     public static int[] askForNumberOfPlayers(Scanner sc) {
         // Ask user for the amount of players to add
         boolean valid = false;
@@ -115,6 +132,12 @@ public class Input {
         return null;
     }
 
+    /**
+     * Method to ask user to select an option to run in our App
+     * Will keep reprompting the user until a valid input is entered
+     * @param sc Scanner to read input from terminal
+     * @return the corresponding int to the function of the app they selected
+     */
     public static int gameModeOption(Scanner sc) {
         boolean valid = false;
         int input = 0;
@@ -135,7 +158,13 @@ public class Input {
         return input;
     }
 
-    
+    /**
+     * Create the players to add into the game. This is used for offline game
+     * Will validate the number of players. Minimum 1 human player and a max of 6 players.
+     * @param sc Scanner to read input from the terminal
+     * @param deck Deck to deal cards to each player when creating them
+     * @return the players to be added into the game
+     */
     public static ArrayList<Player> getPlayerList(Scanner sc, Deck deck) {
     // initialise ArrayList<Player> to return players
     ArrayList<Player> players = new ArrayList<>();
@@ -208,6 +237,15 @@ public class Input {
     return players;
     } 
 
+    /**
+     * Method used to get the username for the players
+     * Will check if the name is between 1 to 80 characters, and is not a duplicate
+     * between existing players and bot players.
+     * @param message The message to display to ask user for username
+     * @param sc Scanner to read input from terminal
+     * @param players The existing players, if null is passed, it will not check this condition
+     * @return validated username of the player
+     */
     public static String getUsername(String message, Scanner sc, ArrayList<Player> players) {
         String username = null;
         List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 

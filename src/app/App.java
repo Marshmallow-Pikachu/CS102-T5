@@ -177,6 +177,7 @@ public class App {
     /**
      * Method for host to join the game server
      * @param sc Scanner to read inputs from the terminal
+     * @param name The username of the host for creating a client to connect
      * @param ipAddress The ip address of the game server
      */
     public static void joinGame(Scanner sc, String name, String ipAddress) {
