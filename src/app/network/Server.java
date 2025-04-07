@@ -93,6 +93,7 @@ public class Server implements Runnable {
      */
     public void executeTurn() {
         // Print out the current game state
+        ClientHandler.broadcast("\n".repeat(5));
         ClientHandler.broadcast(Printer.stringGameState(game));
         ClientHandler.displayHands(game.getPlayers());
 
@@ -113,19 +114,13 @@ public class Server implements Runnable {
      * last round.
      */
     public void executeLastTurn() {
-        // Get the last round reason
-        Player gameEnder = game.getPlayers().getLast();
-        String message = "";
-        if (gameEnder.hasSixColors()) {
-            message = String.format("%s has collected 6 colors!\n", gameEnder.getName());
-        } else {
-            message = "There are no more cards in the deck!\n";
-        }
-        message += "Final Round!\n";
+        // Get the message of why game is ending
+        String message = Printer.stringGameEndMessage(game);
 
         // Run the last turn for each of the players
         for (int i = 0; i < game.getPlayers().size(); i++) {
             // Show the current game state
+            ClientHandler.broadcast("\n".repeat(5));
             ClientHandler.broadcast(Printer.stringGameState(game));
             ClientHandler.displayHands(game.getPlayers());
 

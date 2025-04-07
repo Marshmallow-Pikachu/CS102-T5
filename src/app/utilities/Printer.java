@@ -376,6 +376,20 @@ public class Printer {
         return output;
     }
 
+    public static String stringGameEndMessage(Game game) {
+        // Get the last round reason
+        Player gameEnder = game.getPlayers().getLast();
+        String message = "";
+        if (gameEnder.hasSixColors()) {
+            message = String.format("%s has collected 6 colors!\n", gameEnder.getName());
+        } else {
+            message = "There are no more cards in the deck!\n";
+        }
+        message += "Final Round!\n";
+
+        return message;
+    }
+    
     public static String stringDiscard(Card card) {
         CardList cardList = new CardList();
         cardList.add(Render.renderCard(card));

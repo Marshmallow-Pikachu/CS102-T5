@@ -79,32 +79,38 @@ public class Client {
             public void run() {
                 String message;
 
+                connected:
                 while (socket.isConnected()) {
                     try {
                         message = bufferedReader.readLine();
-                        if (message == null) {
-                            System.out.println("Something went wrong with the connection to server...");
-                            gameEnd = true;
-                            closeEverything(socket, bufferedReader, bufferedWriter);
-                            break;
-                        }
-                        if (message.equals("Thank you for playing!")) {
-                            System.out.println(message);
-                            gameEnd = true;
-                            closeEverything(socket, bufferedReader, bufferedWriter);
-                            break;
-                        }
 
-                        if (message.equals("Something went wrong during the game. Ask the host to try again...")) {
-                            System.out.println(message);
-                            gameEnd = true;
-                            closeEverything(socket, bufferedReader, bufferedWriter);
+                        switch (message) {
+                            case null:
+                                System.out.println("Something went wrong with the connection to server...");
+                                gameEnd = true;
+                                closeEverything(socket, bufferedReader, bufferedWriter);
+                                break connected;
+                            case "Thank you for playing":
+                                System.out.println(message);
+                                gameEnd = true;
+                                closeEverything(socket, bufferedReader, bufferedWriter);
+                                break connected;
+                            case "Username must be between 1 to 80 characters long.":
+                                System.out.println(message);
+                                gameEnd = true;
+                                closeEverything(socket, bufferedReader, bufferedWriter);
+                                break connected;
+                            case "Sorry this username has been taken :(":
+                                System.out.println(message);
+                                gameEnd = true;
+                                closeEverything(socket, bufferedReader, bufferedWriter);
+                                break connected;
+                            case "Your turn":
+                                ready = true;
+                                break;
+                            default:
+                                System.out.println(message);
                         }
-                        if (message.equals("Your turn")) {
-                            ready = true;
-                            continue;
-                        }
-                        System.out.println(message);
                     } catch (IOException e) {
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     } catch (NullPointerException e) {
@@ -112,11 +118,9 @@ public class Client {
                     } catch (Exception e) {
                         System.out.println("Something went wrong when trying to shutdown client");
                     } 
-
                 }
-
-                System.out.println("enter anything to continue!");
                 closeEverything(socket, bufferedReader, bufferedWriter);
+                System.out.println("enter anything to continue!");
             }
         }).start();
     }

@@ -106,7 +106,7 @@ public class ClientHandler implements Runnable {
         List<String> paradeBotNames = List.of("Alice", "Mad Hatter", "White Rabbit", 
         "Humpty Dumpty", "Cheshire Cat", "Dodo Bird");
         if (username.length() > 80 || username.length() < 1) {
-            clientHandler.sendMessage("username must be between 1 to 80 characters long."); 
+            clientHandler.sendMessage("Username must be between 1 to 80 characters long."); 
             return false;
         }
         if (!clientHandlers.keySet().contains(username) && paradeBotNames.indexOf(username) == -1) {

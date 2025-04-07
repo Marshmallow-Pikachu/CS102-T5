@@ -3,14 +3,12 @@ package app;
 import app.entity.*;
 import app.game.*;
 import app.network.Client;
+import app.network.ClientHandler;
 import app.network.Server;
 import app.resource.*;
 import app.utilities.*;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.*;
 import java.util.*;
 
@@ -27,7 +25,13 @@ public class App {
 
     }
 
+    /**
+     * Helper method to execute one turn of the game
+     * @param sc Scanner to read inputs from the terminal
+     * @param game The parade game instance
+     */
     public static void executeTurn(Scanner sc, Game game) {
+        System.out.println("\n".repeat(5));
         Printer.displayGameState(game);
 
         // Get the current Player
@@ -45,18 +49,18 @@ public class App {
         }
     }
 
+    /**
+     * Helper method to execute the last turns of the game
+     * @param sc Scanner to read inputs from the terminal
+     * @param game The parade game instance
+     */
     public static void executeLastTurn(Scanner sc, Game game) {
-        // Player that triggered game end
-        Player gameEnder = game.getPlayers().getLast();
-        String message = "";
-        if (gameEnder.hasSixColors()) {
-            message = String.format("%s has collected 6 colors!\n", gameEnder.getName());
-        } else {
-            message = "There are no more cards in the deck!";
-        }
-        message += "Final Round!\n";
+        // Get the message of why game is ending
+        String message = Printer.stringGameEndMessage(game);
+
         // Last round of playing cards
         for (int i = 0; i < game.getPlayers().size(); i++) {
+            System.out.println("\n".repeat(5));
             Printer.displayGameState(game);
             System.out.println(message);
 
@@ -76,6 +80,11 @@ public class App {
         }
     }
 
+    /**
+     * Helper method to get all players to discard two cards
+     * @param sc Scanner to read inputs from the terminal
+     * @param game The parade game instance
+     */
     public static void executeDiscard(Scanner sc, Game game) {
         ArrayList<Player> players = game.getPlayers();
         for (Player p : players) {
@@ -96,6 +105,10 @@ public class App {
         }
     }
 
+    /**
+     * Helper method to show the final results of the game
+     * @param game the parade game instance
+     */
     public static void showFinalGameResults(Game game) {
         game.flipMajorityCards();
         Printer.displayGameState(game);
@@ -131,7 +144,11 @@ public class App {
         sc.nextLine();
     }
 
-    // Helper function for hosting an online game
+    /**
+     * Method to create the game server, it will run joinGame with localhost as address
+     * after setting up the server
+     * @param sc Scanner to read inputs from the terminal
+     */
     public static void hostGame(Scanner sc) {
         try {
             int[] players = Input.askForNumberOfPlayers(sc);
@@ -144,8 +161,13 @@ public class App {
             thread.start();
 
         } catch (IOException e) {
-            System.out.println("Something went wrong with the server");
-            e.printStackTrace();
+            if (e.getMessage().equals("Address already in use")) {
+                System.out.println("Found a game being hosted on this device, joining it instead");
+            } else {
+                System.out.println("Something went wrong with the server");
+            }
+            
+
         }
         joinGame(sc, "127.0.0.1");
     }
@@ -165,7 +187,6 @@ public class App {
 
             client.listenForMessage();
             client.sendMessage(sc);
-            System.out.println("Press anything to continue");
         } catch (IOException e) {
             System.out.println("Unable to join server");
         }
