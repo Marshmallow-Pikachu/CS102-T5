@@ -465,5 +465,12 @@ public class Printer {
         return output;
     }
 
+    public static void clearScreen() {
+        System.out.println("\033[1J\033[3J");
+    }
+
+    public static String clearScreenString() {
+        return "\033[1J\033[3J";
+    }
 }
 

@@ -94,7 +94,6 @@ public class App {
                     Printer.printDiscard(discard);
                 }
 
-                human.discardCard(Input.askForDiscard(sc, human));
                 human.emptyHandToScoringArea();
             } else {
                 BotPlayer bot = (BotPlayer) p;
@@ -140,6 +139,7 @@ public class App {
         showFinalGameResults(game);
 
         // To let the user see the final game results before showing the menu again
+        System.out.println("Press anything to continue!");
         sc.nextLine();
     }
 
