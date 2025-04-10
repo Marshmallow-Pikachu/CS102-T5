@@ -237,7 +237,6 @@ public class Server implements Runnable {
                 Game game = this.game;
                 while (!game.getGameEnd()) {
                     executeTurn();
-
                 }
                 // Initiate final round mechanic
                 executeLastTurn();

@@ -115,7 +115,7 @@ public class ClientHandler implements Runnable {
             clientHandler.sendMessage("Username must be between 1 to 80 characters long."); 
             return false;
         }
-        if (!clientHandlers.keySet().contains(username) && paradeBotNames.indexOf(username) == -1) {
+        if (!clientHandlers.keySet().contains(username) && !paradeBotNames.contains(username)) {
             clientHandlers.put(username, clientHandler);
             return true;
         }
@@ -179,7 +179,9 @@ public class ClientHandler implements Runnable {
     public static Card promptPlayers(ArrayList<Player> players) {
         // This for loop is to display either the player's hand or the waiting command
         try {
+            // Get the socket of current player
             ClientHandler currentHandler = getCurrentClientToTakeTurn(players);
+            // Get the current player object
             Player currentPlayer = players.get(0);
             
             int cardSelectedIndex = -1; 
@@ -196,6 +198,9 @@ public class ClientHandler implements Runnable {
                     cardSelectedIndex = Integer.parseInt(input) - 1; // the -1 is because number between 1 to 5. Arraylist is 0 indexed
                     if (cardSelectedIndex < 0 || cardSelectedIndex > 4) {
                         throw new IllegalArgumentException(); // catch below
+                        // Hello YL, we are simply doing what was taught in ICE :>
+                        // We understand we could have flipped the logic to not need to 
+                        // throw an exception, but...
                     }
                     break; //if didnt throw any exception, break
                 } catch (IOException e) {
