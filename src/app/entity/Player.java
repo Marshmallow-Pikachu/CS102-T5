@@ -75,14 +75,14 @@ public abstract class Player {
         return false;
     }
     /**
-     * Returns the number of cards of a certain color that the player has in his hand
-     * @param playerHand The hand to count the colors for
+     * Returns the number of cards of a certain color that the player has in their collected zone
+     * @param collectedCards The cards in the collection zone to count the colors for
      * @return colourCount Returns an ArrayList of type Integer with the card counts in order of "Red", "Blue", "Purple", "Green", "Black", "Yellow"
      */
-    public ArrayList<Integer> obtainPlayerColourCounts (ArrayList<Card> playerHand){ 
+    public ArrayList<Integer> obtainPlayerColourCounts (ArrayList<Card> collectedCards){ 
         ArrayList<String> colourList = new ArrayList<>(Arrays.asList("Red", "Blue", "Purple", "Green", "Black", "Yellow"));
         ArrayList<Integer> colourCount = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0, 0));
-        for (Card c : playerHand) {
+        for (Card c : collectedCards) {
             for (int i = 0; i < 6; i++) {
                 if (c.getColour().equals(colourList.get(i))) {
                     colourCount.set(i, colourCount.get(i) + 1);
