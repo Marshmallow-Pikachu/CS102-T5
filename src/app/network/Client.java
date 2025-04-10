@@ -65,7 +65,6 @@ public class Client {
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
-
     }
 
     /**
@@ -79,6 +78,7 @@ public class Client {
             public void run() {
                 String message;
 
+                outer:
                 while (socket.isConnected()) {
                     try {
                         message = bufferedReader.readLine();
@@ -88,22 +88,22 @@ public class Client {
                                 System.out.println("Something went wrong with the connection to server...");
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
-                                break;
+                                break outer;
                             case "Thank you for playing!":
                                 System.out.println(message);
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
-                                break;
+                                break outer;
                             case "Username must be between 1 to 80 characters long.":
                                 System.out.println(message);
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
-                                break;
+                                break outer;
                             case "Sorry this username has been taken :(":
                                 System.out.println(message);
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
-                                break;
+                                break outer;
                             case "Your turn":
                                 ready = true;
                                 break;
