@@ -435,7 +435,7 @@ public class Printer {
      * @return a string of all the scores of all the players
      */
     public static String stringScoreList(Map<String, Integer> scoreList) {
-        String output = "Final Scores:";
+        String output = "Final Scores:\n";
         for (String name : scoreList.keySet()) {
             output += name + ": " + scoreList.get(name) + "\n";
         }
@@ -469,8 +469,6 @@ public class Printer {
         System.out.println("\033[1J\033[3J");
     }
 
-    public static String clearScreenString() {
-        return "\033[1J\033[3J";
-    }
+
 }
 

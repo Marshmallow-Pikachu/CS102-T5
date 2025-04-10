@@ -164,7 +164,6 @@ public class Server implements Runnable {
      * Helper function to display the final game results.
      */
     public void showFinalGameResults() {
-        game.flipMajorityCards();
         ClientHandler.broadcast(Printer.stringGameState(game));
         ClientHandler.broadcast(Printer.stringScoreList(game.calculateScore()));
         ClientHandler.broadcast(Printer.stringWinScreen(game));
@@ -241,6 +240,7 @@ public class Server implements Runnable {
                 // Initiate final round mechanic
                 executeLastTurn();
                 executeDiscards();
+                this.game.flipMajorityCards();
                 showFinalGameResults();
             } catch (Exception e) {
                 System.out.println("Something went wrong...");

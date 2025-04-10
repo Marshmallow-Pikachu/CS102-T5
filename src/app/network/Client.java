@@ -89,7 +89,7 @@ public class Client {
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
                                 break;
-                            case "Thank you for playing":
+                            case "Thank you for playing!":
                                 System.out.println(message);
                                 gameEnd = true;
                                 closeEverything(socket, bufferedReader, bufferedWriter);
