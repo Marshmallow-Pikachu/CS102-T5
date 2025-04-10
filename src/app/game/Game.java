@@ -193,7 +193,7 @@ public class Game {
             int count = 0;
             for (Card c : p.getCollectedParadeCards()){ // Count score for each player
                 if (c.getFlipped()){ //checked if flipped
-                    System.out.printf("Flipping %d, %s\n", c.getValue(), c.getColour());
+                    // System.out.printf("Flipping %d, %s\n", c.getValue(), c.getColour());
                     count++;
                 } else{
                     count += c.getValue();
