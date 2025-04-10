@@ -18,7 +18,7 @@ public class Render {
     /**
      * Translates card attributes to include text images and ANSI color codes.
      * @param c The card to translate.
-     * @return A String [] containing details of the filename for the card image and the corresponding ANSI color code.
+     * @return A String [] containing details of the filename for the card images and the corresponding ANSI color code.
      */
     public static String[] translateCard(Card c) {
         String[] details = new String[2];
@@ -58,14 +58,14 @@ public class Render {
      * @return An ArrayList of String representing the rendered card.
      */
     public static ArrayList<String> renderCard(Card c) {
-        // Get the image and the colour of the card
+        // Get the images and the colour of the card
         String[] details = translateCard(c);
 
         // Initialise the ArrayList to store the card render
         ArrayList<String> cardRender = new ArrayList<>(7);
 
         
-        try (Scanner sc = new Scanner(new File("./image/" + details[0]))) {
+        try (Scanner sc = new Scanner(new File("./images/" + details[0]))) {
             while (sc.hasNext()) {
                 String line = sc.nextLine();
                 // To add the number on the card, replace % with the value
@@ -130,7 +130,7 @@ public class Render {
 
         // Create the subsequent cards
         for (int i = 1; i < cards.size(); i++) {
-            try(Scanner sc = new Scanner(new File("./image/stacked.txt"))) {
+            try(Scanner sc = new Scanner(new File("./images/stacked.txt"))) {
                     Card c = cards.get(i);
                     String[] details =  translateCard(c);
                     int lineNo = 0;
@@ -163,7 +163,7 @@ public class Render {
     public static ArrayList<String> renderDeck(int deckSize) {
         ArrayList<String> printList = new ArrayList<>();
 
-        // Determine what type of deck image to display
+        // Determine what type of deck images to display
         String deckType = "deck.txt";
         switch (deckSize) {
             case 0:
@@ -179,7 +179,7 @@ public class Render {
                 deckType = "deck.txt";
                 break;
         }
-        try (Scanner sc = new Scanner(new File("./image/" + deckType))) {
+        try (Scanner sc = new Scanner(new File("./images/" + deckType))) {
             while (sc.hasNext()){
                 String raw = sc.nextLine();
                 String line = raw.replace("%%", String.format("%2d", deckSize));

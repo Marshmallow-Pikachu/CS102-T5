@@ -20,14 +20,14 @@ public class Printer {
      * Prints the game logo from a text file.
      */
     public static void printLogo() {
-        try (Scanner sc = new Scanner(new File("./image/logo.txt"))) {
+        try (Scanner sc = new Scanner(new File("./images/logo.txt"))) {
             System.out.print(ANSIColor.ANSI_PURPLE);
             while (sc.hasNextLine()) {
                 System.out.println(sc.nextLine());
             }
             System.out.println(ANSIColor.ANSI_RESET);
         } catch (FileNotFoundException e) {
-            System.out.println("Seems like the image folder is missing...");
+            System.out.println("Seems like the images folder is missing...");
         }
     }
 
