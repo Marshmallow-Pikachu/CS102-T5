@@ -150,12 +150,14 @@ public class Game {
         colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);colourCount.add(0);
         for (Player p : players){ //Get Majority of Each Colour
             //Populate colourCount with MAX no. of colour in game
-            ArrayList<Integer> counts = p.obtainPlayerColourCounts(p.getPlayerHand()); //Ive not verified this method from player so im leaving the above to use in case this somehow breaks
+            ArrayList<Integer> counts = p.obtainPlayerColourCounts(p.getCollectedParadeCards()); //Ive not verified this method from player so im leaving the above to use in case this somehow breaks
+            //System.out.println("counts" + counts);
             for (int i = 0; i < 6; i++){ 
                 if (colourCount.get(i) < counts.get(i)){
                     colourCount.set(i, counts.get(i));
                 }
             }
+            //System.out.println(colourCount);
         }
         return colourCount;
     }
@@ -191,6 +193,7 @@ public class Game {
             int count = 0;
             for (Card c : p.getCollectedParadeCards()){ // Count score for each player
                 if (c.getFlipped()){ //checked if flipped
+                    System.out.printf("Flipping %d, %s\n", c.getValue(), c.getColour());
                     count++;
                 } else{
                     count += c.getValue();
