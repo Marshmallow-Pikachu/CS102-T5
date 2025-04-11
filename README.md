@@ -18,3 +18,6 @@ Please go to settings > privacy & security > local network > visual studio code 
 
 ## Additional Note
 - The terminal displays 100 characters in a row so make sure the terminal is expanded for the most optimal playing experience
+
+## How to play the game
+- You can read the rules of the game [here](./rules.md).
