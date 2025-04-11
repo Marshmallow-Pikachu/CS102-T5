@@ -1,4 +1,4 @@
-# G2T5
+# G2T5 - CS102 Project
 
 ## How to Compile and Run
 ### For Mac users
