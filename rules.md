@@ -77,3 +77,45 @@ For each color, players must determine the number of points they score. Each col
 
 # WINNER
 Wonderland, being a little topsy-turvy, the winner is the player with **the lowest score**. In case of a tie, the tied player with the fewest number of cards in front of herself (flipped and face up) wins the game.
+
+## EXAMPLE FOR SCORING
+The numbers in parentheses () show the value of the cards.
+
+### ALICE
+3 Red cards (10, 8, 3), 5 Blue cards (9, 7, 6, 5, 0), 1 Purple card (0), 2 Green cards (4, 2), 3 Grey cards (7, 4, 0).\
+Alice owns the largest number of blue and grey cards.\
+Her points are calculated as follows:\
+Red: 10+8+3 = 21\
+Blue: 5 cards *(1) = 5\
+Purple: 0 = 0\
+Green: 4+2 = 6\
+Grey: 3 cards *(1) = 3\
+Total: = 35 points
+
+### MAD HATTER
+2 Red cards (1, 0), 1 Blue card (8), 4 Purple cards (8, 7, 5, 3), 3 Grey cards (9, 8, 1), 2 Orange cards (10, 1).\
+The Hatter owns the largest number of purple and grey cards.\
+His points are:\
+Red: 1+0 = 1\
+Blue: 8 = 8\
+Purple: 4 cards *(1) = 4\
+Grey: 3 cards *(1) = 3\
+Orange: 10 + 1 = 11\
+Total: 27 points
+
+### CHESHIRE
+4 Red cards(7, 6, 5, 2), 2 Blue cards (4, 3), 2 Purple cards (2, 1), 4 Green cards (9, 8, 7, 6), 1 Grey card (10), 3 Orange cards (3, 2, 0)\
+Cheshire has the majority for the red, green and orange cards.\
+His points are:\
+Red: 4 cards *(1) = 4\
+Blue: 4 + 3 = 7\
+Purple: 2+1 = 3\
+Green 4 cards *(1) = 4\
+Grey: 10 = 10\
+Orange: 3 cards *(1) = 3\
+Total: = 31 points
+
+***THE HATTER WINS THE GAME***
+
+# RULES FOR 2 PLAYERS
+The only rule change is determining majority for scoring purposes. A player has majority only if he has 2 or more cards of a color than the other player.
