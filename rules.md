@@ -61,8 +61,10 @@ If a card with the value 0 is played, all cards enter removal mode.
 *Remember, you only remove cards that are in “removal mode”.*
 
 # LAST ROUND AND END OF THE GAME
-The last round starts when a player has collected cards of all 6 colors, or if the draw pile is exhausted.\
-If a player has collected the 6<sup>th</sup> color, she finishes her turn as before. After that, every player, including the one who collected the 6th color, plays one more turn. However, the players do not draw a card from the draw pile.\
+The last round starts when a player has collected cards of all 6 colors, or if the draw pile is exhausted.
+
+If a player has collected the 6<sup>th</sup> color, she finishes her turn as before. After that, every player, including the one who collected the 6th color, plays one more turn. However, the players do not draw a card from the draw pile.
+
 The game ends after this last round.
 
 If the draw pile is exhausted, every player plays one more turn. The game ends when everybody has only 4 cards left in their hand.
