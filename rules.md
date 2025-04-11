@@ -15,7 +15,8 @@ The start player is determined randomly. Each player is dealt 5 cards. 6 more ca
 During your turn, you perform the following actions in the order given below.
 1. Choose one of the cards in your hand by selecting a number from 1 to 5 to lay it at the end of the parade.
 2. If necessary, cards will be removed from the parade and laid in your scoring zone. \[automatic\]
-3. Draw a card from the draw pile. \[automatic\]\
+3. Draw a card from the draw pile. \[automatic\]
+
 The next player performs the same actions during their turn.
 
 # EXPLANATION OF THE ACTIONS
@@ -61,15 +62,17 @@ If a card with the value 0 is played, all cards enter removal mode.
 
 # LAST ROUND AND END OF THE GAME
 The last round starts when a player has collected cards of all 6 colors, or if the draw pile is exhausted.\
-If a player has collected the 6<sup>th</sup> color, she finishes her turn as before. After that, every player, including the one who collected the 6th color, plays one more turn. However,
-the players do not draw a card from the draw pile.\
-The game ends after this last round.\
-If the draw pile is exhausted, every player plays one more turn. The game ends when everybody has only 4 cards left in their hand.\
+If a player has collected the 6<sup>th</sup> color, she finishes her turn as before. After that, every player, including the one who collected the 6th color, plays one more turn. However, the players do not draw a card from the draw pile.\
+The game ends after this last round.
+
+If the draw pile is exhausted, every player plays one more turn. The game ends when everybody has only 4 cards left in their hand.
+
 Even if other players get their 6th color during the last round, this has no further effect. The games ends after the round.
 
 # SCORING
 After the end of the game each player chooses 2 cards from their hand and discards them. The remaining 2 cards in hand are added to those already in front of the player.\
-*Note: Each of these 2 cards will either be added to colors you already own, or create a new pile (if you do not already have any cards of that color).*\
+*Note: Each of these 2 cards will either be added to colors you already own, or create a new pile (if you do not already have any cards of that color).*
+
 Only the cards in the scoring zone of a player are scored. The cards still taking part in the parade are discarded.\
 For each color, players must determine the number of points they score. Each color is dealt with separately.
 1. Determine who has the majority in each color. The player or players with the most cards in each color flip those cards over and each of these cards counts as 1 point. (The value printed on the cards is not counted.)
@@ -84,7 +87,7 @@ The numbers in parentheses () show the value of the cards.
 ### ALICE
 3 Red cards (10, 8, 3), 5 Blue cards (9, 7, 6, 5, 0), 1 Purple card (0), 2 Green cards (4, 2), 3 Grey cards (7, 4, 0).\
 Alice owns the largest number of blue and grey cards.\
-Her points are calculated as follows:\
+**Her points are calculated as follows:**\
 Red: 10+8+3 = 21\
 Blue: 5 cards *(1) = 5\
 Purple: 0 = 0\
@@ -95,7 +98,7 @@ Total: = 35 points
 ### MAD HATTER
 2 Red cards (1, 0), 1 Blue card (8), 4 Purple cards (8, 7, 5, 3), 3 Grey cards (9, 8, 1), 2 Orange cards (10, 1).\
 The Hatter owns the largest number of purple and grey cards.\
-His points are:\
+**His points are:**\
 Red: 1+0 = 1\
 Blue: 8 = 8\
 Purple: 4 cards *(1) = 4\
@@ -106,7 +109,7 @@ Total: 27 points
 ### CHESHIRE
 4 Red cards(7, 6, 5, 2), 2 Blue cards (4, 3), 2 Purple cards (2, 1), 4 Green cards (9, 8, 7, 6), 1 Grey card (10), 3 Orange cards (3, 2, 0)\
 Cheshire has the majority for the red, green and orange cards.\
-His points are:\
+**His points are:**\
 Red: 4 cards *(1) = 4\
 Blue: 4 + 3 = 7\
 Purple: 2+1 = 3\
