@@ -2,15 +2,15 @@
 
 ## How to Compile and Run
 ### For Mac users
-compile: `bash compile.bat`
+compile: `bash compile.bat`\
 run: `bash run.bat`
 ### For Window users
-on powershell
-compile: `./compile.bat`
+**on powershell**\
+compile: `./compile.bat`\
 run: `./run.bat`
 
-on cmd
-compile: `compile.bat`
+**on cmd**\
+compile: `compile.bat`\
 run: `run.bat`
 
 ## Online Game Mac Users Requirement
