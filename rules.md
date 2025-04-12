@@ -8,6 +8,19 @@ Nobody wants points in Wonderland.
 - 66 cards in 6 colors with values ranging from 0 to 10 (10 being represented by the letter T)
 - Scoring zone
 
+How the cards look (*Note that the colors might not render correctly if your terminal uses a custom theme*)
+```
+   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐   ┌─────────┐
+   │ T       │   │ T       │   │ T       │   │ T       │   │ T       │   │ T       │
+   │ / ┼─┼ \ │   │  ┌───┐  │   │  /\_/\  │   │  (\(\   │   │   ___   │   │    -    │
+   │  /└─┘\  │   │  │   │  │   │ ( o.o ) │   │  (0.0)  │   │ _(  o)> │   │  /._.\  │
+   │ /_____\ │   │ ─┴───┴─ │   │  > ^ <  │   │ O( "")  │   │ \_____) │   │  \___/  │
+   │       T │   │       T │   │       T │   │       T │   │       T │   │       T │
+   └─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────┘   └─────────┘
+     Alice        Mad Hatter   Cheshire cat  White Rabbit   Dodo Bird   Humpty Dumpty
+     (Blue)        (red)         (purple)      (Black)      (Yellow)       (Green)
+```
+
 # PREPARATION OF THE PARADE
 The start player is determined randomly. Each player is dealt 5 cards. 6 more cards are placed next to each other following the draw pile (represented as *Cards Left: XX*); these cards are the initial participants of the parade. The draw pile marks the front of the parade. The other side is called the end of the parade. The remaining cards are placed inside the draw pile.
 
