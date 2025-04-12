@@ -111,10 +111,11 @@ public class Printer {
         CardList cardList = new CardList(Render.renderDeck(deckSize));
 
         for (int i = 0; i < cards.size()-1; i++) {
-            // Check if we had hit 10 cards -> if so, flush out the printlist
+            // Check if we had hit 7 cards -> if so, flush out the printlist
             if (count == 7) {
                 String output = cardList.output();
                 System.out.print(output);
+                count = 0;
             }
 
             // Get the lines of the card
@@ -315,6 +316,7 @@ public class Printer {
             // Check if we had hit 10 cards -> if so, flush out the printlist
             if (count == 7) {
                 output += cardList.output();
+                count = 0;
             }
 
             // Get the lines of the card
