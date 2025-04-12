@@ -14,7 +14,7 @@ compile: `compile.bat`\
 run: `run.bat`
 
 ## Online Game Mac Users Requirement
-Please go to settings > privacy & security > local network > visual studio code > toggle the button on in order to connect to the online game.
+Please go to Settings > Privacy & Security > Local Network > Visual Studio Code > toggle the button on in order to connect to the online game.
 
 ## Additional Note
 - The terminal displays 100 characters in a row so make sure the terminal is expanded for the most optimal playing experience
