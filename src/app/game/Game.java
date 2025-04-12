@@ -157,7 +157,6 @@ public class Game {
                     colourCount.set(i, counts.get(i));
                 }
             }
-            //System.out.println(colourCount);
         }
         return colourCount;
     }
@@ -193,7 +192,6 @@ public class Game {
             int count = 0;
             for (Card c : p.getCollectedParadeCards()){ // Count score for each player
                 if (c.getFlipped()){ //checked if flipped
-                    // System.out.printf("Flipping %d, %s\n", c.getValue(), c.getColour());
                     count++;
                 } else{
                     count += c.getValue();
@@ -212,27 +210,41 @@ public class Game {
      */
     public ArrayList<Player> determineWinner(){
         //Count numbers in scoring zone
-        ArrayList<Player> returnList = new ArrayList<>();
+        ArrayList<Player> winnerList = new ArrayList<>();
         int lowest = 10000;
-        Player lowestcurrent = new HumanPlayer(new Deck(), "Temp"); //Temp human player
-        for (Player p : players){
-            int count = 0;
-            for (Card c : p.getCollectedParadeCards()){ // Count score for each player
-                if (c.getFlipped()){ //checked if flipped
-                    count++;
-                } else{
-                    count += c.getValue();
-                }
-            }
-            if (lowest > count){ //Check if current player has lower score
-                lowest = count; 
-                lowestcurrent = p;
-            } else if (lowest == count){ //Check if there is a draw
-                returnList.add(p);
+        Map<String,Integer> scoreList = this.calculateScore();
+
+        for (Player p : players) {                  //find lowest score
+            if (scoreList.get(p.getName()) < lowest){
+                lowest = scoreList.get(p.getName());
             }
         }
-        returnList.add(lowestcurrent);
-        return returnList;
+
+        for (Player p1 : players){
+            if (scoreList.get(p1.getName()) == lowest){
+                winnerList.add(p1);
+            }
+        }
+
+
+        if (winnerList.size() > 1){                 // if draw by score, check number of cards in each winner's scoring zone to find true winner, fewest number wins
+            ArrayList<Player> newWinnerList = new ArrayList<>();
+            int noCardInScoringZone = 66;
+            System.out.println("Draw by Score (Winner chosen by who has less cards in scoring zone)");
+            for (Player p2 : winnerList){           //find smallest no of cards in scoring zone
+                if (p2.getCollectedParadeCards().size() < noCardInScoringZone){
+                    noCardInScoringZone = p2.getCollectedParadeCards().size();
+                }
+            }
+
+            for (Player p2 : winnerList){           // find player(s) with the smallest no of cards in scoring zone
+                if (p2.getCollectedParadeCards().size()== noCardInScoringZone){
+                    newWinnerList.add(p2);
+                }
+            }
+            winnerList = newWinnerList;
+        }
+        return winnerList;
     }
 
 }
