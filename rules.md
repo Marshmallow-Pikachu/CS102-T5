@@ -81,7 +81,7 @@ For each color, players must determine the number of points they score. Each col
 2. Each player will then add up the printed values of all their face up cards. Sum up this total with the total obtained from any flipped cards. 
 
 # WINNER
-Wonderland, being a little topsy-turvy, the winner is the player with **the lowest score**. In case of a tie, the tied player with the fewest number of cards in front of herself (flipped and face up) wins the game.
+Wonderland, being a little topsy-turvy, the winner is the player with **the lowest score**. In case of a tie, the tied player with the fewest number of cards in front of herself (flipped and face up) wins the game. If the tied players have the same number of cards in the scoring zone, the game results in a draw between the tied players.
 
 ## EXAMPLE FOR SCORING
 The numbers in parentheses () show the value of the cards.
