@@ -21,3 +21,5 @@ Please go to settings > privacy & security > local network > visual studio code 
 
 ## How to play the game
 - You can read the rules of the game [here](./rules.md).
+### Assumption
+In the rule book it is stated that "In case of a tie, the tied player with the fewest number of cards in front of herself (flipped and face up) wins the game." However, it did not state the outcome of tied players having the same number of cards in front (flipped and face up). We assume that given tied players with the same number of cards in the scoring zone, the game results in a draw between the tied players.
