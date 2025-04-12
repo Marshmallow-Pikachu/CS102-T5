@@ -1,11 +1,11 @@
 # G2T5 - CS102 Project
 ## Team Members
-Marc Lim
-Jeffrey Ng
-Jared Lim
-Christopher Tjandra
-Sonia Poh
-Jidapha Boomuang
+- Marc Lim
+- Jeffrey Ng
+- Jared Lim
+- Christopher Tjandra
+- Sonia Poh
+- Jidapha Boomuang
 
 ## How to Compile and Run
 ### For Mac users
