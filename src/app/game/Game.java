@@ -191,7 +191,7 @@ public class Game {
         for (Player p : players) {
             int count = 0;
             for (Card c : p.getCollectedParadeCards()){ // Count score for each player
-                if (c.getFlipped()){ //checked if flipped
+                if (c.getFlipped()){ // Checked if flipped
                     count++;
                 } else{
                     count += c.getValue();
@@ -214,7 +214,7 @@ public class Game {
         int lowest = 10000;
         Map<String,Integer> scoreList = this.calculateScore();
 
-        for (Player p : players) {                  //find lowest score
+        for (Player p : players) {                  // Find lowest score
             if (scoreList.get(p.getName()) < lowest){
                 lowest = scoreList.get(p.getName());
             }
@@ -227,17 +227,17 @@ public class Game {
         }
 
 
-        if (winnerList.size() > 1){                 // if draw by score, check number of cards in each winner's scoring zone to find true winner, fewest number wins
+        if (winnerList.size() > 1){                 // If draw by score, check number of cards in each winner's scoring zone to find true winner, fewest number wins
             ArrayList<Player> newWinnerList = new ArrayList<>();
             int noCardInScoringZone = 66;
             System.out.println("Draw by Score (Winner chosen by who has less cards in scoring zone)");
-            for (Player p2 : winnerList){           //find smallest no of cards in scoring zone
+            for (Player p2 : winnerList){           // Find smallest no of cards in scoring zone
                 if (p2.getCollectedParadeCards().size() < noCardInScoringZone){
                     noCardInScoringZone = p2.getCollectedParadeCards().size();
                 }
             }
 
-            for (Player p2 : winnerList){           // find player(s) with the smallest no of cards in scoring zone
+            for (Player p2 : winnerList){           // Find player(s) with the smallest no of cards in scoring zone
                 if (p2.getCollectedParadeCards().size()== noCardInScoringZone){
                     newWinnerList.add(p2);
                 }
