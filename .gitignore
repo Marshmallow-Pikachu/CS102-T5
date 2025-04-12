@@ -2,4 +2,5 @@ classes/
 *.class
 out/
 .DS_Store
-
+test/
+test.bat
